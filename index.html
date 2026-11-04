@@ -1267,8 +1267,17 @@ if (window.visualViewport) {
   const vv = visualViewport, root = document.documentElement, upd = () => {
     const kb = vv.scale > 1.01 ? 0 : Math.max(0, Math.round(innerHeight - vv.height - vv.offsetTop));
     root.style.setProperty('--kb', kb+'px'); root.style.setProperty('--vvh', Math.round(vv.height)+'px');
+    place();
   };
-  vv.addEventListener('resize', upd); vv.addEventListener('scroll', upd); upd();
+  /* phone browsers move their toolbars, so the page's own bottom edge can sit below what you can see; pin each sheet from the top of the visible area instead */
+  const sideMq = matchMedia('(orientation:landscape) and (max-height:500px)'), SHEETS = ['dlg', 'wk', 'sheet'];
+  const place = () => SHEETS.forEach(id => {
+    const d = $(id);
+    if (!d.open || !compact() || sideMq.matches) { d.style.top = ''; d.style.bottom = ''; return; }
+    d.style.bottom = 'auto'; d.style.top = Math.max(0, Math.round(vv.offsetTop + vv.height - d.offsetHeight)) + 'px';
+  });
+  if (window.ResizeObserver) { const ro = new ResizeObserver(place); SHEETS.forEach(id => ro.observe($(id))); }
+  vv.addEventListener('resize', upd); vv.addEventListener('scroll', upd); mqC.addEventListener('change', place); upd();
 }
 /* swipe the day list sideways for the next or previous day (not from the screen edge) */
 (function () {
