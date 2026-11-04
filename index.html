@@ -1278,6 +1278,15 @@ if (window.visualViewport) {
   });
   if (window.ResizeObserver) { const ro = new ResizeObserver(place); SHEETS.forEach(id => ro.observe($(id))); }
   vv.addEventListener('resize', upd); vv.addEventListener('scroll', upd); mqC.addEventListener('change', place); upd();
+  /* open the page with ?debug=1 to see how this phone measures its screen (for tracking down sheet problems) */
+  if (/[?&]debug=1/.test(location.search)) {
+    const bx = document.createElement('pre'); bx.style.cssText = 'position:fixed;left:4px;top:4px;z-index:2147483647;margin:0;padding:6px 8px;background:#fff;color:#000;border:2px solid #c00;font:11px/1.3 monospace;max-width:92vw;white-space:pre-wrap;pointer-events:none';
+    document.body.appendChild(bx);
+    setInterval(() => {
+      const r = d => { const e = $(d), b = e.getBoundingClientRect(), c = getComputedStyle(e); return d+': '+(e.open?'OPEN':'closed')+' top '+Math.round(b.top)+' h '+Math.round(b.height)+' bot '+Math.round(b.bottom)+' anim '+c.animationName+' tf '+c.transform+' inline-top '+(e.style.top||'-'); };
+      bx.textContent = 'build b3 (sheets: top-pinned, no slide)\ninnerH '+innerHeight+' vvH '+Math.round(vv.height)+' vvTop '+Math.round(vv.offsetTop)+' scale '+vv.scale.toFixed(2)+'\n--kb '+root.style.getPropertyValue('--kb')+' --vvh '+root.style.getPropertyValue('--vvh')+' scrollY '+Math.round(scrollY)+'\n'+['sheet','dlg'].map(r).join('\n')+'\nUA '+navigator.userAgent.replace(/.*\) /,'');
+    }, 400);
+  }
 }
 /* swipe the day list sideways for the next or previous day (not from the screen edge) */
 (function () {
