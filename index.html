@@ -273,7 +273,7 @@ html[data-theme=light]{color-scheme:light}html[data-theme=dark]{color-scheme:dar
   .badge{position:absolute;top:5px;left:calc(50% + 4px);min-width:20px;height:20px;border-radius:10px;background:var(--ink);color:var(--onink);font-size:14px;font-weight:600;line-height:20px;text-align:center;padding:0 5px}
   /* sheets: add / edit, weekend question, loose, more, task menu */
   dialog#dlg,dialog#wk,dialog#sheet{position:fixed;inset:auto 0 var(--kb,0px) 0;margin:0 auto;width:100%;max-width:480px;max-height:calc(var(--vvh,100dvh) * .92);border-radius:22px 22px 0 0;border-width:1px 0 0;box-shadow:none;overflow:hidden}
-  dialog#dlg[open],dialog#wk[open],dialog#sheet[open]{display:flex;flex-direction:column;animation:sheetUp .28s ease-out}
+  dialog#dlg[open],dialog#wk[open],dialog#sheet[open]{display:flex;flex-direction:column}  /* no slide-in: on some iPhones (Low Power Mode) the animation froze with the sheet mostly off screen */
   dialog::backdrop{background:rgba(0,0,0,.42)}
   @keyframes sheetUp{from{transform:translateY(100%)}}
   @media (prefers-reduced-motion:reduce){dialog#dlg[open],dialog#wk[open],dialog#sheet[open]{animation:none}}
