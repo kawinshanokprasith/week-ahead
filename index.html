@@ -436,6 +436,7 @@ body,.wtag b,.comp textarea,.lk,#setup input{font-family:var(--fnt)}
 :root{--fhd:'Kondolar Thai',Kondolar,Georgia,serif}
 .brand,#wk h2,form h2,.mt b,.dh h2,.dh h3,.shh h2,.brandrow b,.ch h3,.tray h2,.glance h2,.bgh h2{font-family:var(--fhd);font-weight:900;letter-spacing:0}
 .brand{font-size:26px;line-height:1;color:var(--ink);padding:0}
+@media (min-width:1024px){.brand{font-size:52px}}   /* WA-44: the name is the biggest text in the header */
 .legacy{display:none!important}
 /* header (WA-37 pickboard picks C1 B, C2 C, C3 B): week as the headline, one "Week" menu, a Filter button and one More menu */
 .pop{position:absolute;top:calc(100% + 4px);left:0;z-index:30;background:var(--card);border-radius:4px;box-shadow:var(--shm);padding:6px;min-width:200px;display:flex;flex-direction:column;gap:1px}
@@ -452,7 +453,7 @@ body,.wtag b,.comp textarea,.lk,#setup input{font-family:var(--fnt)}
   .hr1,.hr2,.hr3{display:flex;align-items:center;gap:10px}
   .hr1{justify-content:space-between}.hr1r{display:flex;align-items:center;gap:12px}
   .hr2{gap:10px}
-  .range{font-family:var(--fhd);font-weight:900;font-size:38px;line-height:1.15;min-width:0;text-align:left;color:var(--ink);white-space:nowrap;padding:0 4px}
+  .range{font-family:var(--fhd);font-weight:900;font-size:30px;line-height:1.2;min-width:0;text-align:left;color:var(--ink);white-space:nowrap;padding:0 4px}
   .hr3{gap:8px}.hr3 .sp{margin-left:auto}
   .hr3 .btn{display:inline-flex;align-items:center;gap:6px}
   .hr3 .btn.on{background:var(--azsoft);color:var(--aztext)}
