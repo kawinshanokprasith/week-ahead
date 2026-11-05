@@ -448,14 +448,14 @@ body,.wtag b,.comp textarea,.lk,#setup input{font-family:var(--fnt)}
 .dd{position:relative;display:inline-block}
 @media (min-width:1024px){
   .bar{display:flex;flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:6px;padding:10px max(16px,2.5vw) 12px}
-  .r1,.r2,.r3{display:flex;align-items:center;gap:10px}
-  .r1{justify-content:space-between}.r1r{display:flex;align-items:center;gap:12px}
-  .r2{gap:10px}
+  .hr1,.hr2,.hr3{display:flex;align-items:center;gap:10px}
+  .hr1{justify-content:space-between}.hr1r{display:flex;align-items:center;gap:12px}
+  .hr2{gap:10px}
   .range{font-family:var(--fhd);font-weight:900;font-size:38px;line-height:1.15;min-width:0;text-align:left;color:var(--ink);white-space:nowrap;padding:0 4px}
-  .r3{gap:8px}.r3 .sp{margin-left:auto}
-  .r3 .btn{display:inline-flex;align-items:center;gap:6px}
-  .r3 .btn.on{background:var(--azsoft);color:var(--aztext)}
-  .r3 .chip{padding:1px 6px}
+  .hr3{gap:8px}.hr3 .sp{margin-left:auto}
+  .hr3 .btn{display:inline-flex;align-items:center;gap:6px}
+  .hr3 .btn.on{background:var(--azsoft);color:var(--aztext)}
+  .hr3 .chip{padding:1px 6px}
   .btn.main{min-height:36px;padding:6px 16px;font-size:15px}
 }
 
@@ -483,8 +483,8 @@ body,.wtag b,.comp textarea,.lk,#setup input{font-family:var(--fnt)}
 .banner{border-radius:8px;background:var(--card);color:var(--ink2);box-shadow:var(--shc)}
 .banner button{color:var(--aztext)}
 .tray{background:rgba(255,255,255,.45)}
-:root[data-theme=dark] .tray{background:rgba(0,0,0,.18)}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .tray{background:rgba(0,0,0,.18)}}
+:root[data-theme=dark]:not(.hasbg) .tray{background:rgba(0,0,0,.18)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]):not(.hasbg) .tray{background:rgba(0,0,0,.18)}}
 /* board: grey rounded columns, white shadowed cards, no coloured bars */
 .tray{border:2px dashed var(--edge);border-radius:8px}
 .tray h2,.glance h2{color:var(--ink2)}
@@ -658,16 +658,16 @@ body,.comp textarea,.lk,.tag,.sz{line-height:1.5}
 </head>
 <body>
 <header class="bar">
-  <div class="r1"><div class="logo"><img src="week-ahead-icon.svg" alt="" width="48" height="48"><h1 class="brand">Week Ahead</h1></div>
-    <div class="r1r"><span class="saved" id="saved" aria-live="polite"></span><button type="button" class="btn main" data-act="add" title="Add task (A)">+ Add task</button></div></div>
-  <div class="r2">
+  <div class="hr1"><div class="logo"><img src="week-ahead-icon.svg" alt="" width="48" height="48"><h1 class="brand">Week Ahead</h1></div>
+    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><button type="button" class="btn main" data-act="add" title="Add task (A)">+ Add task</button></div></div>
+  <div class="hr2">
     <button type="button" class="btn sq" data-act="prev" aria-label="Previous week" title="Previous week (←)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
     <span class="range" id="range" aria-live="polite"></span>
     <button type="button" class="btn sq" data-act="next" aria-label="Next week" title="Next week (→)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
     <span class="chip" id="rel"></span>
     <button type="button" class="btn" data-act="today">Today</button>
   </div>
-  <div class="r3">
+  <div class="hr3">
     <span class="dd"><button type="button" class="btn" id="mView" data-pop="pView" aria-haspopup="menu" aria-expanded="false" title="How much time to show"><span id="mViewT">Week</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
       <div class="pop" id="pView" role="menu" aria-label="How much time to show" hidden>
         <button type="button" role="menuitemradio" data-act="vpick" data-v="day">Day</button><button type="button" role="menuitemradio" data-act="vpick" data-v="3day">3 days</button><button type="button" role="menuitemradio" data-act="vpick" data-v="work">Work week</button><button type="button" role="menuitemradio" data-act="vpick" data-v="week">Week</button><button type="button" role="menuitemradio" data-act="vpick" data-v="month">Month</button></div></span>
