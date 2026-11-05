@@ -663,6 +663,8 @@ html.hasbg::before{content:"";position:fixed;left:0;top:0;width:100vw;height:100
   html.hasbg .strip,html.hasbg .dh,html.hasbg .mfilter,html.hasbg .mempty{background:var(--card);border-radius:12px;padding-left:10px;padding-right:10px}
   html.hasbg .mfilter{padding:8px 10px}
 }
+/* Mac app, phone layout: keep the top bar clear of the traffic lights */
+@media (max-width:699px){html.wa-native .mhead{padding-top:calc(36px + env(safe-area-inset-top))}html.wa-native .mhead .ar,html.wa-native .mhead .tdp{margin-top:0}}
 /* phone and tablet bits that carry the old accent */
 @media (max-width:699px){
   .mhead,.tabbar{background:var(--card)}
@@ -752,8 +754,8 @@ html.hasbg::before{content:"";position:fixed;left:0;top:0;width:100vw;height:100
 
 <dialog id="bgd" aria-labelledby="bgT">
   <div class="bgw">
-    <div class="bgh"><h2 id="bgT">Background picture</h2><button type="button" class="btn" id="bgClose">Done</button></div>
-    <p class="bgn">The picture shows behind the columns on this Mac only. It is not saved with your tasks and not sent to your phone.</p>
+    <div class="bgh"><h2 id="bgT">Picture for this mode</h2><button type="button" class="btn" id="bgClose">Done</button></div>
+    <p class="bgn" id="bgNote">The picture shows behind the columns on this Mac only.</p>
     <div class="row"><button type="button" class="btn" id="bgUp">Upload a photo</button><button type="button" class="btn" id="bgOff" hidden>Remove background</button><input type="file" id="bgFile" accept="image/*" hidden></div>
     <div class="bgs">
       <label class="l" for="bgQ">Find a photo on Unsplash</label>
@@ -1982,24 +1984,32 @@ document.querySelectorAll('.ic-wk').forEach(e => e.innerHTML = IC.work); documen
   const $ = id => document.getElementById(id), R = document.documentElement;
   const get = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
   const put = (k, v) => { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } };
-  const cur = () => { try { return JSON.parse(get('wa-bg') || 'null'); } catch (e) { return null; } };
+  /* two slots: the picture for light mode and the picture for dark mode (WA-48); the slot is the mode that is showing now */
+  const mode = () => { const t = R.dataset.theme; return t === 'dark' || t === 'light' ? t : (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'); };
+  const KEY = () => 'wa-bg-' + mode();
+  const cur = () => { try { return JSON.parse(get(KEY()) || 'null'); } catch (e) { return null; } };
   const UTM = '?utm_source=week_ahead&utm_medium=referral';
   const msg = t => { $('bgMsg').textContent = t || ''; };
   /* uploaded photos live in IndexedDB (no 5 MB limit); Unsplash picks are just a link kept in localStorage */
   const idb = () => new Promise((ok, no) => { const r = indexedDB.open('wa-bg-db', 1); r.onupgradeneeded = () => r.result.createObjectStore('b'); r.onsuccess = () => ok(r.result); r.onerror = () => no(r.error); });
-  const idbPut = async blob => { const d = await idb(); return new Promise((ok, no) => { const t = d.transaction('b', 'readwrite'); t.objectStore('b').put(blob, 'bg'); t.oncomplete = ok; t.onerror = () => no(t.error); }); };
-  const idbGet = async () => { const d = await idb(); return new Promise((ok, no) => { const q = d.transaction('b').objectStore('b').get('bg'); q.onsuccess = () => ok(q.result); q.onerror = () => no(q.error); }); };
-  let objUrl = null;
+  const idbPut = async (blob, key) => { const d = await idb(); return new Promise((ok, no) => { const t = d.transaction('b', 'readwrite'); t.objectStore('b').put(blob, key || 'bg-' + mode()); t.oncomplete = ok; t.onerror = () => no(t.error); }); };
+  const idbGet = async key => { const d = await idb(); return new Promise((ok, no) => { const q = d.transaction('b').objectStore('b').get(key || 'bg-' + mode()); q.onsuccess = () => ok(q.result); q.onerror = () => no(q.error); }); };
+  const objUrls = {};
+  let applySeq = 0;
   async function apply() {
-    const b = cur(), c = $('bgCredit');
+    const m = mode(), seq = ++applySeq, b = cur(), c = $('bgCredit');
     let url = b && b.url || null;
-    if (b && b.t === 'upload' && !url) { try { const blob = await idbGet(); if (blob) { if (objUrl) URL.revokeObjectURL(objUrl); url = objUrl = URL.createObjectURL(blob); } } catch (e) {} }
+    if (b && b.t === 'upload' && !url) {
+      if (objUrls[m]) url = objUrls[m];
+      else { try { const blob = await idbGet('bg-' + m); if (blob) url = objUrls[m] = URL.createObjectURL(blob); } catch (e) {} }
+      if (seq !== applySeq) return;   // the mode changed again while the picture was loading
+    }
     R.classList.toggle('hasbg', !!url);
     if (url) R.style.setProperty('--bgimg', 'url("' + url.replace(/"/g, '%22') + '")'); else R.style.removeProperty('--bgimg');
     if (b && b.t === 'unsplash') { c.hidden = false; c.href = b.link; c.textContent = 'Photo by ' + b.name + ' on Unsplash'; } else c.hidden = true;
     $('bgOff').hidden = !url;
   }
-  function set(b) { if (!put('wa-bg', JSON.stringify(b))) { msg('This browser had no room to keep that picture. Try a smaller photo.'); return false; } apply(); return true; }
+  function set(b) { if (!put(KEY(), JSON.stringify(b))) { msg('This browser had no room to keep that picture. Try a smaller photo.'); return false; } apply(); return true; }
   function drawKey() { const k = get('wa-unsplash-key'); $('bgKeyBox').hidden = !!k; $('bgForget').hidden = !k; }
   async function search() {
     const q = $('bgQ').value.trim(), k = get('wa-unsplash-key');
@@ -2040,7 +2050,7 @@ document.querySelectorAll('.ic-wk').forEach(e => e.innerHTML = IC.work); documen
       c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
       const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .88));
       if (!blob) throw new Error('Could not prepare that picture.');
-      await idbPut(blob);
+      await idbPut(blob); delete objUrls[mode()];
       if (set({ t:'upload' })) msg('Background set.');
     } catch (e) { msg(e.message || 'Could not set that picture.'); }
   }
@@ -2057,15 +2067,27 @@ document.querySelectorAll('.ic-wk').forEach(e => e.innerHTML = IC.work); documen
     if (op && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) { e.preventDefault(); const it = [...op.querySelectorAll('button')].filter(b => !b.hidden), i = it.indexOf(document.activeElement); it[(i + (e.key === 'ArrowDown' ? 1 : -1) + it.length) % it.length].focus(); return; }
   });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.querySelector('.pop:not([hidden])')) { const o = document.querySelector('[data-pop][aria-expanded=true]'); closePops(); if (o) o.focus(); } });
-  $('bBg').onclick = () => { drawKey(); msg(''); apply(); $('bgd').showModal(); };
+  const drawTitle = () => { $('bgT').textContent = 'Picture for ' + mode() + ' mode'; $('bgNote').textContent = 'You are in ' + mode() + ' mode. This picture is kept for ' + mode() + ' mode only; switching the colour mode shows the picture you chose for that mode. It shows behind the columns on this device only, is not saved with your tasks and is not sent to your phone.'; };
+  $('bBg').onclick = () => { drawKey(); msg(''); drawTitle(); apply(); $('bgd').showModal(); };
   $('bgClose').onclick = () => $('bgd').close();
   $('bgUp').onclick = () => $('bgFile').click();
   $('bgFile').onchange = e => { fromFile(e.target.files[0]); e.target.value = ''; };
-  $('bgOff').onclick = () => { try { localStorage.removeItem('wa-bg'); } catch (e) {} idbPut(null).catch(() => {}); apply(); msg('Background removed.'); };
+  $('bgOff').onclick = () => { try { localStorage.removeItem(KEY()); } catch (e) {} idbPut(null).catch(() => {}); delete objUrls[mode()]; apply(); msg('Picture for ' + mode() + ' mode removed.'); };
   $('bgGo').onclick = search;
   $('bgQ').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); search(); } };
   $('bgKeySave').onclick = () => { const v = $('bgKey').value.trim(); if (!v) return; put('wa-unsplash-key', v); $('bgKey').value = ''; drawKey(); msg('Key saved. Now search.'); };
   $('bgForget').onclick = () => { try { localStorage.removeItem('wa-unsplash-key'); } catch (e) {} drawKey(); msg('Key forgotten.'); };
+  /* migration: the old single picture ("wa-bg", IndexedDB "bg") becomes the picture for BOTH modes, so nothing is lost */
+  (async () => {
+    const old = get('wa-bg'); if (!old) return;
+    try { const blob = await idbGet('bg'); if (blob) { await idbPut(blob, 'bg-light'); await idbPut(blob, 'bg-dark'); } } catch (e) {}
+    if (!get('wa-bg-light')) put('wa-bg-light', old); if (!get('wa-bg-dark')) put('wa-bg-dark', old);
+    try { localStorage.removeItem('wa-bg'); } catch (e) {}
+    apply();
+  })();
+  /* switching the colour mode (button, or the system setting when on Auto) swaps the picture */
+  new MutationObserver(() => { apply(); if ($('bgd').open) { drawTitle(); drawKey(); msg(''); } }).observe(R, { attributes: true, attributeFilter: ['data-theme'] });
+  matchMedia('(prefers-color-scheme:dark)').addEventListener('change', () => { apply(); if ($('bgd').open) drawTitle(); });
   window.waBg = { open: () => $('bBg').click(), remove: () => $('bgOff').click() };
   apply();
 })();
