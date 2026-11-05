@@ -53,7 +53,7 @@ h1,h2,h3,p{margin:0}
 .banner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:16px max(16px,2.5vw) 0;padding:10px 16px;background:var(--sunken);border-radius:12px;color:var(--ink2);font-size:14px}
 .banner button{border:0;background:none;text-decoration:underline;padding:0;font-weight:500;color:var(--ink)}
 main{padding:16px max(16px,2.5vw) 48px;overflow-x:auto}
-.board{min-width:700px}.board.r5{min-width:760px}.board.r3,.board.r1{min-width:0}
+.board{min-width:700px}.board.r5{min-width:880px}.board.r7{min-width:1240px}   /* WA-60: columns keep about 165 px; the board scrolls sideways instead of squeezing */.board.r3,.board.r1{min-width:0}
 .tray{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;border:2px dashed var(--edge);border-radius:14px;padding:10px 14px;margin-bottom:14px;min-height:56px}
 .tray.over,.col.over{background:var(--azsoft)}
 .tray h2{font-size:14px;font-weight:600;color:var(--aztext)}
@@ -208,7 +208,22 @@ input[type=text],input[type=date],select{width:100%;border:1px solid var(--edge)
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .row.sp{justify-content:flex-end;margin-top:4px}
 .seg.full{display:flex}.seg.full button{flex:1}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.two{display:grid;grid-template-columns:1fr;gap:12px}
+/* due date: chips + small calendar popover (WA-54) */
+.duew{position:relative}
+.cal{position:absolute;left:0;top:calc(100% + 4px);z-index:5;width:288px;max-width:100%;background:var(--card);border:1px solid var(--border);border-radius:4px;box-shadow:var(--shm);padding:8px}
+.calh{display:flex;align-items:center;gap:4px;margin-bottom:4px}
+.calh b{flex:1;text-align:center;font-size:14px;font-weight:600}
+.calh button,.calf button{border:0;background:transparent;border-radius:3px;min-width:32px;height:32px;padding:0 8px;font-size:14px;color:var(--ink)}
+.calh button:hover,.calf button:hover{background:var(--chover)}
+.calg{display:grid;grid-template-columns:repeat(7,1fr)}
+.calg span{font-size:12px;font-weight:600;color:var(--ink2);text-align:center;padding:4px 0}
+.calg button{border:0;background:transparent;border-radius:3px;height:34px;font-size:14px;color:var(--ink);padding:0}
+.calg button:hover{background:var(--chover)}
+.calg button.out{color:var(--ink2)}
+.calg button.td{font-weight:700;box-shadow:inset 0 0 0 1px var(--edge)}
+.calg button[aria-pressed=true]{background:var(--az);color:var(--onaz);font-weight:700;box-shadow:none}
+.calf{display:flex;justify-content:space-between;margin-top:4px;border-top:1px solid var(--border);padding-top:4px}
 @media (max-width:700px){.nav{margin-left:0}}
 @media (max-width:420px){.brand{font-size:30px}}
 /* WA-36 Trello look: grey columns and tray, white cards with a soft shadow (Win's explicit override of "no shadows"), Work/Life as a thin colour edge plus the chip */
@@ -259,7 +274,8 @@ html[data-theme=light]{color-scheme:light}html[data-theme=dark]{color-scheme:dar
   .bar,main{display:none}
   .banner,.olbar{margin:8px max(12px,env(safe-area-inset-left));font-size:14px}
   .banner button{min-height:44px;padding:0 6px}
-  #app-m{display:block;--tab:58px;--lb:0px;--pad:12px;padding-bottom:calc(var(--tab) + var(--lb) + 100px + env(safe-area-inset-bottom))}
+  #app-m{display:block;--tab:58px;--lb:0px;--pad:12px;padding-bottom:calc(var(--tab) + var(--lb) + 120px + env(safe-area-inset-bottom))}   /* WA-59: Add button is 56px + 16px gap; 120px leaves 48px clear below the last card, Open this week and the day lists */
+  html{scroll-padding-bottom:calc(160px + env(safe-area-inset-bottom))}   /* a focused or revealed card scrolls clear of the Add button */
   #app-m.hasloose{--lb:48px}
   .mhead{position:sticky;top:0;z-index:5;background:var(--sunken);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;min-height:56px;padding:calc(6px + env(safe-area-inset-top)) max(var(--pad),env(safe-area-inset-right)) 6px max(var(--pad),env(safe-area-inset-left))}
   .ar{flex:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--edge);background:var(--card);font-size:24px;line-height:1;display:grid;place-items:center;padding:0 0 3px}
@@ -353,6 +369,7 @@ html[data-theme=light]{color-scheme:light}html[data-theme=dark]{color-scheme:dar
   label.l,.l{font-size:14px}
   input[type=text],input[type=date],select{font-size:16px;min-height:48px;border-radius:12px}
   .two{grid-template-columns:minmax(0,1fr)}
+  .cal{width:100%}.calh button,.calf button{min-height:44px;min-width:44px}.calg button{height:44px;font-size:16px}
   input[type=date]{min-width:0;-webkit-appearance:none;appearance:none;text-align:left}
   dialog#dlg form{overflow-x:hidden}
   #fDay{display:none}
@@ -454,6 +471,7 @@ body,.wtag b,.comp textarea,.lk,#setup input{font-family:var(--fnt)}
 /* header (WA-37 pickboard picks C1 B, C2 C, C3 B): week as the headline, one "Week" menu, a Filter button and one More menu */
 .pop{position:absolute;top:calc(100% + 4px);left:0;z-index:30;background:var(--card);border-radius:4px;box-shadow:var(--shm);padding:6px;min-width:200px;display:flex;flex-direction:column;gap:1px}
 .pop.right{left:auto;right:0}
+.pop.tips{width:300px;padding:10px 12px;gap:6px;align-items:stretch}.pop.tips ul{margin:0;padding-left:18px;font-size:14px;line-height:1.4;color:var(--ink)}.pop.tips li{margin:0 0 6px}.pop.tips .tipx{align-self:flex-end;border:1px solid var(--edge);justify-content:center}
 .pop h5{margin:4px 8px 2px;font-size:12px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em}
 .pop button{border:0;background:transparent;text-align:left;border-radius:3px;padding:7px 10px;font-size:14px;color:var(--ink);display:flex;align-items:center;gap:8px}
 .pop button:hover,.pop button:focus-visible{background:var(--chover)}
@@ -562,7 +580,8 @@ label.l{font-weight:600;color:var(--ink2)}
 .mc{border:0;border-radius:8px;background:var(--card);box-shadow:var(--shc)}
 .mc.wk{background:var(--colwk);box-shadow:none}
 .mc:hover{box-shadow:var(--shc),0 0 0 1px var(--edge)}
-.mc.today{border:0;padding:6px 8px;background:var(--azsoft)}.mc.today .n{color:var(--aztext);font-weight:700}
+.mc.today{border:0;padding:6px 8px;box-shadow:var(--shc),inset 0 0 0 2px var(--az)}.mc.today:hover,.mc.today.hv{box-shadow:var(--shc),inset 0 0 0 2px var(--az)}
+.mc.today .n{align-self:flex-start;background:var(--az);color:var(--onaz);font-weight:700;border-radius:12px;min-width:24px;height:24px;line-height:24px;padding:0 7px;text-align:center}   /* WA-52: ring + filled date circle, same as the phone */
 .mc.hv,.mc.hv.wk{background:var(--tint);border:0;box-shadow:none}
 .mw{border-radius:8px}.mw.heavy{background:var(--tint);color:var(--ink)}
 .dots i.t,.legend i.t,.mk i.w{background:var(--wk-dot)}
@@ -693,6 +712,22 @@ html{background-color:var(--bg)}
   .lz{padding:0}
 }
 @media (min-width:600px) and (max-width:699px){.ag .dlist{padding:12px}}
+/* WA-60: the header never overlaps (700 to 1280 px): rows wrap; columns never squeeze; no mid-word breaks */
+@media (min-width:700px){
+  .hr1{flex-wrap:wrap;gap:6px 12px}
+  .hr1 .logo{flex:0 1 auto;min-width:0}
+  .hr1r{flex-wrap:wrap;justify-content:flex-end;gap:8px 10px;min-width:0}
+  .hr2{row-gap:8px}
+  .hr2 .range{flex:0 0 auto}
+  .week .ch h3{white-space:nowrap}
+  .week .addb,.week .addb span{white-space:nowrap}
+  .week .ct{overflow-wrap:break-word;word-break:normal}
+}
+@media (min-width:700px) and (max-width:1099px){
+  .brand{font-size:44px}
+  html.hasbg .bar{position:relative!important;top:auto!important;padding-bottom:20px}   /* no slide-up header below 1100 px */
+  .olnote{max-width:150px}
+}
 /* phone and tablet bits that carry the old accent */
 @media (max-width:699px){
   .mhead,.tabbar{background:var(--card)}
@@ -738,12 +773,26 @@ html{background-color:var(--bg)}
 .menu button[aria-checked=true]{background:var(--azsoft);font-weight:600}
 .acts .row44{display:flex;align-items:center;gap:10px}.acts .mi{display:inline-flex;width:28px;height:28px;flex:none;color:var(--aztext)}.acts .mi svg{width:26px;height:26px}.acts .mi svg *{stroke-width:1.6}.acts .chk{margin-left:auto;font-weight:700;color:var(--aztext)}
 .dh .wtag{min-width:44px;min-height:44px}.dh .wtag.none{width:auto;height:44px;padding:4px 10px}
+/* WA-51/55/58: done cards are one thin line at the bottom of the day; every load bar is the same height and length (the word says Light, Busy, Full or Over); load word and "N of M done" each on their own line; darker Saved text */
+.stat{display:flex;flex-direction:column;gap:2px;min-height:0}
+.stat .lw,.stat .dcn{display:block}.stat .lw:empty{display:none}
+.stat .lw b{font-weight:600}
+.stat .lw svg{width:12px;height:12px;vertical-align:-1px;margin-right:3px}
+.saved{color:var(--ink)}
+html.hasbg .saved:not(:empty){background:var(--card);border-radius:999px;padding:2px 8px}
+body .card.done{min-height:0;padding:6px 10px 6px 38px;gap:0;justify-content:center;cursor:pointer}
+body .card.hc.done{padding-left:38px}
+body .card.done .cm,body .card.done .olwas,body .card.done .oldot{display:none}
+body .card.done .ct{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;line-height:24px}
+body .card.done .chk{top:50%;transform:translateY(-50%)}
+body .card.done .more{top:50%;bottom:auto;transform:translateY(-50%)}
+@media (max-width:699.98px){body .card.done{min-height:44px;padding:4px 52px 4px 56px}body .card.hc.done{padding-left:56px}}
 </style>
 </head>
 <body>
 <header class="bar">
   <div class="hr1"><div class="logo"><img src="week-ahead-icon.svg" alt="" width="48" height="48"><h1 class="brand">Weeklee</h1></div>
-    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="olnote" id="olNote" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><button type="button" class="btn sq maconly" id="mOl" data-act="olrefresh" aria-label="Refresh from Outlook" title="Refresh from Outlook"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></svg></button><button type="button" class="btn sq" id="bTheme" data-act="themecycle"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" title="Week pattern: which days are office, home or client site" aria-label="Week pattern"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" title="Background picture" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button></span><button type="button" class="btn main" data-act="add" title="Add task (A)">+ Add task</button></div></div>
+    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="olnote" id="olNote" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><button type="button" class="btn sq maconly" id="mOl" data-act="olrefresh" aria-label="Refresh from Outlook" title="Refresh from Outlook"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></svg></button><button type="button" class="btn sq" id="bTheme" data-act="themecycle"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" title="Week pattern: which days are office, home or client site" aria-label="Week pattern"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" title="Background picture" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button><span class="dd tipdd"><button type="button" class="btn sq" id="bHelp" data-pop="pHelp" aria-haspopup="dialog" aria-expanded="false" aria-label="Tips" title="Tips"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg></button><div class="pop right tips" id="pHelp" role="dialog" aria-label="Tips" hidden><h5>Tips</h5><ul><li><b>Loose tasks</b> have no day yet. They wait in the tray until you place them.</li><li><b>Drag a card</b> onto a day to plan it, or back to the tray.</li><li><b>Right-click a card</b> for Delete or Cancel.</li><li><b>X or Space</b> marks the focused card done. <b>A</b> adds a task.</li><li>The <b>view menu</b> (Week) changes how many days show.</li><li>The <b>refresh button</b> pulls the latest meetings from Outlook.</li></ul><button type="button" class="tipx" data-act="tipclose">Got it</button></div></span></span><button type="button" class="btn main" data-act="add" title="Add task (A)">+ Add task</button></div></div>
   <div class="hr2">
     <button type="button" class="btn sq" data-act="prev" aria-label="Previous week" title="Previous week (←)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
     <span class="range" id="range" aria-live="polite"></span>
@@ -808,9 +857,8 @@ html{background-color:var(--bg)}
     <div><span class="l">Size</span><div class="seg full" id="fSize" role="radiogroup" aria-label="Size"><button type="button" role="radio" data-size="quick">Quick</button><button type="button" role="radio" data-size="half">Half-day</button><button type="button" role="radio" data-size="full">Full-day</button></div></div>
     <div class="two">
       <div><label class="l" for="fDay">Day</label><select id="fDay"></select><div class="dchips" id="fDayChips" role="group" aria-label="Day"></div></div>
-      <div><label class="l" for="fDue">Due (optional)</label><input type="date" id="fDue"></div>
     </div>
-    <div class="row" id="fChips" aria-label="Due date shortcuts"></div>
+    <div class="duew"><span class="l" id="fDueL">Due (optional)</span><input type="hidden" id="fDue"><div class="row" id="fChips" role="group" aria-labelledby="fDueL"></div><div class="cal" id="fCal" role="dialog" aria-label="Pick a due date" hidden></div></div>
     </div><p id="fFromNote" hidden></p>
     <div id="fFollow" hidden>
       <div id="fFromLine" hidden></div>
@@ -864,6 +912,7 @@ const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y
 const add = (s,n) => { const d = parse(s); d.setDate(d.getDate()+n); return iso(d); };
 const mondayOf = d => { d = new Date(d); d.setDate(d.getDate()-((d.getDay()+6)%7)); return iso(d); };
 const esc = t => String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtDate = s => { const d = parse(s); return d.getDate()+' '+MN[d.getMonth()]; };   // 31 Oct (WA-53: due pills say the month)
 const fmtDay = s => { const d = parse(s); return DN[(d.getDay()+6)%7]+' '+d.getDate(); };
 const fmtShort = s => { const d = parse(s); return d.getDate()+' '+MN[d.getMonth()]; };
 const uid = () => Math.random().toString(36).slice(2,10);
@@ -1150,7 +1199,7 @@ function whereTag(d, full) {
   const w = whereOf(d); if (!w && !whereAny()) return '';
   const say = w ? WH[w.type].label+(w.own ? ', changed for this day' : ', from your week pattern') : 'not set';
   return '<button type="button" class="wtag'+(w ? (w.own ? ' own' : '') : ' none')+'" data-act="where" data-d="'+d+'" aria-haspopup="menu" aria-label="'+fmtDay(d)+': '+say+'. Change" title="'+(w ? WH[w.type].label+(w.own ? ' (this day only)' : '') : 'Where? Not set')+'">'
-    + (w ? iconDuo(WH[w.type].ic)+(w.own ? '<i class="od" aria-hidden="true"></i>' : '') : '<span aria-hidden="true">Where?</span>') + '</button>';
+    + (w ? iconDuo(WH[w.type].ic) : '<span aria-hidden="true">Where?</span>') + '</button>';
 }
 function focusWhere(d) { const el = [...document.querySelectorAll('[data-act=where][data-d="'+d+'"]')].find(e => e.getClientRects().length); if (el) el.focus(); }
 function setWhere(d, v) {
@@ -1210,7 +1259,9 @@ function relLabel() {
 const WARN = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.2l6.3 11H1.7zM8 6.5v3.2M8 11.2v.1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>';
 const overBy = l => { const o = Math.round((l-1)*10)/10; return o > 0 ? 'over by '+o+(o === 1 ? ' day' : ' days') : ''; };
 const barIn = l => l > 1 ? '<i style="width:'+(100/l).toFixed(1)+'%"></i><i class="ov" style="width:'+(100-100/l).toFixed(1)+'%"></i>' : '<i style="width:'+Math.round(l*100)+'%"></i>';
-const barLabel = l => Math.round(l*100)+'% full'+(overBy(l) ? ', '+overBy(l) : '');
+const loadWord = l => l > 1.2 ? 'Over' : l >= 1 ? 'Full' : l >= .8 ? 'Busy' : l > 0 ? 'Light' : '';   // WA-55: four named steps on WA-14's thresholds (unchanged numbers)
+const barLabel = l => (loadWord(l) ? loadWord(l)+', ' : '')+Math.round(l*100)+'% full'+(overBy(l) ? ', '+overBy(l) : '');
+const loadHtml = l => l > 1.2 ? '<b>'+WARN+'Over</b> '+overBy(l).replace(/^over /, '') : loadWord(l) ? '<b>'+loadWord(l)+'</b>'+(overBy(l) ? ' '+overBy(l).replace(/^over /, '') : '') : '';
 
 /* ---------- render ---------- */
 function links(t) {
@@ -1220,12 +1271,12 @@ function links(t) {
   if (kids.length) h += '<span class="lk led" title="Follow-ups">Led to '+kids.length+' · '+kids.filter(k => k.done).length+' done</span>';
   return h;
 }
-const cardName = t => t.title+(t.mark ? ', '+({ new:'new', changed:'moved from '+(t.mark.was && t.mark.was.day ? fmtDay(t.mark.was.day) : 'another day'), cancelled:'cancelled' }[t.mark.kind] || '') : '')+', '+(t.type === 'meeting' ? 'Meeting' : t.kind === 'life' ? 'Life' : 'Work')+', '+SZ[t.size].label+(t.day || t.type === 'meeting' ? '' : ', loose')+(t.due && !t.done ? ', '+(t.due < TODAY ? 'overdue, due ' : 'due ')+fmtDay(t.due) : '')+(t.done ? ', done' : '');
+const cardName = t => t.title+(t.mark ? ', '+({ new:'new', changed:'moved from '+(t.mark.was && t.mark.was.day ? fmtDay(t.mark.was.day) : 'another day'), cancelled:'cancelled' }[t.mark.kind] || '') : '')+', '+(t.type === 'meeting' ? 'Meeting' : t.kind === 'life' ? 'Life' : 'Work')+', '+SZ[t.size].label+(t.day || t.type === 'meeting' ? '' : ', loose')+(t.due && !t.done ? ', '+(t.due < TODAY ? 'overdue, due ' : 'due ')+fmtDate(t.due) : '')+(t.done ? ', done' : '');
 function card(t, inTray) {
   const life = t.kind === 'life' && t.type !== 'meeting', meet = t.type === 'meeting';
   const tag = '<span class="tag'+(meet?' meet':life?' life':'')+'">'+icon(meet?'meet':life?'life':'work')+(meet?'Meeting':life?'Life':'Work')+'</span>';
   const cat = life && t.cat ? '<span class="sz">'+esc(t.cat)+' ·</span>' : '';
-  const due = t.due && !t.done && !cancelled(t) ? '<span class="due">'+(t.due < TODAY ? 'Overdue · ' : 'Due ')+fmtDay(t.due)+'</span>' : '';
+  const due = t.due && !t.done && !cancelled(t) ? '<span class="due">'+(t.due < TODAY ? 'Overdue · ' : 'Due ')+fmtDate(t.due)+'</span>' : '';
   const mk = t.mark && t.mark.kind, cx = mk === 'cancelled';
   const dot = mk === 'new' || mk === 'changed' ? '<span class="oldot'+(mk === 'changed' ? ' am' : '')+'" role="img" aria-label="'+(mk === 'new' ? 'New' : 'Moved')+'"></span>' : '';
   const was = mk === 'changed' ? '<span class="olwas">Moved from '+(t.mark.was && t.mark.was.day ? fmtDay(t.mark.was.day) : 'another day')+'</span>' : '';
@@ -1237,17 +1288,17 @@ function card(t, inTray) {
     + (cx ? '' : '<button type="button" class="more" data-act="menu" data-id="'+t.id+'" aria-label="Move or change '+esc(t.title)+'" aria-haspopup="menu"'+(compact() ? '' : ' tabindex="-1"')+'>⋯</button>')+'</article>';
 }
 const cardsOf = items => { let seenCx = false; return items.map(t => { const h = cancelled(t) && !seenCx ? '<p class="olcxh">Cancelled</p>' : ''; if (cancelled(t)) seenCx = true; return h + card(t); }).join(''); };
-const doneCount = items => { const n = items.filter(t => t.type === 'task').length, k = items.filter(t => t.type === 'task' && t.done).length; return k ? (' <span class="dcn">'+(k === n ? 'All done' : k+' of '+n+' done')+'</span>') : ''; };
+const doneCount = items => { const n = items.filter(t => t.type === 'task').length, k = items.filter(t => t.type === 'task' && t.done).length; return k ? ('<span class="dcn">'+(k === n ? 'All done' : k+' of '+n+' done')+'</span>') : ''; };
 const isWeekend = d => [0,6].includes(parse(d).getDay());
 function glance() {
   if (weeksBetween(THIS_MON, ui.anchor) !== 1) return '';
   const days = weekDays(ui.anchor), dls = S.tasks.filter(t => t.due && !t.done && !cancelled(t) && days.includes(t.due) && vis(t));
   let busy = null, bl = 0; days.forEach(d => { const l = load(d); if (l > bl) { bl = l; busy = d; } });
   const loose = S.tasks.filter(t => t.type === 'task' && !t.day && !t.done && !cancelled(t) && t.week === ui.anchor).length;
-  const word = bl > 1.2 ? 'too full' : bl >= 1 ? 'full' : 'almost full';
+  const word = loadWord(bl).toLowerCase();
   return '<section class="glance" aria-label="Next week at a glance"><h2>Next week at a glance</h2>'
     + '<span>'+dls.length+' deadline'+(dls.length === 1 ? '' : 's')+(dls.length ? ' · '+dls.slice(0,3).map(t => esc(t.title)+' '+fmtDay(t.due).split(' ')[0]).join(', ') : '')+'</span>'
-    + (bl >= .8 ? '<button type="button" class="pill" data-act="gl" data-t="'+busy+'">'+fmtDay(busy).split(' ')[0]+' is '+word+' · jump to it</button>' : '<span>No day is nearly full</span>')
+    + (bl >= .8 ? '<button type="button" class="pill" data-act="gl" data-t="'+busy+'">'+fmtDay(busy).split(' ')[0]+' is '+word+' · jump to it</button>' : '<span>No day is Busy yet</span>')
     + '<button type="button" class="pill" data-act="gl" data-t="tray">'+loose+' loose task'+(loose === 1 ? '' : 's')+' · open the tray</button></section>';
 }
 /* Trello-style add at the bottom of a day: the text box stays open after each card so Win can keep typing */
@@ -1267,7 +1318,7 @@ async function composeAdd() {
 function renderWeek() {
   const days = shownDays(), R = RANGES[ui.range];
   const tray = S.tasks.filter(t => t.type === 'task' && !t.day && !t.done && t.week === ui.anchor && vis(t));
-  let h = glance() + '<div class="tray" data-drop="tray"><h2>Loose this week</h2>' + (tray.length ? tray.map(t => card(t, true)).join('') : '<span class="empty">Nothing loose. Drag a task here when a day goes wrong.</span>') + '</div>';
+  let h = glance() + '<div class="tray" data-drop="tray"><h2>Loose this week</h2>' + (tray.length ? tray.map(t => card(t, true)).join('') : '<span class="empty">Nothing loose.</span>') + '</div>';
   if (ui.range === 'work') {
     const we = weekDays(ui.anchor).slice(5), n = S.tasks.filter(t => we.includes(t.day) && !t.done && vis(t)).length;
     if (n) h += '<div class="hidwk"><span>Work week hides Sat and Sun, which hold '+n+' item'+(n === 1 ? '' : 's')+'.</span><button type="button" class="pill" data-act="range" data-r="week">Show the whole week</button></div>';
@@ -1276,7 +1327,7 @@ function renderWeek() {
   h += '<div class="week n'+R.n+'" style="--n:'+R.n+'">';
   days.forEach((d, i) => {
     const items = dayItems(d);
-    const l = load(d), st = (l > 1.2 ? '<b>'+WARN+'Too full</b>' : l >= 1 ? '<b>Full</b>' : l >= .8 ? '<b>Almost full</b>' : '') + (overBy(l) ? (l >= 1 ? ' · ' : '')+overBy(l) : '') + doneCount(items);
+    const l = load(d), st = '<span class="lw">'+loadHtml(l)+'</span>' + doneCount(items);
     h += '<section class="col'+(isWeekend(d)?' wk':'')+(d===TODAY?' today':'')+'" data-drop="'+d+'" aria-label="'+fmtDay(d)+'">'
       + '<div class="ch"><h3>'+fmtDay(d)+'</h3>'+(whereAny() ? whereTag(d) : '')+'</div>'
       + '<div class="fill'+(l>=.8?' hi':'')+'" role="img" aria-label="'+barLabel(l)+'">'+barIn(l)+'</div><div class="stat">'+st+'</div>'
@@ -1290,7 +1341,7 @@ function renderMonth() {
     const mon = add(ui.anchor, w*7), days = weekDays(mon);
     const full = days.filter(d => load(d) >= .8).length, dl = S.tasks.filter(t => t.due && !t.done && !cancelled(t) && days.includes(t.due) && vis(t)).length;
     const heavy = full >= 2 || dl >= 3;
-    h += '<button type="button" class="mw'+(heavy?' heavy':'')+'" data-act="goto" data-d="'+mon+'" '+(heavy?'title="Heavy week: 2+ nearly full days or 3+ deadlines"':'')+'>'+fmtShort(mon)+(heavy?'<br><span class="chip">Heavy</span>':'')+'</button>';
+    h += '<button type="button" class="mw'+(heavy?' heavy':'')+'" data-act="goto" data-d="'+mon+'" '+(heavy?'title="Heavy week: 2+ Busy days or 3+ deadlines"':'')+'>'+fmtShort(mon)+(heavy?'<br><span class="chip">Heavy</span>':'')+'</button>';
     days.forEach((d, i) => {
       const dots = [];
       S.tasks.filter(t => t.day === d && !t.done && !cancelled(t) && vis(t)).forEach(t => dots.push(t.type === 'meeting' ? 'm' : t.kind === 'life' ? 'l' : 't'));
@@ -1302,7 +1353,7 @@ function renderMonth() {
       h += '<button type="button" class="mc'+(i>4?' wk':'')+(d===TODAY?' today':'')+(heavy?' hv':'')+'" data-act="goto" data-d="'+d+'" aria-label="'+fmtDay(d)+' '+MN[parse(d).getMonth()]+', '+dots.length+' items'+(kinds.length ? ', '+kinds.map(k => k === 'changed' ? 'moved' : k).join(' and ')+' meeting' : '')+'. Open this week"><span class="n">'+(day===1||w===0&&i===0?MN[parse(d).getMonth()]+' ':'')+day+'</span><span class="dots">'+shown+'</span>'+omk+'</button>';
     });
   }
-  return h + '</div><div class="legend"><span><i></i>Meeting</span><span><i class="t"></i>Work task</span><span><i class="l"></i>Life task</span><span><i class="d"></i>Deadline</span><span class="chip">Heavy = 2+ nearly full days or 3+ deadlines</span><span>Click a day or a week to open it.</span></div>';
+  return h + '</div><div class="legend"><span><i></i>Meeting</span><span><i class="t"></i>Work task</span><span><i class="l"></i>Life task</span><span><i class="d"></i>Deadline</span><span class="chip">Heavy = 2+ Busy days or 3+ deadlines</span><span>Click a day or a week to open it.</span></div>';
 }
 /* Motion (Subframe motion guidance): glide only on occasional moves (mouse drop, menu buttons); keyboard moves are instant.
    Cards travelling between two places use ease-in-out, ~220 ms, transform only, no bounce; reduced motion gets a quick fade on the moved card. */
@@ -1374,7 +1425,7 @@ function askWeekend(title, day) {
 function dayItems(d, all) {
   const ro = t => CLOUD && t.type === 'meeting', g = t => ro(t) ? 0 : t.order != null ? 1 : 2;
   return S.tasks.filter(t => t.day === d && (all || vis(t)))
-    .sort((a,b) => (cancelled(a) ? 1 : 0) - (cancelled(b) ? 1 : 0) || g(a) - g(b) || (g(a) === 1 ? a.order - b.order : g(a) === 2 ? (a.type==='meeting'?0:1) - (b.type==='meeting'?0:1) : 0));
+    .sort((a,b) => (cancelled(a) ? 1 : 0) - (cancelled(b) ? 1 : 0) || (a.done ? 1 : 0) - (b.done ? 1 : 0) || g(a) - g(b) || (g(a) === 1 ? a.order - b.order : g(a) === 2 ? (a.type==='meeting'?0:1) - (b.type==='meeting'?0:1) : 0));
 }
 function say(m) { const l = $('live'); l.textContent = ''; setTimeout(() => { l.textContent = m; }, 30); }
 /* put task `id` before (or after) card `ref` in its own day, then number the whole day 1, 2, 3 … */
@@ -1493,11 +1544,63 @@ function fillDialog(day) {
   const days = weekDays(day ? mondayOf(parse(day)) : ui.anchor);
   $('fDay').innerHTML = '<option value="">Loose this week</option>' + days.map(d => '<option value="'+d+'">'+fmtDay(d)+'</option>').join('');
   $('fDay').value = day && days.includes(day) ? day : '';
-  $('fDue').value = '';
-  const chips = [['Today', TODAY], ['Tomorrow', add(TODAY,1)], ['Friday', add(ui.anchor, 4)]];
-  $('fChips').innerHTML = chips.map(([l,v]) => '<button type="button" class="pill" data-due="'+v+'">'+l+'</button>').join('') + '<button type="button" class="pill" data-due="">No due date</button>';
+  $('fDue').value = ''; closeCal(); drawDueChips();
   drawCats(false); drawDayChips();
 }
+/* due date chips + calendar popover (WA-54): shortcuts light up when picked; "Pick another date…" opens a small month grid */
+const MNF = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const fmtFull = s => DN[(parse(s).getDay()+6)%7]+' '+fmtDate(s);
+function duePresets() {
+  const seen = new Set(), out = [];
+  [['Today', TODAY], ['Tomorrow', add(TODAY,1)], ['End of week', add(ui.anchor,4)], ['Next week', add(ui.anchor,11)]].forEach(([l,v]) => { if (v >= TODAY && !seen.has(v)) { seen.add(v); out.push([l,v]); } });
+  return out;
+}
+function drawDueChips() {
+  const v = $('fDue').value, pre = duePresets(), custom = v && !pre.some(([,d]) => d === v);
+  $('fChips').innerHTML = pre.map(([l,d]) => '<button type="button" class="pill" data-due="'+d+'" title="'+fmtFull(d)+'" aria-pressed="'+(d === v)+'">'+l+'</button>').join('')
+    + '<button type="button" class="pill" data-duepick aria-haspopup="dialog" aria-expanded="'+!$('fCal').hidden+'" aria-pressed="'+!!custom+'">'+(custom ? fmtFull(v) : 'Pick another date…')+'</button>'
+    + '<button type="button" class="pill" data-due="" aria-pressed="'+!v+'">No due date</button>';
+}
+let cal = null;
+function closeCal(back) { cal = null; $('fCal').hidden = true; if (back) { drawDueChips(); const b = $('fChips').querySelector('[data-duepick]'); if (b) b.focus(); } else drawDueChips(); }
+function openCal() {
+  const v = $('fDue').value, base = v || TODAY, d = parse(base);
+  cal = { y:d.getFullYear(), m:d.getMonth(), f:base }; drawCal(true); $('fCal').hidden = false; drawDueChips(); focusCalDay();
+}
+function focusCalDay() { const b = $('fCal').querySelector('.calg button[tabindex="0"]'); if (b) b.focus(); }
+function drawCal(keep) {
+  const first = new Date(cal.y, cal.m, 1), start = add(iso(first), -((first.getDay()+6)%7)), sel = $('fDue').value;
+  let g = DN.map(n => '<span aria-hidden="true">'+n.slice(0,2)+'</span>').join('');
+  for (let i = 0; i < 42; i++) {
+    const d = add(start, i), dd = parse(d), out = dd.getMonth() !== cal.m;
+    g += '<button type="button" class="'+(out ? 'out ' : '')+(d === TODAY ? 'td' : '')+'" data-cd="'+d+'" tabindex="'+(d === cal.f ? 0 : -1)+'" aria-pressed="'+(d === sel)+'" aria-label="'+fmtFull(d)+' '+dd.getFullYear()+(d === TODAY ? ', today' : '')+'">'+dd.getDate()+'</button>';
+  }
+  $('fCal').innerHTML = '<div class="calh"><button type="button" data-cm="-1" aria-label="Previous month">‹</button><b aria-live="polite">'+MNF[cal.m]+' '+cal.y+'</b><button type="button" data-cm="1" aria-label="Next month">›</button></div>'
+    + '<div class="calg" role="group" aria-label="Days">'+g+'</div><div class="calf"><button type="button" data-ct>Today</button><button type="button" data-cx>Clear date</button></div>';
+}
+function calMove(d) {   // keyboard: move focus to date d, switching month when needed
+  const dd = parse(d); cal.f = d; cal.y = dd.getFullYear(); cal.m = dd.getMonth(); drawCal(true); focusCalDay();
+}
+function calPick(v) { $('fDue').value = v; closeCal(true); }
+$('fCal').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.cd) calPick(b.dataset.cd);
+  else if (b.dataset.cm) { const d = new Date(cal.y, cal.m + Number(b.dataset.cm), 1); cal.y = d.getFullYear(); cal.m = d.getMonth(); cal.f = iso(d); drawCal(true); const n = $('fCal').querySelector('[data-cm="'+b.dataset.cm+'"]'); if (n) n.focus(); }
+  else if (b.hasAttribute('data-ct')) calPick(TODAY);
+  else if (b.hasAttribute('data-cx')) calPick('');
+});
+$('fCal').addEventListener('keydown', e => {
+  if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeCal(true); return; }
+  const b = e.target.closest('[data-cd]'); if (!b) return;
+  const d = b.dataset.cd, dd = parse(d), k = { ArrowLeft:-1, ArrowRight:1, ArrowUp:-7, ArrowDown:7 }[e.key];
+  if (k) { e.preventDefault(); calMove(add(d, k)); }
+  else if (e.key === 'PageUp' || e.key === 'PageDown') { e.preventDefault(); const n = new Date(dd.getFullYear(), dd.getMonth() + (e.key === 'PageUp' ? -1 : 1), 1); n.setDate(Math.min(dd.getDate(), new Date(n.getFullYear(), n.getMonth()+1, 0).getDate())); calMove(iso(n)); }
+  else if (e.key === 'Home') { e.preventDefault(); calMove(add(d, -((dd.getDay()+6)%7))); }
+  else if (e.key === 'End') { e.preventDefault(); calMove(add(d, 6-((dd.getDay()+6)%7))); }
+});
+$('fCal').addEventListener('focusout', e => { if (cal && e.relatedTarget && !$('fCal').contains(e.relatedTarget) && !(e.relatedTarget.closest && e.relatedTarget.closest('[data-duepick]'))) closeCal(false); });
+$('dlg').addEventListener('cancel', e => { if (cal) { e.preventDefault(); closeCal(true); } });
+$('dlg').addEventListener('close', () => closeCal(false));
 /* life categories: four starters plus the ones Win adds (saved as S.cats) */
 const allCats = () => CATS.concat(S.cats || []);
 const catUsed = n => S.tasks.some(t => t.cat === n);
@@ -1552,7 +1655,7 @@ function openEdit(id) {
   form = { kind: t.type === 'meeting' ? 'meeting' : t.kind, cat: t.cat || '', size: t.size, again:false };
   $('dlgT').textContent = 'Edit task'; $('bAnother').hidden = true; $('bDel').hidden = false; $('bDone').hidden = t.type === 'meeting'; $('bDone').textContent = t.done ? 'Mark not done' : 'Mark done'; $('bSave').textContent = 'Save changes';
   addFrom = null; $('fFromNote').hidden = true; $('fFollow').hidden = t.type === 'meeting';
-  fillDialog(t.day); $('title').value = t.title; $('fDue').value = t.due || ''; drawFollow(t);
+  fillDialog(t.day); $('title').value = t.title; $('fDue').value = t.due || ''; drawDueChips(); drawFollow(t);
   $('dlg').classList.remove('typing'); $('dlg').showModal();
   if (!compact()) { $('title').focus(); $('title').select(); }
 }
@@ -1571,6 +1674,7 @@ async function saveTask(again) {
 }
 $('form').addEventListener('submit', e => { e.preventDefault(); saveTask(false); });
 $('dlg').addEventListener('click', e => {
+  if (cal && !e.target.closest('#fCal,[data-duepick]')) closeCal(false);
   const b = e.target.closest('button'); if (!b) return;
   if (b.dataset.dlg === 'cancel') $('dlg').close();
   else if (b.dataset.dlg === 'del') { const id = editing; $('dlg').close(); delTask(id); }
@@ -1582,7 +1686,8 @@ $('dlg').addEventListener('click', e => {
   else if (b.hasAttribute('data-catok')) addCat();
   else if (b.dataset.catdel) { S.cats = (S.cats || []).filter(c => c !== b.dataset.catdel); if (form.cat === b.dataset.catdel) form.cat = ''; save(); drawCats(false); }
   else if (b.dataset.cat) { form.cat = form.cat === b.dataset.cat ? '' : b.dataset.cat; syncForm(); }
-  else if (b.dataset.due !== undefined) $('fDue').value = b.dataset.due;
+  else if (b.hasAttribute('data-duepick')) { if (cal) closeCal(true); else openCal(); }
+  else if (b.dataset.due !== undefined) { $('fDue').value = b.dataset.due; closeCal(false); }
   else if (b.dataset.dayv !== undefined) { $('fDay').value = b.dataset.dayv; drawDayChips(); }
   else if (b === $('fSum')) endTyping();
 });
@@ -1683,6 +1788,7 @@ document.addEventListener('click', e => {
   else if (a === 'cleardemo') { S.tasks = S.tasks.filter(t => !t.demo); save(); render(); }
   else if (a === 'backthis') goToday();
   else if (a === 'dismiss') setNotice('');
+  else if (a === 'tipclose') { const h = $('bHelp'); if (h) h.focus(); }
   else if (a === 'reveal') reveal(b.dataset.id);
   else if (a === 'followup') { closeMenu(); openAdd(null, b.dataset.id); }
   else if (a === 'tab') {
@@ -1787,7 +1893,7 @@ function fixDay() {
   const lo = ui.anchor, hi = add(ui.anchor, ui.view === 'month' ? 34 : 6);
   if (!ui.day || ui.day < lo || ui.day > hi) ui.day = TODAY >= lo && TODAY <= hi ? TODAY : lo;
 }
-function fullWord(l) { return '<b>'+(l > 1.2 ? WARN+'Too full' : l >= 1 ? 'Full' : l >= .8 ? 'Almost full' : l > 0 ? 'Room left' : 'Nothing planned')+'</b>'+(overBy(l) ? '<br>'+overBy(l) : ''); }
+function fullWord(l) { return l > 0 ? loadHtml(l).replace(/<\/b> /, '</b><br>') : '<b>Nothing planned</b>'; }
 function dayList(d, small) {
   const items = dayItems(d);
   const l = load(d), H = small ? 'h3' : 'h2';
@@ -2089,7 +2195,7 @@ document.querySelectorAll('.ic-wk').forEach(e => e.innerHTML = IC.work); documen
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-pop]');
     if (t) { const p = $(t.dataset.pop), was = !p.hidden; closePops(); if (!was) { p.hidden = false; t.setAttribute('aria-expanded', 'true'); const f = p.querySelector('button'); if (f && e.detail === 0) f.focus(); } return; }
-    if (e.target.closest('[data-act=fk]')) return;
+    if (e.target.closest('[data-act=fk],#pHelp ul')) return;
     closePops();
   });
   document.addEventListener('keydown', e => {
@@ -2126,7 +2232,7 @@ document.querySelectorAll('.ic-wk').forEach(e => e.innerHTML = IC.work); documen
 /* sticky header (with a photo): measures where the nav row sits, then slides the title and Add task onto it once you scroll */
 (() => {
   const R = document.documentElement; let thr = 1e9;
-  const wide = () => innerWidth >= 700;
+  const wide = () => innerWidth >= 1100;   // below this the header is too tight for the slide-up; it stays a plain two-row header
   const measure = () => {
     const bar = document.querySelector('.bar'), h1 = document.querySelector('.hr1'), h2 = document.querySelector('.hr2'), lg = document.querySelector('.hr1 .logo');
     if (!bar || !h1 || !h2 || !lg || !wide() || R.classList.contains('stuck')) return;
