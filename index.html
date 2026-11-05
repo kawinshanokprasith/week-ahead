@@ -665,6 +665,11 @@ html.hasbg::before{content:"";position:fixed;left:0;top:0;width:100vw;height:100
 }
 /* Mac app, phone layout: keep the top bar clear of the traffic lights */
 @media (max-width:699px){html.wa-native .mhead{padding-top:calc(36px + env(safe-area-inset-top))}html.wa-native .mhead .ar,html.wa-native .mhead .tdp{margin-top:0}}
+/* WA-49: Refresh from Outlook as a header icon button */
+.olnote{font-size:12px;color:var(--ink2);max-width:240px;text-align:right}
+#mOl.waiting svg{animation:olspin 1.4s linear infinite}
+@keyframes olspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){#mOl.waiting svg{animation:none}#mOl.waiting{background:var(--azsoft)}}
 /* phone and tablet bits that carry the old accent */
 @media (max-width:699px){
   .mhead,.tabbar{background:var(--card)}
@@ -715,7 +720,7 @@ html.hasbg::before{content:"";position:fixed;left:0;top:0;width:100vw;height:100
 <body>
 <header class="bar">
   <div class="hr1"><div class="logo"><img src="week-ahead-icon.svg" alt="" width="48" height="48"><h1 class="brand">Week Ahead</h1></div>
-    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><button type="button" class="btn sq" id="bTheme" data-act="themecycle"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" title="Week pattern: which days are office, home or client site" aria-label="Week pattern"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" title="Background picture" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button></span><button type="button" class="btn main" data-act="add" title="Add task (A)">+ Add task</button></div></div>
+    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="olnote" id="olNote" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><button type="button" class="btn sq maconly" id="mOl" data-act="olrefresh" aria-label="Refresh from Outlook" title="Refresh from Outlook"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></svg></button><button type="button" class="btn sq" id="bTheme" data-act="themecycle"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" title="Week pattern: which days are office, home or client site" aria-label="Week pattern"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" title="Background picture" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button></span><button type="button" class="btn main" data-act="add" title="Add task (A)">+ Add task</button></div></div>
   <div class="hr2">
     <button type="button" class="btn sq" data-act="prev" aria-label="Previous week" title="Previous week (←)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
     <span class="range" id="range" aria-live="polite"></span>
@@ -1931,8 +1936,10 @@ if (window.visualViewport) {
 function olRender() {
   const b = $('mOl'), n = $('olNote'); if (!b || !n) return;
   const waiting = !!(ol.req && ol.req.status === 'waiting');
-  b.textContent = waiting ? 'Asked Claude, waiting…' : 'Refresh from Outlook'; b.setAttribute('aria-disabled', String(waiting));
-  n.textContent = ol.err || (waiting ? 'Tell Claude “refresh” in the Week Ahead chat. Nothing leaves this Mac.' : ol.last ? ol.last.line : 'Never refreshed. Press the button, then tell Claude “refresh”.');
+  const line = ol.err || (waiting ? 'Asked Claude, waiting. Tell Claude “refresh” in the Week Ahead chat. Nothing leaves this Mac.' : ol.last ? ol.last.line : 'Never refreshed. Press the button, then tell Claude “refresh”.');
+  b.setAttribute('aria-disabled', String(waiting)); b.classList.toggle('waiting', waiting);
+  b.title = waiting ? line : 'Refresh from Outlook. ' + line; b.setAttribute('aria-label', waiting ? line : 'Refresh from Outlook. ' + line);
+  n.textContent = ol.err || (waiting ? 'Asked Claude, waiting…' : '');   // visible only while something needs attention; the full line is in the tooltip and the changes bar
 }
 async function olPoll() {
   if (CLOUD) return;
