@@ -612,6 +612,15 @@ body,.comp textarea,.lk,.tag,.sz{line-height:1.5}
 @media (hover:none){
   .week .cm{padding-right:30px}          /* no hover: the "…" is at the bottom right; the meta row keeps clear of it */
 }
+/* WA-46: the header flows into the page (no band, no line); generous room above the name; extra room under the Mac traffic lights */
+@media (min-width:1024px){
+  .bar{position:static;background:transparent;border-bottom:0;padding:44px max(16px,2.5vw) 8px;gap:14px}
+  html.wa-native .bar{padding-top:72px}
+  html.hasbg .bar{padding-bottom:12px}
+  html.hasbg .hr1 .logo{background:var(--card);border-radius:8px;padding:2px 14px 4px;box-shadow:var(--shc)}
+  html.hasbg .hr2{align-self:flex-start;background:var(--card);border-radius:8px;padding:6px 10px;box-shadow:var(--shc)}
+  .hr2{padding-bottom:2px}
+}
 /* phone and tablet bits that carry the old accent */
 @media (max-width:1023px){
   .mhead,.tabbar{background:var(--card)}
