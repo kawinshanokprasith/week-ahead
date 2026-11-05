@@ -52,7 +52,7 @@ h1,h2,h3,p{margin:0}
 .banner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:16px max(16px,2.5vw) 0;padding:10px 16px;background:var(--sunken);border-radius:12px;color:var(--ink2);font-size:14px}
 .banner button{border:0;background:none;text-decoration:underline;padding:0;font-weight:500;color:var(--ink)}
 main{padding:16px max(16px,2.5vw) 48px;overflow-x:auto}
-.board{min-width:980px}.board.r5{min-width:760px}.board.r3,.board.r1{min-width:0}
+.board{min-width:700px}.board.r5{min-width:760px}.board.r3,.board.r1{min-width:0}
 .tray{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;border:2px dashed var(--edge);border-radius:14px;padding:10px 14px;margin-bottom:14px;min-height:56px}
 .tray.over,.col.over{background:var(--azsoft)}
 .tray h2{font-size:14px;font-weight:600;color:var(--aztext)}
@@ -227,7 +227,7 @@ input[type=text],input[type=date],select{width:100%;border:1px solid var(--edge)
 .tray .card.meeting{border:1px dashed var(--bstrong)}
 .ph{background:var(--azsoft)}
 .col .addb{color:var(--ink)}
-/* ---------- phone and tablet (WA-22): under 1024 wide; the layout above 1024 is untouched ---------- */
+/* ---------- phone and tablet (WA-22): under 700 wide (WA-47, was 1024); the layout above 1024 is untouched ---------- */
 #app-m,#sheet{display:none}
 /* WA-35: one-tap check circle on every task card (not meetings), Trello-style: shows on hover or focus, a done circle stays (green, the one place green is allowed, Win's pick). 24 px visible; 44 px hit area on phone and tablet (rules below), where it is always shown */
 :root{--okg:#1F845A;--okon:#fff}
@@ -241,25 +241,22 @@ input[type=text],input[type=date],select{width:100%;border:1px solid var(--edge)
 .card.done .ck svg{stroke-dashoffset:0}
 .card.done,.card.life.done{background:var(--sunken);border-color:var(--border);color:var(--ink2)}
 .card.done .ct{text-decoration:line-through;text-decoration-thickness:1px;color:var(--ink2)}
-.ck.pop{animation:ckpop .34s cubic-bezier(.3,1.5,.5,1)}
-.ck.pop svg{animation:ckdraw .26s .1s ease-out backwards}
-@keyframes ckpop{0%{transform:scale(.7);box-shadow:0 0 0 0 var(--okg)}55%{transform:scale(1.14)}100%{transform:scale(1);box-shadow:0 0 0 9px transparent}}
-@keyframes ckdraw{from{stroke-dashoffset:14}}
-@media (min-width:1024px){
+@media (min-width:700px){
   .card.hc{padding-left:10px;transition:padding-left .12s ease-out}
-  .card.hc:hover,.card.hc:focus-within,.card.hc.done{padding-left:40px}
-  .card.hc .chk{opacity:0;transform:scale(.7);transition:opacity .12s,transform .12s}
-  .card.hc:hover .chk,.card.hc:focus-within .chk,.card.hc.done .chk{opacity:1;transform:none}
+  .card.hc:hover,.card.hc:focus-within,.card.hc.done,.card.hc.hov{padding-left:40px}
+  .card.hc .chk{opacity:0;transition:opacity .12s}
+  .card.hc:hover .chk,.card.hc:focus-within .chk,.card.hc.hov .chk{opacity:1}
+  .card.hc.done .chk{opacity:1;transition:none}   /* a done circle is always there, never fades or waits for hover */
 }
-@media (prefers-reduced-motion:reduce){.ck.pop,.ck.pop svg{animation:none}.card.hc,.card.hc .chk,.ck{transition:none!important}}
+@media (prefers-reduced-motion:reduce){.card.hc,.card.hc .chk,.ck{transition:none!important}}
 .pickers{display:contents}
 #fSum,#fDayChips{display:none}
 html[data-theme=light]{color-scheme:light}html[data-theme=dark]{color-scheme:dark}
-@media (max-width:1023px){
+@media (max-width:699px){
   html{-webkit-text-size-adjust:100%}
   button,.card{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   .bar,main{display:none}
-  .banner{margin:8px max(12px,env(safe-area-inset-left));font-size:14px}
+  .banner,.olbar{margin:8px max(12px,env(safe-area-inset-left));font-size:14px}
   .banner button{min-height:44px;padding:0 6px}
   #app-m{display:block;--tab:58px;--lb:0px;--pad:12px;padding-bottom:calc(var(--tab) + var(--lb) + 100px + env(safe-area-inset-bottom))}
   #app-m.hasloose{--lb:48px}
@@ -406,20 +403,35 @@ html[data-theme=light]{color-scheme:light}html[data-theme=dark]{color-scheme:dar
     .mbody .pl,.mbody .pr{min-width:0}
   }
 }
-@media (max-width:1023px) and (orientation:landscape) and (max-height:500px){
+@media (max-width:699px) and (orientation:landscape) and (max-height:500px){
   #app-m{--tab:0px;padding-left:calc(76px + env(safe-area-inset-left))}
   .mhead{padding-top:calc(4px + env(safe-area-inset-top));min-height:52px}
   .tabbar{top:0;right:auto;width:calc(76px + env(safe-area-inset-left));height:auto;grid-template-columns:none;grid-template-rows:repeat(4,1fr);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom) env(safe-area-inset-left);border-top:0;border-right:1px solid var(--border)}
   .tb[aria-current=page]::before{top:20%;bottom:20%;left:0;right:auto;width:3px;height:auto;border-radius:0 3px 3px 0}
   .badge{left:calc(50% + 2px)}
   .lbar{left:calc(76px + env(safe-area-inset-left))}
-  .banner{margin-left:calc(88px + env(safe-area-inset-left))}
+  .banner,.olbar{margin-left:calc(88px + env(safe-area-inset-left))}
   #bAnother{display:none}
   dialog#dlg,dialog#wk,dialog#sheet{inset:0 0 var(--kb,0px) auto;width:58%;max-width:none;height:auto;max-height:none;border-radius:22px 0 0 22px;border-width:0 0 0 1px}
   @keyframes sheetUp{from{transform:translateX(100%)}}
 }
 /* cloud mode (phone): meetings come from the Mac, read-only; setup screen */
 .cloud [data-kind="meeting"]{display:none}
+.cloud .maconly{display:none}
+/* Refresh from Outlook (WA-09) */
+.olbox{border-top:1px solid var(--line);margin-top:4px;padding-top:4px}.olnote{margin:0;padding:2px 10px 6px;font-size:12px;line-height:1.4;color:var(--ink2);max-width:260px}
+.olbox button[aria-disabled=true]{color:var(--ink2);cursor:default}
+:root{--olam:#B38600}@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--olam:#F5CD47}}:root[data-theme=dark]{--olam:#F5CD47}
+.oldot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--az);margin-left:6px;vertical-align:middle;flex:none}.oldot.am{background:var(--olam)}
+.olwas{font-size:12px;color:var(--ink2)}
+.olb{border:0;background:none;padding:0;font-size:12px;font-weight:600;color:var(--aztext);text-decoration:underline;cursor:pointer}
+.card.olcx,.card.meeting.olcx{background:var(--sunken);color:var(--ink2);border:1px dashed var(--border);box-shadow:none;cursor:default}.card.olcx .ct{text-decoration:line-through;text-decoration-thickness:1px}
+.olcxh{margin:4px 2px 0;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink2)}
+.olcxa{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--ink2)}
+.olonly .card:not(.olm):not(.olcx){opacity:.35}
+.olbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px max(16px,2.5vw) 0;padding:8px 12px;border-radius:8px;background:var(--azsoft);color:var(--ink);font-size:13px}.olbar span{margin-right:auto}.olbar .btn[aria-pressed=true]{background:var(--az);color:var(--onaz)}
+.olbar[hidden]{display:none}
+.omk{display:flex;gap:3px;min-height:5px}.omk i{display:block;height:5px;width:16px;border-radius:2px;background:var(--az)}.omk i.m{background:var(--olam)}.omk i.c{background:var(--red)}
 .cloud .card.meeting{cursor:default}
 #setup{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:max(24px,env(safe-area-inset-top)) 16px 24px}
 #setup .su{width:min(420px,100%);display:flex;flex-direction:column;gap:10px;margin-top:6vh}
@@ -436,7 +448,7 @@ body,.wtag b,.comp textarea,.lk,#setup input{font-family:var(--fnt)}
 :root{--fhd:'Kondolar Thai',Kondolar,Georgia,serif}
 .brand,#wk h2,form h2,.mt b,.dh h2,.dh h3,.shh h2,.brandrow b,.ch h3,.tray h2,.glance h2,.bgh h2{font-family:var(--fhd);font-weight:900;letter-spacing:0}
 .brand{font-size:26px;line-height:1;color:var(--ink);padding:0}
-@media (min-width:1024px){.brand{font-size:52px}}   /* WA-44: the name is the biggest text in the header */
+@media (min-width:700px){.brand{font-size:52px}}   /* WA-44: the name is the biggest text in the header */
 .legacy{display:none!important}
 /* header (WA-37 pickboard picks C1 B, C2 C, C3 B): week as the headline, one "Week" menu, a Filter button and one More menu */
 .pop{position:absolute;top:calc(100% + 4px);left:0;z-index:30;background:var(--card);border-radius:4px;box-shadow:var(--shm);padding:6px;min-width:200px;display:flex;flex-direction:column;gap:1px}
@@ -448,13 +460,13 @@ body,.wtag b,.comp textarea,.lk,#setup input{font-family:var(--fnt)}
 .pop button:not([aria-checked=true])::before{content:"";width:12px}
 .pop button[role=menuitem]::before{display:none}
 .dd{position:relative;display:inline-block}
-@media (min-width:1024px){
+@media (min-width:700px){
   .bar{display:flex;flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:6px;padding:10px max(16px,2.5vw) 12px}
   .hr1,.hr2{display:flex;align-items:center;gap:10px}
   .hr1{justify-content:space-between}.hr1r{display:flex;align-items:center;gap:12px}
   .hr2{gap:8px;flex-wrap:wrap}   /* WA-45: week, Today, the view menu, Filter and More share one row; they wrap rather than overlap */
   .range{font-family:var(--fhd);font-weight:900;font-size:30px;line-height:1.2;min-width:0;text-align:left;color:var(--ink);white-space:nowrap;padding:0 4px}
-  .hr2 .sp{margin-left:auto}.hr2 button[data-act=today]+.dd{margin-left:8px}
+  .hbtns{display:inline-flex;gap:6px}.hr2 button[data-act=today]+.dd{margin-left:8px}
   .hr2 .dd .btn{display:inline-flex;align-items:center;gap:6px}
   .hr2 .dd .btn.on{background:var(--azsoft);color:var(--aztext)}
   .hr2 #mFiltN{padding:1px 6px}
@@ -574,11 +586,11 @@ body,.comp textarea,.lk,.tag,.sz{line-height:1.5}
 .tag{padding:0 6px;letter-spacing:.03em}
 .addb{padding:6px 8px;font-weight:400;color:var(--ink2)}
 .col .addb:hover{background:var(--chover);color:var(--ink)}
-@media (min-width:1024px){
+@media (min-width:700px){
   .card.hc{padding-left:12px}
-  .card.hc:hover,.card.hc:focus-within,.card.hc.done{padding-left:42px}
+  .card.hc:hover,.card.hc:focus-within,.card.hc.done,.card.hc.hov{padding-left:42px}
 }
-@media (hover:hover) and (min-width:1024px){
+@media (hover:hover) and (min-width:700px){
   .week .more{top:4px;bottom:auto;right:4px;width:26px;height:26px;opacity:0;background:var(--sunken);border-radius:6px}
   .card:hover .more,.card:focus-within .more,.more:focus-visible{opacity:1}
 }
@@ -594,35 +606,65 @@ body,.comp textarea,.lk,.tag,.sz{line-height:1.5}
 .bgk{align-self:flex-start;border:0;background:none;padding:0;font-size:13px;color:var(--aztext);text-decoration:underline}
 #bgCredit{position:fixed;right:12px;bottom:12px;z-index:4;background:var(--card);color:var(--ink2);font-size:12px;padding:4px 8px;border-radius:3px;box-shadow:var(--shc);text-decoration:none}
 #bgCredit:hover{text-decoration:underline}
-@media (min-width:1024px){
-  html.hasbg body{background:var(--bg) var(--bgimg) center/cover fixed no-repeat}
+@media (min-width:700px){
   html.hasbg .tray{background:var(--col)}
   html.hasbg .hidwk,html.hasbg .legend{background:var(--card);padding:8px 12px;border-radius:8px;width:fit-content}
   html.hasbg .mh,html.hasbg .mw:not(.heavy){background:var(--card);border-radius:8px}
 }
-@media (max-width:1023px){#bgCredit{display:none!important}}
+
 /* WA-39: the "…" button always has its own room, so text never runs under it */
 .tray .card,.tray .card.s-half,.tray .card.s-full,.tray .card.life{padding:6px 36px 6px 12px;max-width:100%;min-width:0}
 .tray .card .ct{flex:0 1 auto;min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:0}
 .tray .card .cm{flex:none}
 .tray .card .more{top:50%;bottom:auto;right:4px;transform:translateY(-50%)}
-@media (hover:hover) and (min-width:1024px){
+@media (hover:hover) and (min-width:700px){
   .week .card .ct{padding-right:24px}   /* the hover "…" sits at the top right; the first line keeps clear of it */
 }
 @media (hover:none){
   .week .cm{padding-right:30px}          /* no hover: the "…" is at the bottom right; the meta row keeps clear of it */
 }
 /* WA-46: the header flows into the page (no band, no line); generous room above the name; extra room under the Mac traffic lights */
-@media (min-width:1024px){
-  .bar{position:static;background:transparent;border-bottom:0;padding:44px max(16px,2.5vw) 8px;gap:14px}
-  html.wa-native .bar{padding-top:72px}
-  html.hasbg .bar{padding-bottom:12px}
-  html.hasbg .hr1 .logo{background:var(--card);border-radius:8px;padding:2px 14px 4px;box-shadow:var(--shc)}
-  html.hasbg .hr2{align-self:flex-start;background:var(--card);border-radius:8px;padding:6px 10px;box-shadow:var(--shc)}
+@media (min-width:700px){
+  .bar{position:static;background:transparent;border-bottom:0;padding:28px max(16px,2.5vw) 8px;gap:12px}
+  html.wa-native .bar{padding-top:40px}
+  /* with a photo: white top area that fades into it; scrolling turns it into a solid sticky bar (title + nav + Add task in one row) */
+  html.hasbg .bar{position:sticky;top:var(--stk,0px);z-index:6;isolation:isolate;padding-bottom:20px}
+  html.hasbg .bar::before,html.hasbg .bar::after{content:"";position:absolute;z-index:-1;left:0;right:0;top:0;pointer-events:none;transition:opacity .2s}
+  html.hasbg .bar::before{bottom:-36px;background:var(--card);
+    -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 56px),rgba(0,0,0,.92) calc(100% - 46px),rgba(0,0,0,.74) calc(100% - 35px),rgba(0,0,0,.48) calc(100% - 24px),rgba(0,0,0,.22) calc(100% - 13px),rgba(0,0,0,.06) calc(100% - 5px),transparent 100%);
+            mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 56px),rgba(0,0,0,.92) calc(100% - 46px),rgba(0,0,0,.74) calc(100% - 35px),rgba(0,0,0,.48) calc(100% - 24px),rgba(0,0,0,.22) calc(100% - 13px),rgba(0,0,0,.06) calc(100% - 5px),transparent 100%)}
+  html.hasbg .bar::after{bottom:8px;background:var(--card);box-shadow:0 8px 22px rgba(0,0,0,.16),0 1px 0 var(--border);opacity:0}
+  html.hasbg.stuck .bar::after{opacity:1}
+  html.hasbg.stuck .bar::before{opacity:0}
+  html.hasbg .hr1 .logo,html.hasbg .hr2{background:transparent;box-shadow:none;padding-left:0;padding-right:0}
+  html.hasbg .hr2{align-self:flex-start}
+  html.hasbg .hr1{opacity:var(--hd,1)}                 /* the big title row fades out as you start scrolling, never cut off */
+  html.hasbg.stuck .hr1{height:var(--h1h);transform:translateY(var(--dy,0px));opacity:1;pointer-events:none;animation:wahd .22s ease both}
+  html.hasbg.stuck .hr1 .brand{font-size:36px}         /* a little smaller, still bigger than the date */
+  html.hasbg.stuck .hr1 .hr1r{pointer-events:auto}
+  html.hasbg.stuck .hr2{transform:translateX(var(--tw,0px));animation:wahd .22s ease both}
+  @keyframes wahd{from{opacity:0}to{opacity:1}}
   .hr2{padding-bottom:2px}
 }
+/* narrow desktop (700 to 900 px): same design, tighter columns so chips never spill out of the card */
+@media (min-width:700px) and (max-width:900px){
+  .week{gap:5px}.week .col{padding:6px}
+  .week .card{padding:6px 8px}
+  .week .tag{letter-spacing:0;padding:0 5px;font-size:11px}.week .tag svg{display:none}
+  .week .ct{font-size:13px}
+  .week .ch h3{font-size:16px}
+}
+/* background photo on every width, phone included */
+html.hasbg body{background:transparent}
+html.hasbg{background:var(--bg)}
+/* a fixed layer instead of background-attachment:fixed, which WebKit does not repaint reliably while the window is resized */
+html.hasbg::before{content:"";position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:-1;background:var(--bgimg) center/cover no-repeat;transform:translateZ(0);pointer-events:none}
+@media (max-width:699px){
+  html.hasbg .strip,html.hasbg .dh,html.hasbg .mfilter,html.hasbg .mempty{background:var(--card);border-radius:12px;padding-left:10px;padding-right:10px}
+  html.hasbg .mfilter{padding:8px 10px}
+}
 /* phone and tablet bits that carry the old accent */
-@media (max-width:1023px){
+@media (max-width:699px){
   .mhead,.tabbar{background:var(--card)}
   .card,.card.s-half,.card.s-full{padding:10px 52px 10px 14px}
   .card.hc{padding-left:56px}
@@ -671,7 +713,7 @@ body,.comp textarea,.lk,.tag,.sz{line-height:1.5}
 <body>
 <header class="bar">
   <div class="hr1"><div class="logo"><img src="week-ahead-icon.svg" alt="" width="48" height="48"><h1 class="brand">Week Ahead</h1></div>
-    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><button type="button" class="btn main" data-act="add" title="Add task (A)">+ Add task</button></div></div>
+    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><button type="button" class="btn sq" id="bTheme" data-act="themecycle"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" title="Week pattern: which days are office, home or client site" aria-label="Week pattern"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" title="Background picture" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button></span><button type="button" class="btn main" data-act="add" title="Add task (A)">+ Add task</button></div></div>
   <div class="hr2">
     <button type="button" class="btn sq" data-act="prev" aria-label="Previous week" title="Previous week (←)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
     <span class="range" id="range" aria-live="polite"></span>
@@ -684,21 +726,17 @@ body,.comp textarea,.lk,.tag,.sz{line-height:1.5}
     <span class="dd"><button type="button" class="btn" id="mFilt" data-pop="pFilt" aria-haspopup="menu" aria-expanded="false" title="Choose what to show"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filter<span class="chip" id="mFiltN" hidden></span></button>
       <div class="pop" id="pFilt" role="menu" aria-label="Show" hidden><h5>Show</h5>
         <button type="button" role="menuitemcheckbox" data-act="fk" data-k="work"><span class="tag">Work</span></button><button type="button" role="menuitemcheckbox" data-act="fk" data-k="life"><span class="tag life">Life</span></button><button type="button" role="menuitemcheckbox" data-act="fk" data-k="meeting"><span class="tag meet">Meeting</span></button></div></span>
-    <span class="dd sp"><button type="button" class="btn sq" id="mMore" data-pop="pMore" aria-haspopup="menu" aria-expanded="false" aria-label="More" title="More"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
-      <div class="pop right" id="pMore" role="menu" aria-label="More" hidden>
-        <button type="button" role="menuitem" id="mPat" data-act="pattern">Week pattern…</button><button type="button" role="menuitem" id="mBg">Background picture…</button><button type="button" role="menuitem" id="mTheme" data-act="themecycle">Colour mode</button></div></span>
   </div>
   <div class="legacy" hidden aria-hidden="true">
 <div class="seg" role="group" aria-label="View"><button type="button" id="vWeek" data-act="view" data-v="week">Week</button><button type="button" id="vMonth" data-act="view" data-v="month">Month</button></div>
   <div class="seg rng" id="rngSeg" role="group" aria-label="Days shown"><button type="button" data-act="range" data-r="day">Day</button><button type="button" data-act="range" data-r="3day">3 days</button><button type="button" data-act="range" data-r="work">Work week</button><button type="button" data-act="range" data-r="week">Week</button></div>
   <div class="row" role="group" aria-label="Filter"><button type="button" class="pill" data-act="filter" data-f="all">All</button><button type="button" class="pill" data-act="filter" data-f="work">Work</button><button type="button" class="pill" data-act="filter" data-f="life">Life</button></div>
   <button type="button" class="pill" id="bPat" data-act="pattern" title="Which days are office, work from home or client site">Week pattern</button>
-  <button type="button" class="btn sq" id="bBg" title="Background picture" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button>
-  <button type="button" class="btn sq" id="bTheme" data-act="themecycle"></button>
   </div>
 </header>
 <div class="banner" id="notice" hidden></div>
 <div class="banner" id="demo" hidden>These are example tasks so you can try things. <button type="button" data-act="cleardemo">Clear examples</button></div>
+<div class="olbar" id="olBar" hidden></div>
 <main><div class="board" id="board"></div></main>
 <div id="app-m">
   <header class="mhead" id="mhead"></header>
@@ -807,7 +845,7 @@ let S = { tasks: [] };
 const RANGES = { day:{n:1,step:1,label:'Day'}, '3day':{n:3,step:3,label:'3 days'}, work:{n:5,step:7,label:'Work week'}, week:{n:7,step:7,label:'Week'} };
 let savedRange = 'week'; try { const r = localStorage.getItem('wa-range'); if (RANGES[r]) savedRange = r; } catch (e) {}
 const ui = { range:savedRange, first:TODAY, view:'week', anchor:THIS_MON, filter:'all', hideMeet:false, menu:null, day:null, placing:null, armDel:null };
-const mqC = matchMedia('(max-width:1023px)'), compact = () => mqC.matches;
+const mqC = matchMedia('(max-width:699px)'), compact = () => mqC.matches;
 let form = { kind:'work', cat:'', size:'half', again:false };
 
 /* ---------- storage ----------
@@ -1064,7 +1102,9 @@ function seed() {
 }
 
 /* ---------- helpers ---------- */
-const load = (date) => S.tasks.filter(t => t.day === date && !t.done).reduce((a,t) => a + SZ[t.size].w, 0);
+const ol = { req:null, last:null, seen:undefined, err:'' };   // Refresh from Outlook state (see olPoll)
+const cancelled = t => !!(t.mark && t.mark.kind === 'cancelled');   // WA-09: a cancelled meeting stays on the board but takes no time
+const load = (date) => S.tasks.filter(t => t.day === date && !t.done && !cancelled(t)).reduce((a,t) => a + SZ[t.size].w, 0);
 const vis = t => t.type === 'meeting' ? !ui.hideMeet : (ui.filter === 'all' || t.kind === ui.filter);
 /* where I work: S.where = { pattern:{"1":"office",...,"7":..} (1 = Monday), days:{"YYYY-MM-DD":"office|home|client|none"} }; no block = no tags */
 const WH = { office:{label:'Office', short:'Office', ic:'office'}, home:{label:'Work from home', short:'Home', ic:'home'}, client:{label:'Client site', short:'Client site', ic:'pin'} };
@@ -1150,25 +1190,30 @@ function links(t) {
   if (kids.length) h += '<span class="lk led" title="Follow-ups">Led to '+kids.length+' · '+kids.filter(k => k.done).length+' done</span>';
   return h;
 }
-const cardName = t => t.title+', '+(t.type === 'meeting' ? 'Meeting' : t.kind === 'life' ? 'Life' : 'Work')+', '+SZ[t.size].label+(t.day || t.type === 'meeting' ? '' : ', loose')+(t.due && !t.done ? ', '+(t.due < TODAY ? 'overdue, due ' : 'due ')+fmtDay(t.due) : '')+(t.done ? ', done' : '');
+const cardName = t => t.title+(t.mark ? ', '+({ new:'new', changed:'moved from '+(t.mark.was && t.mark.was.day ? fmtDay(t.mark.was.day) : 'another day'), cancelled:'cancelled' }[t.mark.kind] || '') : '')+', '+(t.type === 'meeting' ? 'Meeting' : t.kind === 'life' ? 'Life' : 'Work')+', '+SZ[t.size].label+(t.day || t.type === 'meeting' ? '' : ', loose')+(t.due && !t.done ? ', '+(t.due < TODAY ? 'overdue, due ' : 'due ')+fmtDay(t.due) : '')+(t.done ? ', done' : '');
 function card(t, inTray) {
   const life = t.kind === 'life' && t.type !== 'meeting', meet = t.type === 'meeting';
   const tag = '<span class="tag'+(meet?' meet':life?' life':'')+'">'+icon(meet?'meet':life?'life':'work')+(meet?'Meeting':life?'Life':'Work')+'</span>';
   const cat = life && t.cat ? '<span class="sz">'+esc(t.cat)+' ·</span>' : '';
-  const due = t.due && !t.done ? '<span class="due">'+(t.due < TODAY ? 'Overdue · ' : 'Due ')+fmtDay(t.due)+'</span>' : '';
-  return '<article class="card s-'+t.size+(life?' life':'')+(meet?' meeting':' hc')+(t.done?' done':'')+'" '+'draggable="true" tabindex="0" role="group"'+' aria-keyshortcuts="'+(meet ? '' : 'X Space ')+(t.day ? 'Alt+ArrowUp Alt+ArrowDown' : '')+'"'+' aria-label="'+esc(cardName(t))+'" data-id="'+t.id+'">'
+  const due = t.due && !t.done && !cancelled(t) ? '<span class="due">'+(t.due < TODAY ? 'Overdue · ' : 'Due ')+fmtDay(t.due)+'</span>' : '';
+  const mk = t.mark && t.mark.kind, cx = mk === 'cancelled';
+  const dot = mk === 'new' || mk === 'changed' ? '<span class="oldot'+(mk === 'changed' ? ' am' : '')+'" role="img" aria-label="'+(mk === 'new' ? 'New' : 'Moved')+'"></span>' : '';
+  const was = mk === 'changed' ? '<span class="olwas">Moved from '+(t.mark.was && t.mark.was.day ? fmtDay(t.mark.was.day) : 'another day')+'</span>' : '';
+  const olA = CLOUD || !mk || mk === 'new' ? (cx ? '<span class="olwas">Cancelled</span>' : '') : cx ? '<span class="olcxa"><span>Cancelled</span><button type="button" class="olb" data-act="oldismiss" data-id="'+t.id+'">Dismiss</button><button type="button" class="olb" data-act="olrestore" data-id="'+t.id+'">Restore</button></span>' : '<button type="button" class="olb" data-act="olgot" data-id="'+t.id+'">Got it</button>';
+  return '<article class="card s-'+t.size+(life?' life':'')+(meet?' meeting':' hc')+(t.done?' done':'')+(mk === 'new' || mk === 'changed' ? ' olm' : '')+(cx ? ' olcx' : '')+'" '+(cx ? '' : 'draggable="true" ')+'tabindex="0" role="group"'+' aria-keyshortcuts="'+(meet ? '' : 'X Space ')+(t.day ? 'Alt+ArrowUp Alt+ArrowDown' : '')+'"'+' aria-label="'+esc(cardName(t))+'" data-id="'+t.id+'">'
     + (meet ? '' : '<button type="button" class="chk" data-act="done" data-id="'+t.id+'" aria-pressed="'+!!t.done+'" aria-label="'+(t.done?'Mark not done: ':'Mark done: ')+esc(t.title)+'"'+(compact() ? '' : ' tabindex="-1"')+'><span class="ck" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-6.5"/></svg></span></button>')
-    + '<div class="ct">'+esc(t.title)+'</div>'
-    + '<div class="cm">'+tag+cat+'<span class="sz">'+SZ[t.size].label+'</span>'+due+links(t)+'</div>'
-    + '<button type="button" class="more" data-act="menu" data-id="'+t.id+'" aria-label="Move or change '+esc(t.title)+'" aria-haspopup="menu"'+(compact() ? '' : ' tabindex="-1"')+'>⋯</button></article>';
+    + '<div class="ct">'+esc(t.title)+dot+'</div>'
+    + '<div class="cm">'+tag+cat+'<span class="sz">'+SZ[t.size].label+'</span>'+due+links(t)+was+olA+'</div>'
+    + (cx ? '' : '<button type="button" class="more" data-act="menu" data-id="'+t.id+'" aria-label="Move or change '+esc(t.title)+'" aria-haspopup="menu"'+(compact() ? '' : ' tabindex="-1"')+'>⋯</button>')+'</article>';
 }
+const cardsOf = items => { let seenCx = false; return items.map(t => { const h = cancelled(t) && !seenCx ? '<p class="olcxh">Cancelled</p>' : ''; if (cancelled(t)) seenCx = true; return h + card(t); }).join(''); };
 const doneCount = items => { const n = items.filter(t => t.type === 'task').length, k = items.filter(t => t.type === 'task' && t.done).length; return k ? (' <span class="dcn">'+(k === n ? 'All done' : k+' of '+n+' done')+'</span>') : ''; };
 const isWeekend = d => [0,6].includes(parse(d).getDay());
 function glance() {
   if (weeksBetween(THIS_MON, ui.anchor) !== 1) return '';
-  const days = weekDays(ui.anchor), dls = S.tasks.filter(t => t.due && !t.done && days.includes(t.due) && vis(t));
+  const days = weekDays(ui.anchor), dls = S.tasks.filter(t => t.due && !t.done && !cancelled(t) && days.includes(t.due) && vis(t));
   let busy = null, bl = 0; days.forEach(d => { const l = load(d); if (l > bl) { bl = l; busy = d; } });
-  const loose = S.tasks.filter(t => t.type === 'task' && !t.day && !t.done && t.week === ui.anchor).length;
+  const loose = S.tasks.filter(t => t.type === 'task' && !t.day && !t.done && !cancelled(t) && t.week === ui.anchor).length;
   const word = bl > 1.2 ? 'too full' : bl >= 1 ? 'full' : 'almost full';
   return '<section class="glance" aria-label="Next week at a glance"><h2>Next week at a glance</h2>'
     + '<span>'+dls.length+' deadline'+(dls.length === 1 ? '' : 's')+(dls.length ? ' · '+dls.slice(0,3).map(t => esc(t.title)+' '+fmtDay(t.due).split(' ')[0]).join(', ') : '')+'</span>'
@@ -1205,7 +1250,7 @@ function renderWeek() {
     h += '<section class="col'+(isWeekend(d)?' wk':'')+(d===TODAY?' today':'')+'" data-drop="'+d+'" aria-label="'+fmtDay(d)+'">'
       + '<div class="ch"><h3>'+fmtDay(d)+'</h3>'+(whereAny() ? whereTag(d) : '')+'</div>'
       + '<div class="fill'+(l>=.8?' hi':'')+'" role="img" aria-label="'+barLabel(l)+'">'+barIn(l)+'</div><div class="stat">'+st+'</div>'
-      + items.map(t => card(t)).join('') + composerHtml(d) + '</section>';
+      + cardsOf(items) + composerHtml(d) + '</section>';
   });
   return h + '</div>';
 }
@@ -1213,16 +1258,18 @@ function renderMonth() {
   let h = '<div class="mgrid"><div></div>' + DN.map(n => '<div class="mh">'+n+'</div>').join('');
   for (let w = 0; w < 5; w++) {
     const mon = add(ui.anchor, w*7), days = weekDays(mon);
-    const full = days.filter(d => load(d) >= .8).length, dl = S.tasks.filter(t => t.due && !t.done && days.includes(t.due) && vis(t)).length;
+    const full = days.filter(d => load(d) >= .8).length, dl = S.tasks.filter(t => t.due && !t.done && !cancelled(t) && days.includes(t.due) && vis(t)).length;
     const heavy = full >= 2 || dl >= 3;
     h += '<button type="button" class="mw'+(heavy?' heavy':'')+'" data-act="goto" data-d="'+mon+'" '+(heavy?'title="Heavy week: 2+ nearly full days or 3+ deadlines"':'')+'>'+fmtShort(mon)+(heavy?'<br><span class="chip">Heavy</span>':'')+'</button>';
     days.forEach((d, i) => {
       const dots = [];
-      S.tasks.filter(t => t.day === d && !t.done && vis(t)).forEach(t => dots.push(t.type === 'meeting' ? 'm' : t.kind === 'life' ? 'l' : 't'));
-      S.tasks.filter(t => t.due === d && !t.done && vis(t)).forEach(() => dots.push('d'));
+      S.tasks.filter(t => t.day === d && !t.done && !cancelled(t) && vis(t)).forEach(t => dots.push(t.type === 'meeting' ? 'm' : t.kind === 'life' ? 'l' : 't'));
+      S.tasks.filter(t => t.due === d && !t.done && !cancelled(t) && vis(t)).forEach(() => dots.push('d'));
       const shown = dots.slice(0, 6).map(c => '<i class="'+(c==='m'?'':c)+'"></i>').join('') + (dots.length > 6 ? '<span>+'+(dots.length-6)+'</span>' : '');
       const day = parse(d).getDate();
-      h += '<button type="button" class="mc'+(i>4?' wk':'')+(d===TODAY?' today':'')+(heavy?' hv':'')+'" data-act="goto" data-d="'+d+'" aria-label="'+fmtDay(d)+' '+MN[parse(d).getMonth()]+', '+dots.length+' items. Open this week"><span class="n">'+(day===1||w===0&&i===0?MN[parse(d).getMonth()]+' ':'')+day+'</span><span class="dots">'+shown+'</span></button>';
+      const chg = S.tasks.filter(t => t.day === d && t.mark && vis(t)), kinds = ['new','changed','cancelled'].filter(k => chg.some(t => t.mark.kind === k));
+      const omk = kinds.length ? '<span class="omk" aria-hidden="true">'+kinds.map(k => '<i class="'+(k === 'changed' ? 'm' : k === 'cancelled' ? 'c' : '')+'"></i>').join('')+'</span>' : '';
+      h += '<button type="button" class="mc'+(i>4?' wk':'')+(d===TODAY?' today':'')+(heavy?' hv':'')+'" data-act="goto" data-d="'+d+'" aria-label="'+fmtDay(d)+' '+MN[parse(d).getMonth()]+', '+dots.length+' items'+(kinds.length ? ', '+kinds.map(k => k === 'changed' ? 'moved' : k).join(' and ')+' meeting' : '')+'. Open this week"><span class="n">'+(day===1||w===0&&i===0?MN[parse(d).getMonth()]+' ':'')+day+'</span><span class="dots">'+shown+'</span>'+omk+'</button>';
     });
   }
   return h + '</div><div class="legend"><span><i></i>Meeting</span><span><i class="t"></i>Work task</span><span><i class="l"></i>Life task</span><span><i class="d"></i>Deadline</span><span class="chip">Heavy = 2+ nearly full days or 3+ deadlines</span><span>Click a day or a week to open it.</span></div>';
@@ -1247,7 +1294,18 @@ function render() {
   const hadComp = document.activeElement && document.activeElement.id === 'compT';
   renderNow(); { const t = $('compT'); if (t) { sizeComp(t); if (hadComp) { t.focus(); t.setSelectionRange(t.value.length, t.value.length); } } } if (prev) playFlip(prev, flipId, rmMotion()); dropId = null;
 }
+function olBarRender() {
+  const bar = $('olBar'); if (!bar) return;
+  const m = S.tasks.filter(t => t.type === 'meeting' && t.source === 'outlook' && t.mark), c = k => m.filter(t => t.mark.kind === k).length;
+  const n = c('new'), ch = c('changed'), cx = c('cancelled'), tot = m.length;
+  if (CLOUD || !tot) { bar.hidden = true; ui.olOnly = false; document.body.classList.remove('olonly'); return; }
+  const parts = [n && n+' new', ch && ch+' moved', cx && cx+' cancelled'].filter(Boolean).join(', ');
+  bar.hidden = false;
+  bar.innerHTML = '<span><b>'+tot+' change'+(tot === 1 ? '' : 's')+'</b> since the last refresh'+(ol.last ? ' at '+esc(ol.last.at) : '')+': '+parts+'</span><button type="button" class="btn" data-act="olonly" aria-pressed="'+!!ui.olOnly+'">'+(ui.olOnly ? 'Show everything' : 'Show only changes')+'</button>'+((n || ch) ? '<button type="button" class="btn" data-act="olseen">Mark all as seen</button>' : '');
+  document.body.classList.toggle('olonly', !!ui.olOnly);
+}
 function renderNow() {
+  olBarRender();
   if (compact()) renderM(); else {
     $('vWeek').setAttribute('aria-pressed', ui.view === 'week'); $('vMonth').setAttribute('aria-pressed', ui.view === 'month');
     document.querySelectorAll('[data-act=filter]').forEach(b => b.setAttribute('aria-pressed', b.dataset.f === ui.filter));
@@ -1286,7 +1344,7 @@ function askWeekend(title, day) {
 function dayItems(d, all) {
   const ro = t => CLOUD && t.type === 'meeting', g = t => ro(t) ? 0 : t.order != null ? 1 : 2;
   return S.tasks.filter(t => t.day === d && (all || vis(t)))
-    .sort((a,b) => g(a) - g(b) || (g(a) === 1 ? a.order - b.order : g(a) === 2 ? (a.type==='meeting'?0:1) - (b.type==='meeting'?0:1) : 0));
+    .sort((a,b) => (cancelled(a) ? 1 : 0) - (cancelled(b) ? 1 : 0) || g(a) - g(b) || (g(a) === 1 ? a.order - b.order : g(a) === 2 ? (a.type==='meeting'?0:1) - (b.type==='meeting'?0:1) : 0));
 }
 function say(m) { const l = $('live'); l.textContent = ''; setTimeout(() => { l.textContent = m; }, 30); }
 /* put task `id` before (or after) card `ref` in its own day, then number the whole day 1, 2, 3 … */
@@ -1331,17 +1389,47 @@ function openMenu(id, btn) {
   const t = S.tasks.find(x => x.id === id); if (!t || roMeeting(id)) return;
   ui.ret = id;
   if (compact()) { ui.menu = id; ui.armDel = null; openSheet('menu'); return; }
-  const r = btn.getBoundingClientRect(), days = [...new Set([...weekDays(t.day ? mondayOf(parse(t.day)) : ui.anchor), ...shownDays()])].sort();
-  let h = '<div class="menu" role="menu" style="left:'+Math.max(8, Math.min(r.left-150, innerWidth-210))+'px;top:'+Math.min(r.bottom+4, innerHeight-450)+'px"><small>Order</small>'
-    + (t.day ? '<button type="button" role="menuitem" data-act="step" data-id="'+id+'" data-dir="-1">Move up</button><button type="button" role="menuitem" data-act="step" data-id="'+id+'" data-dir="1">Move down</button><hr>' : '') + '<small>Move to</small>';
-  days.forEach(d => { h += '<button type="button" role="menuitem" data-act="move" data-id="'+id+'" data-to="'+d+'"'+(t.day===d?' disabled':'')+'>'+fmtDay(d)+(t.day===d?' (here)':'')+'</button>'; });
-  if (t.type !== 'meeting') h += '<button type="button" role="menuitem" data-act="move" data-id="'+id+'" data-to="tray">Loose tray</button>';
-  if (t.type !== 'meeting') h += '<hr><button type="button" role="menuitem" data-act="followup" data-id="'+id+'">Add a follow-up…</button>';
-  h += '<hr>' + (t.type !== 'meeting' ? '<button type="button" role="menuitem" data-act="done" data-id="'+id+'">'+(t.done?'Mark not done':'Mark done')+'</button><hr>' : '') + '<button type="button" role="menuitem" data-act="del" data-id="'+id+'">'+icon('trash')+'Delete</button></div>';
+  const r = btn.getBoundingClientRect();
+  let h = '<div class="menu" role="menu" style="left:'+Math.max(8, Math.min(r.left-150, innerWidth-210))+'px;top:'+Math.min(r.bottom+4, innerHeight-200)+'px">';
+  if (t.type !== 'meeting') h += '<button type="button" role="menuitem" data-act="followup" data-id="'+id+'">Add a follow-up…</button><button type="button" role="menuitem" data-act="done" data-id="'+id+'">'+(t.done?'Mark not done':'Mark done')+'</button><hr>';
+  h += '<button type="button" role="menuitem" data-act="del" data-id="'+id+'">'+icon('trash')+'Delete</button></div>';
   $('menuhost').innerHTML = h.replace(/<button /g, '<button tabindex="-1" '); ui.menu = id;
   const first = $('menuhost').querySelector('button:not([disabled])'); if (first) first.focus();
 }
 
+/* ---------- right-click menus (WA-47): a card gets only Cancel/Restore and Delete; the page background gets the picture items ---------- */
+function showCtx(x, y, h, who) {
+  ui.ret = who || null;
+  $('menuhost').innerHTML = '<div class="menu" role="menu" style="left:'+Math.max(8, Math.min(x, innerWidth-210))+'px;top:'+Math.max(8, Math.min(y, innerHeight-130))+'px">'+h.replace(/<button /g, '<button tabindex="-1" ')+'</div>';
+  ui.menu = who || 'ctx';
+  const first = $('menuhost').querySelector('button:not([disabled])'); if (first) first.focus();
+}
+function openCtx(id, x, y) {
+  const t = S.tasks.find(v => v.id === id); if (!t || roMeeting(id)) return false;
+  showCtx(x, y, '<button type="button" role="menuitem" data-act="'+(cancelled(t) ? 'cxrestore' : 'cxl')+'" data-id="'+id+'">'+(cancelled(t) ? 'Restore' : 'Cancel')+'</button><hr><button type="button" role="menuitem" data-act="del" data-id="'+id+'">'+icon('trash')+'Delete</button>', id);
+  return true;
+}
+function openBgMenu(x, y) {
+  const on = document.documentElement.classList.contains('hasbg');
+  showCtx(x, y, on ? '<button type="button" role="menuitem" data-act="bgopen">Change picture…</button><button type="button" role="menuitem" data-act="bgoff">Remove picture</button>' : '<button type="button" role="menuitem" data-act="bgopen">Choose a picture…</button>', null);
+}
+function setMark(id, mark, msg) {
+  const t = S.tasks.find(v => v.id === id); if (!t || roMeeting(id)) return;
+  const prev = t.mark ? JSON.parse(JSON.stringify(t.mark)) : null;
+  if (mark) t.mark = mark; else delete t.mark;
+  save(); render(); focusCard(id); say(msg+': '+t.title);
+  showUndo({ kind:'mark', id, prev }, msg+' · “'+t.title+'”');
+}
+document.addEventListener('contextmenu', e => {
+  const tg = e.target; if (!tg.closest) return;
+  if (tg.closest('.menu')) { e.preventDefault(); return; }
+  if (tg.closest('dialog,#sheet,input,textarea,select,a[href]') || document.querySelector('dialog[open]')) return;
+  const card = tg.closest('.card');
+  if (card) { if (openCtx(card.dataset.id, e.clientX, e.clientY)) e.preventDefault(); return; }
+  if (ui.menu) closeMenu();
+  if (compact() || tg.closest('button,label,.undo,#bgCredit,.pop,[role=button]')) return;
+  e.preventDefault(); openBgMenu(e.clientX, e.clientY);
+});
 function openWhere(d, btn) {
   ui.retWhere = d;
   if (compact()) { ui.whereDay = d; openSheet('where'); return; }
@@ -1500,11 +1588,15 @@ function focusNeighbor(n) {
 }
 
 /* ---------- done and delete (delete can be undone for a few seconds, links included) ---------- */
-let undo = null, undoTimer = null;
+let undo = null, undoTimer = null, ptrToggle = false;
 function toggleDone(id) {
   const t = S.tasks.find(x => x.id === id); if (!t || t.type === 'meeting' || roMeeting(id)) return;
   t.done = !t.done; save(); render(); focusCard(id);
-  if (t.done && !rmMotion()) { const c = cardEls().get(id), k = c && c.querySelector('.ck'); if (k) { k.classList.add('pop'); k.addEventListener('animationend', () => k.classList.remove('pop'), { once:true }); } }
+  const c = cardEls().get(id);
+  if (c && ptrToggle) { c.classList.add('hov'); const off = () => { c.classList.remove('hov'); document.removeEventListener('mousemove', off, true); }; document.addEventListener('mousemove', off, true); }  // the card was just rebuilt under the pointer: keep its hover look until the mouse moves
+  if (t.done && !rmMotion() && c) { const k = c.querySelector('.ck'), pth = k && k.querySelector('path'); if (k && k.animate) {   // played by script on the finished, always-correct circle, so nothing can get stuck
+    k.animate([{ transform:'scale(.7)', boxShadow:'0 0 0 0 '+getComputedStyle(k).backgroundColor }, { transform:'scale(1.14)', offset:.55 }, { transform:'scale(1)', boxShadow:'0 0 0 9px transparent' }], { duration:340, easing:'cubic-bezier(.3,1.5,.5,1)' });
+    if (pth && pth.animate) pth.animate([{ strokeDashoffset:14 }, { strokeDashoffset:0 }], { duration:260, delay:100, easing:'ease-out', fill:'backwards' }); } }
   const m = (t.done ? 'Marked done' : 'Marked not done'); say(m+': '+t.title);
   showUndo({ kind:'done', id, prev:!t.done }, m+' · “'+t.title+'”');
 }
@@ -1523,6 +1615,7 @@ function delTask(id) {
 function undoDel() {
   if (!undo) return; const u = undo; hideUndo();
   if (u.kind === 'done') { const x = S.tasks.find(y => y.id === u.id); if (x) { x.done = u.prev; save(); render(); focusCard(u.id); say('Undone: '+x.title); } return; }
+  if (u.kind === 'mark') { const x = S.tasks.find(y => y.id === u.id); if (x) { if (u.prev) x.mark = u.prev; else delete x.mark; save(); render(); focusCard(u.id); say('Undone: '+x.title); } return; }
   const { t, i, kids } = u;
   S.tasks.splice(Math.min(i, S.tasks.length), 0, t);
   kids.forEach(k => { const x = S.tasks.find(y => y.id === k); if (x && !x.from) x.from = t.id; });
@@ -1548,8 +1641,12 @@ document.addEventListener('click', e => {
   else if (a === 'menu') { ui.menu === b.dataset.id ? closeMenu() : openMenu(b.dataset.id, b); }
   else if (a === 'move') move(b.dataset.id, b.dataset.to);
   else if (a === 'step') moveStep(b.dataset.id, +b.dataset.dir);
-  else if (a === 'done') toggleDone(b.dataset.id);
+  else if (a === 'done') { ptrToggle = e.detail > 0 && !!b.closest('.card'); toggleDone(b.dataset.id); ptrToggle = false; }
   else if (a === 'del') delTask(b.dataset.id);
+  else if (a === 'cxl') { const t = S.tasks.find(v => v.id === b.dataset.id); closeMenu(); if (t) setMark(t.id, { kind:'cancelled', since:new Date().toISOString(), was:{ day:t.day, start:t.time || '' } }, 'Cancelled'); }
+  else if (a === 'cxrestore') { closeMenu(); setMark(b.dataset.id, null, 'Restored'); }
+  else if (a === 'bgopen') { closeMenu(); window.waBg.open(); }
+  else if (a === 'bgoff') { closeMenu(); window.waBg.remove(); }
   else if (a === 'undo') undoDel();
   else if (a === 'goto') { ui.view = 'week'; if (RANGES[ui.range].n <= 3) ui.first = b.dataset.d; showDay(b.dataset.d); setNotice(''); render(); }
   else if (a === 'range') setRange(b.dataset.r);
@@ -1569,6 +1666,11 @@ document.addEventListener('click', e => {
   }
   else if (a === 'sheet') openSheet(b.dataset.s);
   else if (a === 'pattern') openPattern();
+  else if (a === 'olrefresh') olAsk();
+  else if (a === 'olgot' || a === 'olrestore') { const x = S.tasks.find(y => y.id === b.dataset.id); if (x) { delete x.mark; save(); render(); say(a === 'olrestore' ? 'Restored: '+x.title : 'Got it'); } }
+  else if (a === 'oldismiss') { const x = S.tasks.find(y => y.id === b.dataset.id); if (x) { S.tasks = S.tasks.filter(y => y.id !== x.id); save(); render(); say('Dismissed: '+x.title); } }
+  else if (a === 'olonly') { ui.olOnly = !ui.olOnly; render(); }
+  else if (a === 'olseen') { S.tasks.forEach(x => { if (x.mark && x.mark.kind !== 'cancelled') delete x.mark; }); ui.olOnly = false; save(); render(); say('Marked as seen'); }
   else if (a === 'where') { ui.menu === 'where:'+b.dataset.d ? (closeMenu(), focusWhere(b.dataset.d)) : openWhere(b.dataset.d, b); }
   else if (a === 'wset') { const d = b.dataset.d; setWhere(d, b.dataset.v); if (sheet === 'where') closeSheet(); focusWhere(d); }
   else if (a === 'wpat') { setPattern(b.dataset.i, b.dataset.v); afterPattern(b.dataset.i, b.dataset.v); }
@@ -1634,6 +1736,7 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); return; }
   }
   if (e.key === 'Escape' && ui.menu) { closeMenu(); return; }
+  if ((e.key === 'ContextMenu' || (e.key === 'F10' && e.shiftKey)) && e.target.classList && e.target.classList.contains('card') && !$('dlg').open) { e.preventDefault(); const r = e.target.getBoundingClientRect(); openCtx(e.target.dataset.id, r.left + 24, r.top + 28); return; }
   if (e.key === 'Enter' && e.target.classList && e.target.classList.contains('card') && !$('dlg').open) { e.preventDefault(); openEdit(e.target.dataset.id); return; }
   if ((e.key === 'x' || e.key === 'X' || e.key === ' ') && !e.altKey && !e.metaKey && !e.ctrlKey && e.target.classList && e.target.classList.contains('card') && !e.target.classList.contains('meeting') && !$('dlg').open) { e.preventDefault(); toggleDone(e.target.dataset.id); return; }
   if (e.altKey && !e.metaKey && !e.ctrlKey && !e.shiftKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown') && e.target.classList && e.target.classList.contains('card') && !$('dlg').open) { e.preventDefault(); moveStep(e.target.dataset.id, e.key === 'ArrowUp' ? -1 : 1, true); return; }
@@ -1645,9 +1748,9 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'ArrowRight') go(1);
 });
 
-/* ---------- phone and tablet layout (under 1024 wide): same data, same functions, a different shell ---------- */
+/* ---------- phone and tablet layout (under 700 wide (WA-47, was 1024)): same data, same functions, a different shell ---------- */
 let sheet = null; // which bottom sheet is open: 'loose' | 'more' | 'menu'
-const looseList = () => S.tasks.filter(t => t.type === 'task' && !t.day && !t.done && t.week === ui.anchor && vis(t));
+const looseList = () => S.tasks.filter(t => t.type === 'task' && !t.day && !t.done && !cancelled(t) && t.week === ui.anchor && vis(t));
 const chipLabel = d => d === TODAY ? 'Today' : d === add(TODAY,1) ? 'Tomorrow' : fmtDay(d);
 const TABS = [['week','Week','<rect x="3" y="5" width="18" height="15" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>'], ['month','Month','<rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01"/>'], ['loose','Loose','<path d="M4 7h16M4 12h16M4 17h10"/>'], ['more','More','<circle cx="6" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18" cy="12" r="1.2"/>']];
 function fixDay() {
@@ -1662,11 +1765,11 @@ function dayList(d, small) {
     + (ui.view === 'week' ? whereTag(d, true) : '')
     + (!small && ui.view === 'month' ? '<button type="button" class="pill" data-act="goto" data-d="'+d+'">Open this week</button>' : '')
     + '<div class="fbw"><div class="fb'+(l>=.8?' hi':'')+'" role="img" aria-label="'+barLabel(l)+'">'+barIn(l)+'</div><span class="fw">'+fullWord(l)+'</span></div></div>'
-    + (items.length ? items.map(t => card(t)).join('') : '<p class="mempty">Nothing here yet. Tap Add to put something on this day.</p>') + '</section>';
+    + (items.length ? cardsOf(items) : '<p class="mempty">Nothing here yet. Tap Add to put something on this day.</p>') + '</section>';
 }
 function stripM() {
   return '<div class="strip'+(whereAny()?' hw':'')+'" role="group" aria-label="Days of the week">' + weekDays(ui.anchor).map((d, i) => {
-    const l = load(d), dl = S.tasks.some(t => t.due === d && !t.done && vis(t)), wh = whereOf(d);
+    const l = load(d), dl = S.tasks.some(t => t.due === d && !t.done && !cancelled(t) && vis(t)), wh = whereOf(d);
     return '<button type="button" class="sd'+(i>4?' wk':'')+'" data-act="pick" data-d="'+d+'" aria-pressed="'+(d===ui.day)+'" aria-label="'+fmtDay(d)+', '+barLabel(l)+(dl?', has a deadline':'')+(d===TODAY?', today':'')+(wh?', '+WH[wh.type].label:'')+'">'
       + (wh?'<span class="sw" aria-hidden="true">'+icon(WH[wh.type].ic)+'</span>':'') + '<span class="dn">'+DN[i]+'</span><span class="dd">'+parse(d).getDate()+'</span><span class="td'+(d===TODAY?'':' off')+'"></span><span class="mb'+(l>=.8?' hi':'')+'">'+barIn(l)+'</span>'+(dl?'<b class="dl" aria-hidden="true"></b>':'')+'</button>';
   }).join('') + '</div>';
@@ -1675,11 +1778,11 @@ function gridM() {
   let h = '<div class="mfilter" role="group" aria-label="Show">' + [['all','All'],['work','Work'],['life','Life']].map(([f,n]) => '<button type="button" class="pill" data-act="filter" data-f="'+f+'" aria-pressed="'+(ui.filter===f)+'">'+n+'</button>').join('') + '</div><div class="mg">' + DN.map(n => '<div class="mhd" aria-hidden="true">'+n+'</div>').join('');
   for (let w = 0; w < 5; w++) {
     const days = weekDays(add(ui.anchor, w*7));
-    const heavy = days.filter(d => load(d) >= .8).length >= 2 || S.tasks.filter(t => t.due && !t.done && days.includes(t.due) && vis(t)).length >= 3;
+    const heavy = days.filter(d => load(d) >= .8).length >= 2 || S.tasks.filter(t => t.due && !t.done && !cancelled(t) && days.includes(t.due) && vis(t)).length >= 3;
     days.forEach((d, i) => {
       const dots = [];
       S.tasks.filter(t => t.day === d && !t.done && vis(t)).forEach(t => dots.push(t.type === 'meeting' ? 'm' : t.kind === 'life' ? 'lf' : 'w'));
-      S.tasks.filter(t => t.due === d && !t.done && vis(t)).forEach(() => dots.push('d'));
+      S.tasks.filter(t => t.due === d && !t.done && !cancelled(t) && vis(t)).forEach(() => dots.push('d'));
       const day = parse(d).getDate();
       h += '<button type="button" class="mcell'+(i>4?' wk':'')+(d===TODAY?' today':'')+(heavy?' hv':'')+'" data-act="pick" data-d="'+d+'" aria-pressed="'+(d===ui.day)+'" aria-label="'+fmtDay(d)+' '+MN[parse(d).getMonth()]+', '+dots.length+' item'+(dots.length===1?'':'s')+(heavy?', heavy week':'')+'">'
         + (day===1||w===0&&i===0 ? '<span class="mn">'+MN[parse(d).getMonth()]+'</span>' : '') + '<span class="n">'+day+'</span><span class="mk">'
@@ -1720,10 +1823,7 @@ function fillSheet() {
   } else if (sheet === 'menu') {
     const t = S.tasks.find(x => x.id === ui.menu); if (!t) { closeSheet(); return; }
     title = t.title;
-    const dl = t.day ? dayItems(t.day) : [], di = dl.findIndex(x => x.id === t.id), lock = x => !x || (CLOUD && x.type === 'meeting');
-    h = (t.day && !(CLOUD && t.type === 'meeting') ? '<p class="lbl">Order on '+fmtDay(t.day)+'</p><div class="acts"><button type="button" class="row44" data-act="step" data-id="'+t.id+'" data-dir="-1"'+(lock(dl[di-1]) ? ' disabled' : '')+'>Move up</button><button type="button" class="row44" data-act="step" data-id="'+t.id+'" data-dir="1"'+(lock(dl[di+1]) ? ' disabled' : '')+'>Move down</button></div>' : '')
-      + '<p class="lbl">Move to</p>' + dayChips(weekDays(t.day ? mondayOf(parse(t.day)) : ui.anchor), t.id, t.day, t.type !== 'meeting')
-      + '<div class="acts"><button type="button" class="row44" data-act="edit" data-id="'+t.id+'">Edit…</button>'
+    h = '<div class="acts"><button type="button" class="row44" data-act="edit" data-id="'+t.id+'">Edit…</button>'
       + (t.type !== 'meeting' ? '<button type="button" class="row44" data-act="done" data-id="'+t.id+'">'+(t.done?'Mark not done':'Mark done')+'</button><button type="button" class="row44" data-act="followup" data-id="'+t.id+'">Add a follow-up…</button>' : '')
       + (ui.armDel === t.id ? '<button type="button" class="row44 dng" data-act="del" data-id="'+t.id+'">Tap again to delete</button>' : '<button type="button" class="row44" data-act="delask" data-id="'+t.id+'">Delete</button>') + '</div>';
   } else if (sheet === 'where') {
@@ -1761,8 +1861,7 @@ function drawBar() {
 }
 function drawTheme() {
   const c = curTheme(), nm = { auto:'Auto (follows your system)', light:'Light', dark:'Dark' }[c], nx = { auto:'Light', light:'Dark', dark:'Auto' }[c], b = $('bTheme');
-  const mt = $('mTheme'); if (mt) mt.textContent = 'Colour mode: '+nm;
-  b.innerHTML = icon({ auto:'half', light:'sun', dark:'moon' }[c]); b.setAttribute('aria-label', 'Colour mode: '+nm+'. Switch to '+nx); b.title = 'Colour mode: '+nm+' (click for '+nx+')';
+    b.innerHTML = icon({ auto:'half', light:'sun', dark:'moon' }[c]); b.setAttribute('aria-label', 'Colour mode: '+nm+'. Switch to '+nx); b.title = 'Colour mode: '+nm+' (click for '+nx+')';
 }
 function applyTheme() {
   drawTheme();
@@ -1823,6 +1922,36 @@ if (window.visualViewport) {
     if (Math.abs(dx) > 56 && Math.abs(dy) < Math.abs(dx) * .6) go(dx < 0 ? 1 : -1);
   }, { passive:true });
 })();
+
+/* ---------- Refresh from Outlook (WA-09) ----------
+   The button only leaves a request on this Mac (POST /api/refresh/request). Claude, in the hub chat, reads Outlook and hands the result to the
+   server (POST /api/refresh/import); the server marks what is new / moved / cancelled inside data/tasks.json. We just notice and reload. */
+function olRender() {
+  const b = $('mOl'), n = $('olNote'); if (!b || !n) return;
+  const waiting = !!(ol.req && ol.req.status === 'waiting');
+  b.textContent = waiting ? 'Asked Claude, waiting…' : 'Refresh from Outlook'; b.setAttribute('aria-disabled', String(waiting));
+  n.textContent = ol.err || (waiting ? 'Tell Claude “refresh” in the Week Ahead chat. Nothing leaves this Mac.' : ol.last ? ol.last.line : 'Never refreshed. Press the button, then tell Claude “refresh”.');
+}
+async function olPoll() {
+  if (CLOUD) return;
+  try {
+    const j = await (await fetch('/api/refresh')).json(); ol.req = j.request; ol.last = j.last; ol.err = '';
+    const id = j.last ? j.last.id : null;
+    if (ol.seen === undefined) ol.seen = id;
+    else if (id !== ol.seen) {            // Claude handed in a new import: take the changed file
+      ol.seen = id;
+      if (!saveTimer) { const s = await (await fetch('/api/state')).json(); if (s && Array.isArray(s.tasks)) { S = s; if (syncOn) snapBase(); render(); say(j.last.line); } }
+    }
+  } catch (e) {}
+  olRender();
+}
+async function olAsk() {
+  if (ol.req && ol.req.status === 'waiting') return;
+  try { const r = await fetch('/api/refresh/request', { method:'POST', headers:{'Content-Type':'application/json','X-Week-Ahead':'1'}, body:'{}' }); if (!r.ok) throw 0; ol.req = await r.json(); ol.err = ''; }
+  catch (e) { ol.err = 'Could not leave the request. Is the app running from its own folder?'; }
+  olRender(); say('Asked Claude to refresh from Outlook');
+}
+if (!CLOUD) { setInterval(() => { if (!document.hidden) olPoll(); }, 4000); document.addEventListener('visibilitychange', () => { if (!document.hidden) olPoll(); }); setTimeout(olPoll, 600); }
 
 /* ---------- start ---------- */
 document.querySelectorAll('.ic-wk').forEach(e => e.innerHTML = IC.work); document.querySelectorAll('.ic-lf').forEach(e => e.innerHTML = IC.life);
@@ -1928,7 +2057,6 @@ document.querySelectorAll('.ic-wk').forEach(e => e.innerHTML = IC.work); documen
     if (op && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) { e.preventDefault(); const it = [...op.querySelectorAll('button')].filter(b => !b.hidden), i = it.indexOf(document.activeElement); it[(i + (e.key === 'ArrowDown' ? 1 : -1) + it.length) % it.length].focus(); return; }
   });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.querySelector('.pop:not([hidden])')) { const o = document.querySelector('[data-pop][aria-expanded=true]'); closePops(); if (o) o.focus(); } });
-  $('mBg').onclick = () => $('bBg').click();
   $('bBg').onclick = () => { drawKey(); msg(''); apply(); $('bgd').showModal(); };
   $('bgClose').onclick = () => $('bgd').close();
   $('bgUp').onclick = () => $('bgFile').click();
@@ -1938,7 +2066,36 @@ document.querySelectorAll('.ic-wk').forEach(e => e.innerHTML = IC.work); documen
   $('bgQ').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); search(); } };
   $('bgKeySave').onclick = () => { const v = $('bgKey').value.trim(); if (!v) return; put('wa-unsplash-key', v); $('bgKey').value = ''; drawKey(); msg('Key saved. Now search.'); };
   $('bgForget').onclick = () => { try { localStorage.removeItem('wa-unsplash-key'); } catch (e) {} drawKey(); msg('Key forgotten.'); };
+  window.waBg = { open: () => $('bBg').click(), remove: () => $('bgOff').click() };
   apply();
+})();
+</script>
+<script>
+/* sticky header (with a photo): measures where the nav row sits, then slides the title and Add task onto it once you scroll */
+(() => {
+  const R = document.documentElement; let thr = 1e9;
+  const wide = () => innerWidth >= 700;
+  const measure = () => {
+    const bar = document.querySelector('.bar'), h1 = document.querySelector('.hr1'), h2 = document.querySelector('.hr2'), lg = document.querySelector('.hr1 .logo');
+    if (!bar || !h1 || !h2 || !lg || !wide() || R.classList.contains('stuck')) return;
+    thr = h2.offsetTop - (R.classList.contains('wa-native') ? 44 : 12);
+    bar.style.setProperty('--stk', -thr + 'px');
+    bar.style.setProperty('--h1h', h1.offsetHeight + 'px');
+    bar.style.setProperty('--dy', Math.round(h2.offsetTop + h2.offsetHeight / 2 - h1.offsetTop - h1.offsetHeight / 2) + 'px');
+    bar.style.setProperty('--tw', Math.round(lg.offsetWidth * 36 / 52 + 32) + 'px');
+  };
+  const update = () => {
+    R.classList.toggle('stuck', wide() && R.classList.contains('hasbg') && scrollY >= thr - 1);
+    R.style.setProperty('--hd', wide() ? Math.max(0, 1 - scrollY / (thr * .5)).toFixed(2) : 1);
+  };
+  const both = () => { measure(); update(); };
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', both);
+  addEventListener('load', both);
+  const bar = document.querySelector('.bar');
+  if (bar && window.ResizeObserver) new ResizeObserver(both).observe(bar);
+  new MutationObserver(both).observe(R, { attributes: true, attributeFilter: ['class'] });
+  both();
 })();
 </script>
 </body>
