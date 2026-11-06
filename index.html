@@ -787,6 +787,32 @@ body .card.done .ct{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;fo
 body .card.done .chk{top:50%;transform:translateY(-50%)}
 body .card.done .more{top:50%;bottom:auto;transform:translateY(-50%)}
 @media (max-width:699.98px){body .card.done{min-height:44px;padding:4px 52px 4px 56px}body .card.hc.done{padding-left:56px}}
+/* WA-65: the sun companion. Its clouds are the week's load: Light clear, Busy a few clouds, Full mostly cloudy, Over overcast with the sun peeking. Gentle motion only; reduced motion turns all of it off. */
+.sun{flex:none;width:46px;height:46px;min-width:0;min-height:0;margin:-6px 2px -6px 0;padding:0;border:0;background:none;border-radius:50%;box-shadow:none;cursor:pointer;display:block}
+.sun.sm{width:38px;height:38px;margin:0}
+.sun svg{display:block;width:100%;height:100%;overflow:visible}
+.sun .cl{fill:var(--tint);animation:sundrift 8s ease-in-out infinite}
+.sun .sd,.sun .rays rect{fill:#FFC247}
+.sun .fc{fill:#292929}.sun .fs{fill:none;stroke:#292929;stroke-width:2;stroke-linecap:round}
+.sun .rays{transform-origin:32px 30px;animation:sunspin 40s linear infinite}
+.sun .rp{transform-origin:32px 30px}
+.sun .eg{transition:transform .25s ease-out}.sun.look .eg{transform:translateX(2.4px)}
+.sun .ey{transform-box:fill-box;transform-origin:center;animation:sunbk 5s infinite}
+.sun .sp{fill:#FFC247;stroke:var(--ink2);stroke-width:.8;opacity:0;transform-box:fill-box;transform-origin:center}
+.sun.pop .rp{animation:sunpop .5s ease-out}
+.sun.hop svg{animation:sunhop .6s ease-out}
+.sun.blink .ey{animation:sunbk1 .4s}
+.sun.in .cl{animation:sunin .7s ease-out,sundrift 8s .7s ease-in-out infinite}
+.sun.spark .sp{animation:sunsp .8s ease-out}.sun.spark .sp:nth-of-type(2){animation-delay:.1s}.sun.spark .sp:nth-of-type(3){animation-delay:.2s}
+@keyframes sunspin{to{transform:rotate(360deg)}}
+@keyframes sundrift{0%,100%{transform:translateX(0)}50%{transform:translateX(2px)}}
+@keyframes sunbk{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes sunbk1{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.1)}}
+@keyframes sunpop{0%,100%{transform:scale(1)}40%{transform:scale(1.16)}}
+@keyframes sunhop{0%,100%{transform:translateY(0)}40%{transform:translateY(-6px) scale(1.06)}70%{transform:translateY(0) scale(1.02,.96)}}
+@keyframes sunin{from{transform:translateY(-12px);opacity:0}to{transform:none;opacity:1}}
+@keyframes sunsp{0%{opacity:0;transform:scale(.3)}35%{opacity:1;transform:scale(1.2)}100%{opacity:0;transform:scale(.6)}}
+@media (prefers-reduced-motion:reduce){.sun *,.sun svg{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -794,6 +820,7 @@ body .card.done .more{top:50%;bottom:auto;transform:translateY(-50%)}
   <div class="hr1"><div class="logo"><img src="week-ahead-icon.svg" alt="" width="48" height="48"><h1 class="brand">Weeklee</h1></div>
     <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="olnote" id="olNote" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><button type="button" class="btn sq maconly" id="mOl" data-act="olrefresh" aria-label="Refresh from Outlook" title="Refresh from Outlook"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></svg></button><button type="button" class="btn sq" id="bTheme" data-act="themecycle"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" title="Week pattern: which days are office, home or client site" aria-label="Week pattern"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" title="Background picture" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button><span class="dd tipdd"><button type="button" class="btn sq" id="bHelp" data-pop="pHelp" aria-haspopup="dialog" aria-expanded="false" aria-label="Tips" title="Tips"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg></button><div class="pop right tips" id="pHelp" role="dialog" aria-label="Tips" hidden><h5>Tips</h5><ul><li><b>Loose tasks</b> have no day yet. They wait in the tray until you place them.</li><li><b>Drag a card</b> onto a day to plan it, or back to the tray.</li><li><b>Right-click a card</b> for Delete or Cancel.</li><li><b>X or Space</b> marks the focused card done. <b>A</b> adds a task.</li><li>The <b>view menu</b> (Week) changes how many days show.</li><li>The <b>refresh button</b> pulls the latest meetings from Outlook.</li></ul><button type="button" class="tipx" data-act="tipclose">Got it</button></div></span></span><button type="button" class="btn main" data-act="add" title="Add task (A)">+ Add task</button></div></div>
   <div class="hr2">
+    <button type="button" class="sun" aria-label="Week mood"></button>
     <button type="button" class="btn sq" data-act="prev" aria-label="Previous week" title="Previous week (←)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
     <span class="range" id="range" aria-live="polite"></span>
     <button type="button" class="btn sq" data-act="next" aria-label="Next week" title="Next week (→)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
@@ -1400,7 +1427,41 @@ function renderNow() {
   }
   $('demo').hidden = !S.tasks.some(t => t.demo);
   closeMenu(); if (sheet) fillSheet(); if ($('pat').open) fillPat();
+  sunUpdate();
 }
+
+/* ---------- WA-65: sun companion (clouds = how loaded the shown week is; a quiet read, never a score) ---------- */
+const SUNCL = [[], [[46,52,22,8]], [[18,52,26,9],[44,50,26,10],[46,42,20,8]], [[16,47,30,11],[44,45,32,12],[30,56,44,10]]];
+const sunCloud = ([cx,cy,w,h]) => '<rect x="'+(cx-w/2)+'" y="'+(cy-h/2)+'" width="'+w+'" height="'+h+'" rx="'+h/2+'"/><circle cx="'+(cx-w*.16)+'" cy="'+(cy-h*.42)+'" r="'+h*.78+'"/><circle cx="'+(cx+w*.14)+'" cy="'+(cy-h*.58)+'" r="'+h*.6+'"/>';
+function sunSvg(lv) {
+  let rays = ''; for (let k = 0; k < 7; k++) rays += '<rect x="29.4" y="4" width="5.2" height="7" rx="2.6" transform="rotate('+(k*51.43).toFixed(2)+' 32 30)"/>';
+  const sq = lv === 3, star = (x, y) => '<path class="sp" transform="translate('+x+' '+y+')" d="M0-4L1.2-1.2L4 0L1.2 1.2L0 4L-1.2 1.2L-4 0L-1.2-1.2Z"/>';
+  const eyes = sq ? '<path class="fs ey" d="M24 29h5M35 29h5"/>' : '<circle class="fc ey" cx="26.5" cy="29" r="2"/><circle class="fc ey" cx="37.5" cy="29" r="2"/>';
+  return '<svg viewBox="0 0 64 64" aria-hidden="true"><g class="rp"><g class="rays">'+rays+'</g></g><circle class="sd" cx="32" cy="30" r="17"/><g class="eg">'+eyes+'</g>'+(sq ? '' : '<path class="fs" d="M27.5 34.5Q32 39 36.5 34.5"/>')+'<g class="cl">'+SUNCL[lv].map(sunCloud).join('')+'</g>'+star(55,9)+star(9,13)+star(57,38)+'</svg>';
+}
+const DAYFULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+function sunInfo() {
+  const ds = weekDays(ui.anchor).slice(0,5), ls = ds.map(load), max = Math.max(...ls), avg = ls.reduce((a,b) => a+b, 0)/5, nm = DAYFULL[ls.indexOf(max)];
+  const lv = max > 1.2 ? 3 : (max >= 1 || avg >= .8) ? 2 : (max >= .8 || avg >= .45) ? 1 : 0;
+  const txt = max === 0 ? 'Nothing planned yet. Clear skies.' : lv === 0 ? 'A light week. Plenty of room.' : lv === 1 ? 'Getting busy. '+nm+' is the heaviest day.' : lv === 2 ? 'A full week. '+nm+' is the one to watch.' : nm+' is '+overBy(max)+'. Maybe move one thing.';
+  return { lv, txt };
+}
+function sunDo(k) {
+  if (rmMotion()) return;
+  document.querySelectorAll('.sun').forEach(h => { h.classList.remove(k); void h.offsetWidth; h.classList.add(k); clearTimeout(h['_t'+k]); h['_t'+k] = setTimeout(() => h.classList.remove(k), 1200); });
+}
+let sunLv = null, sunAn = null;
+function sunUpdate() {
+  const hs = document.querySelectorAll('.sun'); if (!hs.length) return;
+  const f = sunInfo(), same = sunAn === ui.anchor;
+  hs.forEach(h => { if (!h.firstChild || h.dataset.lv !== String(f.lv)) h.innerHTML = sunSvg(f.lv); h.dataset.lv = f.lv; h.title = f.txt; h.setAttribute('aria-label', 'Week mood: '+f.txt); });
+  if (same && sunLv !== null && f.lv === 3 && sunLv < 3) sunDo('in'); else if (sunAn !== null && !same) sunDo('pop');
+  sunLv = f.lv; sunAn = ui.anchor;
+}
+document.addEventListener('click', e => { if (e.target.closest('.sun')) { sunDo('hop'); sunDo('blink'); } });
+const sunLook = on => document.querySelectorAll('.sun').forEach(h => h.classList.toggle('look', on));
+document.addEventListener('mouseover', e => { if (e.target.closest('[data-act=add]')) sunLook(true); });
+document.addEventListener('mouseout', e => { if (e.target.closest('[data-act=add]') && !$('dlg').open) sunLook(false); });
 
 /* ---------- actions ---------- */
 function setNotice(html) { const n = $('notice'); n.innerHTML = html || ''; n.hidden = !html; }
@@ -1662,6 +1723,7 @@ function syncForm() {
 }));
 let editing = null;
 let addFrom = null;
+$('dlg').addEventListener('close', () => sunLook(false));
 $('dlg').addEventListener('close', () => setTimeout(() => { const a = document.activeElement; if (!a || a === document.body || $('dlg').contains(a)) focusCard(ui.ret); }, 30));
 function openAdd(day, from) {
   const p = from && S.tasks.find(x => x.id === from); addFrom = p ? p.id : null;
@@ -1690,7 +1752,7 @@ async function saveTask(again) {
   const data = { type:isMeeting?'meeting':'task', title, kind, cat:kind === 'life' ? form.cat : '', size:form.size, day, week:day ? mondayOf(parse(day)) : ((t && t.week) || ui.anchor), due };
   if (t && t.day !== day) delete t.order;
   if (t) Object.assign(t, data); else { const n = Object.assign({ id:uid(), done:false }, addFrom ? { from:addFrom } : {}, data); S.tasks.push(n); ui.ret = n.id; }
-  save(); render();
+  save(); render(); if (!t) sunDo('spark');
   if (again && !t) { $('title').value = ''; $('title').focus(); } else $('dlg').close();
 }
 $('form').addEventListener('submit', e => { e.preventDefault(); saveTask(false); });
@@ -1748,6 +1810,7 @@ let undo = null, undoTimer = null, ptrToggle = false;
 function toggleDone(id) {
   const t = S.tasks.find(x => x.id === id); if (!t || t.type === 'meeting' || roMeeting(id)) return;
   t.done = !t.done; save(); render(); focusCard(id);
+  if (t.done) { sunDo('hop'); sunDo('spark'); }
   const c = cardEls().get(id);
   if (c && ptrToggle) { c.classList.add('hov'); const off = () => { c.classList.remove('hov'); document.removeEventListener('mousemove', off, true); }; document.addEventListener('mousemove', off, true); }  // the card was just rebuilt under the pointer: keep its hover look until the mouse moves
   if (t.done && !rmMotion() && c) { const k = c.querySelector('.ck'), pth = k && k.querySelector('path'); if (k && k.animate) {   // played by script on the finished, always-correct circle, so nothing can get stuck
@@ -1951,7 +2014,7 @@ function gridM() {
 function renderM() {
   fixDay();
   const wk = ui.view === 'week', away = wk ? ui.day !== TODAY : ui.anchor !== THIS_MON;
-  $('mhead').innerHTML = '<button type="button" class="ar" data-act="prev" aria-label="'+(wk?'Previous day':'Previous 4 weeks')+'">‹</button><div class="mt" aria-live="polite"><b>'+(wk ? fmtDay(ui.day)+' '+MN[parse(ui.day).getMonth()] : rangeLabel())+'</b><span>'+(wk && ui.day === TODAY ? 'Today' : relLabel())+'</span></div><button type="button" class="ar" data-act="next" aria-label="'+(wk?'Next day':'Next 4 weeks')+'">›</button>' + (away ? '<button type="button" class="tdp" data-act="today">Today</button>' : '');
+  $('mhead').innerHTML = '<button type="button" class="sun sm" aria-label="Week mood"></button><button type="button" class="ar" data-act="prev" aria-label="'+(wk?'Previous day':'Previous 4 weeks')+'">‹</button><div class="mt" aria-live="polite"><b>'+(wk ? fmtDay(ui.day)+' '+MN[parse(ui.day).getMonth()] : rangeLabel())+'</b><span>'+(wk && ui.day === TODAY ? 'Today' : relLabel())+'</span></div><button type="button" class="ar" data-act="next" aria-label="'+(wk?'Next day':'Next 4 weeks')+'">›</button>' + (away ? '<button type="button" class="tdp" data-act="today">Today</button>' : '');
   $('mbody').innerHTML = wk
     ? '<div class="pl">'+stripM()+dayList(ui.day)+'</div><div class="pr ag" aria-label="The whole week">'+weekDays(ui.anchor).map(d => dayList(d, true)).join('')+'</div>'
     : '<div class="pl">'+gridM()+'</div><div class="pr">'+dayList(ui.day)+'</div>';
