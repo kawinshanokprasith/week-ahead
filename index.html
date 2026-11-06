@@ -1412,7 +1412,7 @@ function olBarRender() {
   if (CLOUD || !tot) { bar.hidden = true; ui.olOnly = false; document.body.classList.remove('olonly'); return; }
   const parts = [n && n+' new', ch && ch+' moved', cx && cx+' cancelled'].filter(Boolean).join(', ');
   bar.hidden = false;
-  bar.innerHTML = '<span><b>'+tot+' change'+(tot === 1 ? '' : 's')+'</b> since the last refresh'+(ol.last ? ' at '+esc(ol.last.at) : '')+': '+parts+'</span><button type="button" class="btn" data-act="olonly" aria-pressed="'+!!ui.olOnly+'">'+(ui.olOnly ? 'Show everything' : 'Show only changes')+'</button>'+((n || ch) ? '<button type="button" class="btn" data-act="olseen">Mark all as seen</button>' : '');
+  bar.innerHTML = '<span><b>'+tot+' change'+(tot === 1 ? '' : 's')+'</b> since the last refresh'+(ol.last ? ' at '+esc(ol.last.at) : '')+': '+parts+'</span><button type="button" class="btn" data-act="olonly" aria-pressed="'+!!ui.olOnly+'">'+(ui.olOnly ? 'Show everything' : 'Show only changes')+'</button>'+'<button type="button" class="btn" data-act="olseen">Mark all as seen</button>';
   document.body.classList.toggle('olonly', !!ui.olOnly);
 }
 function renderNow() {
@@ -1893,7 +1893,7 @@ document.addEventListener('click', e => {
   else if (a === 'olgot' || a === 'olrestore') { const x = S.tasks.find(y => y.id === b.dataset.id); if (x) { delete x.mark; save(); render(); say(a === 'olrestore' ? 'Restored: '+x.title : 'Got it'); } }
   else if (a === 'oldismiss') { const x = S.tasks.find(y => y.id === b.dataset.id); if (x) { S.tasks = S.tasks.filter(y => y.id !== x.id); save(); render(); say('Dismissed: '+x.title); } }
   else if (a === 'olonly') { ui.olOnly = !ui.olOnly; render(); }
-  else if (a === 'olseen') { S.tasks.forEach(x => { if (x.mark && x.mark.kind !== 'cancelled') delete x.mark; }); ui.olOnly = false; save(); render(); say('Marked as seen'); }
+  else if (a === 'olseen') { S.tasks = S.tasks.filter(x => !(x.type === 'meeting' && x.source === 'outlook' && x.mark && x.mark.kind === 'cancelled')); S.tasks.forEach(x => { if (x.mark) delete x.mark; }); ui.olOnly = false; save(); render(); say('Marked as seen'); }   // WA-66: new, moved and cancelled all count; cancelled ones go like Dismiss
   else if (a === 'where') { ui.menu === 'where:'+b.dataset.d ? (closeMenu(), focusWhere(b.dataset.d)) : openWhere(b.dataset.d, b); }
   else if (a === 'wset') { const d = b.dataset.d; setWhere(d, b.dataset.v); if (sheet === 'where') closeSheet(); focusWhere(d); }
   else if (a === 'wpat') { setPattern(b.dataset.i, b.dataset.v); afterPattern(b.dataset.i, b.dataset.v); }
