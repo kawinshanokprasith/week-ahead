@@ -918,8 +918,8 @@ const fmtShort = s => { const d = parse(s); return d.getDate()+' '+MN[d.getMonth
 const uid = () => Math.random().toString(36).slice(2,10);
 const $ = id => document.getElementById(id);
 
-const TODAY = iso(new Date());
-const THIS_MON = mondayOf(new Date());
+let TODAY = iso(new Date());   // WA-62: refreshed by dayRoll() when the calendar day changes
+let THIS_MON = mondayOf(new Date());
 let S = { tasks: [] };
 const RANGES = { day:{n:1,step:1,label:'Day'}, '3day':{n:3,step:3,label:'3 days'}, work:{n:5,step:7,label:'Work week'}, week:{n:7,step:7,label:'Week'} };
 let savedRange = 'week'; try { const r = localStorage.getItem('wa-range'); if (RANGES[r]) savedRange = r; } catch (e) {}
@@ -1409,6 +1409,27 @@ function go(delta) {
   else if (rangeOn() && RANGES[ui.range].n <= 3) { ui.first = add(ui.first, delta*RANGES[ui.range].step); ui.anchor = mondayOf(parse(ui.first)); }
   else ui.anchor = add(ui.anchor, delta*7);
   setNotice(''); render();
+}
+/* WA-62: follow the real day without a reload. dayRoll() compares the clock with the cached TODAY; if the day changed it moves TODAY and THIS_MON, keeps Win on "today" / "this week" if he was there (and leaves any other view alone), and re-renders. Called at the next midnight, every minute (covers sleep), when the tab or home-screen app is shown again, and on focus. */
+function dayRoll() {
+  const nt = iso(new Date()); if (nt === TODAY) return;
+  const oldMon = THIS_MON, oldToday = TODAY;
+  TODAY = nt; THIS_MON = mondayOf(new Date());
+  const wasWeek = ui.anchor === oldMon, wasFirst = ui.first === oldToday, wasDay = ui.day === oldToday;
+  if (wasFirst) ui.first = TODAY;
+  if (wasDay) ui.day = TODAY;
+  if (compact()) { if (ui.view === 'week') { if (wasDay) ui.anchor = mondayOf(parse(TODAY)); } else if (wasWeek) ui.anchor = THIS_MON; }
+  else if (ui.view === 'month') { if (wasWeek) ui.anchor = THIS_MON; }
+  else if (RANGES[ui.range].n <= 3) { if (wasFirst) ui.anchor = mondayOf(parse(TODAY)); }
+  else if (wasWeek) ui.anchor = THIS_MON;
+  render();
+}
+let dayTimer = null;
+function dayWatch() {
+  const arm = () => { clearTimeout(dayTimer); const n = new Date(), m = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 0, 0, 3); dayTimer = setTimeout(() => { dayRoll(); arm(); }, Math.max(1000, m - n)); };
+  arm(); setInterval(dayRoll, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { dayRoll(); arm(); } });
+  addEventListener('focus', dayRoll); addEventListener('pageshow', () => { dayRoll(); arm(); });
 }
 function goToday() { ui.anchor = THIS_MON; ui.day = TODAY; ui.first = TODAY; setNotice(''); render(); }
 function askWeekend(title, day) {
@@ -2111,6 +2132,7 @@ document.querySelectorAll('.ic-wk').forEach(e => e.innerHTML = IC.work); documen
     setNotice('It’s Sunday, so this opened on next week. <button type="button" data-act="backthis">Back to this week</button> <button type="button" data-act="dismiss" aria-label="Dismiss">Dismiss</button>');
   }
   applyTheme(); render();
+  dayWatch();
   if (CLOUD) { if (cloudCfg()) { cloud.started = true; cloudStart(); } else showSetup(); }
 })();
 </script>
