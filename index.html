@@ -465,8 +465,8 @@ html[data-theme=light]{color-scheme:light}html[data-theme=dark]{color-scheme:dar
 body,.wtag b,.comp textarea,.lk,#setup input{font-family:var(--fnt)}
 :root{--fhd:'Kondolar Thai',Kondolar,Georgia,serif}
 .brand,#wk h2,form h2,.mt b,.dh h2,.dh h3,.shh h2,.brandrow b,.ch h3,.tray h2,.glance h2,.bgh h2{font-family:var(--fhd);font-weight:900;letter-spacing:0}
-.brand{font-size:26px;line-height:1;color:var(--ink);padding:0}
-@media (min-width:700px){.brand{font-size:52px}}   /* WA-44: the name is the biggest text in the header */
+.brand{font-size:39px;line-height:1;color:var(--ink);padding:0}
+@media (min-width:700px){.brand{font-size:78px}}   /* WA-44: the name is the biggest text in the header */
 .legacy{display:none!important}
 /* header (WA-37 pickboard picks C1 B, C2 C, C3 B): week as the headline, one "Week" menu, a Filter button and one More menu */
 .pop{position:absolute;top:calc(100% + 4px);left:0;z-index:30;background:var(--card);border-radius:4px;box-shadow:var(--shm);padding:6px;min-width:200px;display:flex;flex-direction:column;gap:1px}
@@ -645,12 +645,12 @@ body,.comp textarea,.lk,.tag,.sz{line-height:1.5}
 }
 /* WA-46: the header flows into the page (no band, no line); generous room above the name; extra room under the Mac traffic lights */
 @media (min-width:700px){
-  .bar{position:static;background:transparent;border-bottom:0;padding:28px max(16px,2.5vw) 8px;gap:12px}
-  html.wa-native .bar{padding-top:40px}
+  .bar{position:relative;isolation:isolate;background:transparent;border-bottom:0;padding:40px max(16px,2.5vw) 20px;gap:12px}   /* WA-63: more room above the name; the soft top fade shows with or without a picture */
+  html.wa-native .bar{padding-top:60px}
   /* with a photo: white top area that fades into it; scrolling turns it into a solid sticky bar (title + nav + Add task in one row) */
   html.hasbg .bar{position:sticky;top:var(--stk,0px);z-index:6;isolation:isolate;padding-bottom:20px}
-  html.hasbg .bar::before,html.hasbg .bar::after{content:"";position:absolute;z-index:-1;left:0;right:0;top:0;pointer-events:none;transition:opacity .2s}
-  html.hasbg .bar::before{bottom:-36px;background:var(--card);
+  .bar::before,html.hasbg .bar::after{content:"";position:absolute;z-index:-1;left:0;right:0;top:0;pointer-events:none;transition:opacity .2s}
+  .bar::before{bottom:-36px;background:var(--card);
     -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 56px),rgba(0,0,0,.92) calc(100% - 46px),rgba(0,0,0,.74) calc(100% - 35px),rgba(0,0,0,.48) calc(100% - 24px),rgba(0,0,0,.22) calc(100% - 13px),rgba(0,0,0,.06) calc(100% - 5px),transparent 100%);
             mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 56px),rgba(0,0,0,.92) calc(100% - 46px),rgba(0,0,0,.74) calc(100% - 35px),rgba(0,0,0,.48) calc(100% - 24px),rgba(0,0,0,.22) calc(100% - 13px),rgba(0,0,0,.06) calc(100% - 5px),transparent 100%)}
   html.hasbg .bar::after{bottom:8px;background:var(--card);box-shadow:0 8px 22px rgba(0,0,0,.16),0 1px 0 var(--border);opacity:0}
@@ -660,7 +660,7 @@ body,.comp textarea,.lk,.tag,.sz{line-height:1.5}
   html.hasbg .hr2{align-self:flex-start}
   html.hasbg .hr1{opacity:var(--hd,1)}                 /* the big title row fades out as you start scrolling, never cut off */
   html.hasbg.stuck .hr1{height:var(--h1h);transform:translateY(var(--dy,0px));opacity:1;pointer-events:none;animation:wahd .22s ease both}
-  html.hasbg.stuck .hr1 .brand{font-size:36px}         /* a little smaller, still bigger than the date */
+  html.hasbg.stuck .hr1 .brand{font-size:48px}         /* a little smaller, still bigger than the date */
   html.hasbg.stuck .hr1 .hr1r{pointer-events:auto}
   html.hasbg.stuck .hr2{transform:translateX(var(--tw,0px));animation:wahd .22s ease both}
   @keyframes wahd{from{opacity:0}to{opacity:1}}
@@ -724,7 +724,7 @@ html{background-color:var(--bg)}
   .week .ct{overflow-wrap:break-word;word-break:normal}
 }
 @media (min-width:700px) and (max-width:1099px){
-  .brand{font-size:44px}
+  .brand{font-size:66px}
   html.hasbg .bar{position:relative!important;top:auto!important;padding-bottom:20px}   /* no slide-up header below 1100 px */
   .olnote{max-width:150px}
 }
