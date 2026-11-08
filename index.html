@@ -832,9 +832,10 @@ html.hasbg.stuck .hr1 .logo .sun{width:41px;height:41px;margin:0 0 0 6px}
 .tpx svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
 .tpb{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;padding:4px 16px 16px;display:flex;flex-direction:column;gap:16px}
 .tpb::-webkit-scrollbar{display:none}
-.tp input.tpt{font:900 24px/1.2 Kondolar,Georgia,serif;border:2px solid transparent;border-radius:6px;padding:4px 8px;margin:0 -8px;width:calc(100% + 16px);background:transparent;color:var(--ink);text-overflow:ellipsis}
+.tp input.tpt{font:900 24px/1.2 Kondolar,Georgia,serif;border:1px solid transparent;border-radius:6px;background:transparent;color:var(--ink);text-overflow:ellipsis}
 .tp input.tpt:hover{background:var(--hover)}
-.tp input.tpt:focus{background:var(--card);border-color:var(--ink);outline:none}
+.tp input.tpt,.tp input.tpt:focus-visible{border-width:1px;padding:5px 9px;margin:0 -9px;width:calc(100% + 18px)}
+.tp input.tpt:focus,.tp input.tpt:focus-visible{background:var(--card);border-color:var(--bstrong);outline:none;box-shadow:none}
 .tpfs{display:flex;flex-direction:column;gap:12px}
 .tpf{display:grid;grid-template-columns:58px 1fr;gap:10px;align-items:center}
 .tpl{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink2)}
@@ -868,7 +869,7 @@ html.hasbg.stuck .hr1 .logo .sun{width:41px;height:41px;margin:0 0 0 6px}
 .tps li.d .cb{background:var(--okg);border-color:var(--okg)}
 .tps li.d .cb svg{stroke-dashoffset:0}
 .tp input.tx{flex:1;min-width:0;border:0;background:transparent;padding:2px 0;border-radius:0;font-size:15px;color:var(--ink)}
-.tp input.tx:focus{outline:none;box-shadow:0 1px 0 var(--ink)}
+.tp input.tx:focus,.tp input.tx:focus-visible{outline:none;box-shadow:0 1px 0 var(--bstrong)}
 .tps li.d input.tx{color:var(--ink2);text-decoration:line-through;text-decoration-color:var(--ink3)}
 .tps .rm{flex:none;opacity:0;border:0;background:transparent;width:28px;height:28px;border-radius:4px;color:var(--ink2);font-size:18px;line-height:1}
 .tps li:hover .rm,.tps .rm:focus-visible{opacity:1}
@@ -876,7 +877,7 @@ html.hasbg.stuck .hr1 .logo .sun{width:41px;height:41px;margin:0 0 0 6px}
 .tps .rm:hover{background:var(--chover);color:var(--ink)}
 .tps .addr{display:flex;align-items:center;gap:8px;margin-top:6px}
 .tp input.tadd{flex:1;min-width:0;height:36px;border:1px solid var(--bstrong);border-radius:4px;padding:0 10px;background:var(--card);color:var(--ink)}
-.tp input.tadd:focus{outline:none;border-color:var(--ink)}
+.tp input.tadd:focus,.tp input.tadd:focus-visible{outline:none;box-shadow:none;border-color:var(--edge)}
 .tps .empty{color:var(--ink2);font-size:14px;margin:0 0 6px}
 .tp .fu{display:flex;align-items:center;gap:8px;font-size:14px;background:var(--sunken);border-radius:6px;padding:8px 10px;margin-bottom:6px}
 .tp .fu span{flex:1;min-width:0;overflow-wrap:anywhere}
@@ -1940,14 +1941,14 @@ function openPanel(id) {
   render();
   tpGlide(id); tpPills();
   const ti = $('tp').querySelector('[data-fk=title]');
-  if (compact()) $('tp').focus({ preventScroll:true }); else if (ti) ti.focus({ preventScroll:true });
+  if (compact()) $('tp').focus({ preventScroll:true }); else if (ti) { ti.focus({ preventScroll:true }); try { ti.setSelectionRange(ti.value.length, ti.value.length); } catch (x) {} }   // caret at the end, nothing highlighted
 }
 function closePanel(focusBack = true) {
   if (ui.panel === null) return; const id = ui.panel; ui.panel = null;
   $('tp').classList.remove('on'); $('tp').inert = true; $('tpPills').innerHTML = '';
   clearTimeout(tpTimer);
   if (!compact() && tpPrev !== null) { tpMain().scrollTo({ left:tpPrev, behavior: rmMotion() ? 'auto' : 'smooth' }); tpTimer = setTimeout(tpLayout, rmMotion() ? 0 : 340); } else tpLayout();   // the board glides back, then gets its full width again
-  tpPrev = null; render();
+  tpPrev = null; try { render(); } catch (x) { console.error(x); }
   if (focusBack) focusCard(id);
 }
 /* called after every board render: keep the panel in step with the data (a sync can change or delete the ticket under it) */
@@ -1960,7 +1961,7 @@ function panelSync() {
 function drawPanel() {
   const t = tpTask(); if (!t) return;
   const life = t.kind === 'life', a = document.activeElement, inP = a && $('tp').contains(a), key = inP ? a.dataset.fk : null;
-  const sel = inP && typeof a.selectionStart === 'number' ? [a.selectionStart, a.selectionEnd] : null, st = $('tp').querySelector('.tpb') ? $('tp').querySelector('.tpb').scrollTop : 0;
+  const sel = inP && a.tagName === 'INPUT' && a.type === 'text' ? [a.selectionStart, a.selectionEnd] : null, st = $('tp').querySelector('.tpb') ? $('tp').querySelector('.tpb').scrollTop : 0;
   const subs = subsOf(t), n = subs.length, k = subs.filter(x => x.done).length, days = weekDays(t.day ? mondayOf(parse(t.day)) : (t.week || ui.anchor));
   const meta = '<span class="tag'+(life?' life':'')+'">'+icon(life?'life':'work')+(life?'Life':'Work')+'</span><span>'+(t.day ? fmtDay(t.day) : 'Loose this week')+' · '+SZ[t.size].label+'</span>';
   const radios = (g, items, cur) => '<div class="seg" role="radiogroup" data-tpg="'+g+'" aria-labelledby="tpl-'+g+'">'+items.map(([v, lab, ic]) => '<button type="button" role="radio" data-tp="'+g+'" data-v="'+v+'" data-fk="'+g+':'+v+'" aria-checked="'+(cur === v)+'" tabindex="'+(cur === v ? 0 : -1)+'">'+(ic || '')+lab+'</button>').join('')+'</div>';
@@ -2043,6 +2044,19 @@ $('tp').addEventListener('keydown', e => {
   }
 });
 $('tpScrim').addEventListener('click', () => closePanel());
+/* Esc closes from anywhere (capture phase, so nothing else can swallow it); a click outside the panel closes it, a click on another ticket switches to that ticket */
+addEventListener('keydown', e => {
+  if (e.key !== 'Escape' || ui.panel === null || e.defaultPrevented) return;
+  if (document.querySelector('dialog[open]') || ui.menu) return;
+  const el = e.target; if (el && el.dataset && el.dataset.tp === 'add' && el.value) return;   // a first Esc only clears the add field
+  e.preventDefault(); closePanel();
+}, true);
+document.addEventListener('click', e => {
+  if (ui.panel === null || compact()) return;
+  const path = e.composedPath ? e.composedPath() : [];
+  if (path.some(n => n && n.nodeType === 1 && (n.id === 'tp' || n.id === 'tpPills' || n.id === 'undo' || n.id === 'menuhost' || n.tagName === 'DIALOG' || (n.classList && (n.classList.contains('card') || n.classList.contains('menu')))))) return;
+  closePanel(false);
+});
 function reveal(id) {
   const t = S.tasks.find(x => x.id === id); if (!t) return;
   ui.view = 'week'; if (t.day) showDay(t.day); else { ui.anchor = t.week || ui.anchor; if (RANGES[ui.range].n <= 3) ui.first = ui.anchor; } setNotice(''); render();
