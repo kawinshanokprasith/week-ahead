@@ -545,6 +545,8 @@ body,.wtag b,.comp textarea,.lk,#setup input{font-family:var(--fnt)}
 .compb .cadd{background:var(--az);color:var(--onaz);border:0;border-radius:3px}
 .compb .cadd:hover{background:var(--azhover)}
 .compb button{border-radius:3px}
+/* the Add card button never wraps; Work and X shrink and drop to a second row only if the column is tiny */
+.compb{flex-wrap:wrap;gap:4px}.compb button{white-space:nowrap;flex:0 0 auto}.compb .cadd{padding:0 10px;font-size:13px}.compb .ckind{padding:0 4px;font-size:13px}.compb .cx{width:26px}
 .ph{border:2px dashed var(--az);background:var(--azsoft);border-radius:8px}
 .dragimg{box-shadow:var(--shm)}
 .fill,.fb,.mb{background:var(--border)}
