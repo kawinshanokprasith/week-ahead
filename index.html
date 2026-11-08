@@ -819,7 +819,7 @@ html.hasbg.stuck .hr1 .logo .sun{width:52px;height:52px;margin:0 12px 0 0}
 .tph .k{flex:1}
 .tph .grab{display:none}
 .tpm{display:none}
-.tpx{flex:none;width:32px;height:32px;border:0;background:transparent;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;color:var(--ink2)}
+.tpx{flex:none;width:36px;height:36px;border:0;background:transparent;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;color:var(--ink2)}
 .tpx:hover{background:var(--chover);color:var(--ink)}
 .tpx svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
 .tpb{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;padding:4px 16px 16px;display:flex;flex-direction:column;gap:16px}
@@ -887,7 +887,11 @@ html.hasbg.stuck .hr1 .logo .sun{width:52px;height:52px;margin:0 12px 0 0}
 .sbc.all{color:var(--ink)}
 @media (min-width:700px){
   html.tpo{scrollbar-width:none}html.tpo::-webkit-scrollbar{display:none}
-  body.tpo main{padding-right:calc(min(400px,100vw) + 16px)}
+  /* room for the panel is a real flex item, not padding: WebKit (the Mac app) leaves trailing padding out of the scrollable width, so padding gave nothing to scroll */
+  body.tpo main{display:flex;align-items:flex-start}
+  body.tpo main>.board{flex:none}
+  body.tpo main::after{content:"";flex:none;width:calc(min(400px,100vw) + 16px);height:1px}
+  html.wa-native .tph{padding-top:60px}   /* the Mac shell has an invisible 40 px drag strip across the top that eats clicks */
   .card.tpsel,.card.tpsel:hover{box-shadow:var(--shc),0 0 0 2px var(--ink)}
 }
 @media (max-width:699px){
@@ -1879,7 +1883,7 @@ const tpBand = () => { const m = tpMain().getBoundingClientRect(); return { lo:m
 /* lock the board at its current width and make room, so opening the panel never squeezes the columns */
 function tpLayout() {
   const on = ui.panel !== null, desk = !compact(), b = $('board');
-  if (on && desk) { if (!b.style.minWidth) b.style.minWidth = b.offsetWidth + 'px'; } else b.style.minWidth = '';
+  if (on && desk) { if (!b.style.minWidth) { const w = b.offsetWidth + 'px'; b.style.minWidth = w; b.style.width = w; } } else { b.style.minWidth = ''; b.style.width = ''; }
   document.documentElement.classList.toggle('tpo', on && desk); document.body.classList.toggle('tpo', on && desk);
   $('tpScrim').hidden = !(on && !desk);
 }
@@ -1930,13 +1934,14 @@ function closePanel(focusBack = true) {
 function panelSync() {
   if (ui.panel === null) return;
   if (!tpTask()) { closePanel(false); return; }
-  const k = ui.view+ui.range; if (k !== tpKey) { tpKey = k; $('board').style.minWidth = ''; tpLayout(); }
+  const k = ui.view+ui.range; if (k !== tpKey) { tpKey = k; $('board').style.minWidth = ''; $('board').style.width = ''; tpLayout(); }
   drawPanel(); tpPills();
 }
 function drawPanel() {
   const t = tpTask(); if (!t) return;
   const life = t.kind === 'life', a = document.activeElement, inP = a && $('tp').contains(a), key = inP ? a.dataset.fk : null;
-  const sel = inP && a.tagName === 'INPUT' && a.type === 'text' ? [a.selectionStart, a.selectionEnd] : null, st = $('tp').querySelector('.tpb') ? $('tp').querySelector('.tpb').scrollTop : 0;
+  let sel = null; try { if (inP && a.tagName === 'INPUT' && a.type === 'text') sel = [a.selectionStart, a.selectionEnd]; } catch (x) {}   // WebKit throws when you ask a date box or checkbox for its caret; that used to leave the panel showing the PREVIOUS ticket
+  const st = $('tp').querySelector('.tpb') ? $('tp').querySelector('.tpb').scrollTop : 0;
   const subs = subsOf(t), n = subs.length, k = subs.filter(x => x.done).length, days = weekDays(t.day ? mondayOf(parse(t.day)) : (t.week || ui.anchor));
   const meta = '<span class="tag'+(life?' life':'')+'">'+icon(life?'life':'work')+(life?'Life':'Work')+'</span><span>'+(t.day ? fmtDay(t.day) : 'Loose this week')+' · '+SZ[t.size].label+'</span>';
   const radios = (g, items, cur) => '<div class="seg" role="radiogroup" data-tpg="'+g+'" aria-labelledby="tpl-'+g+'">'+items.map(([v, lab, ic]) => '<button type="button" role="radio" data-tp="'+g+'" data-v="'+v+'" data-fk="'+g+':'+v+'" aria-checked="'+(cur === v)+'" tabindex="'+(cur === v ? 0 : -1)+'">'+(ic || '')+lab+'</button>').join('')+'</div>';
