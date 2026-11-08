@@ -787,27 +787,38 @@ body .card.done .ct{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;fo
 body .card.done .chk{top:50%;transform:translateY(-50%)}
 body .card.done .more{top:50%;bottom:auto;transform:translateY(-50%)}
 @media (max-width:699.98px){body .card.done{min-height:44px;padding:4px 52px 4px 56px}body .card.hc.done{padding-left:56px}}
-/* WA-73: the WeekGo mark (rounded quarter sun, Win's pick from the logomark board). Amber in light and dark, the smile is dark ink on it (9:1).
-   Motion is CSS only: one rise-in on load, the smile settles, a slow soft glow, a small bounce on hover. Reduced motion turns all of it off. */
-.sun{position:relative;flex:none;width:84px;height:84px;min-width:0;min-height:0;margin:0 20px 0 0;padding:0;border:0;background:none;border-radius:50%;box-shadow:none;cursor:default;display:block;-webkit-user-select:none;user-select:none}
-.sun.sm{width:38px;height:38px;margin:0}
-.sun svg{position:relative;display:block;width:100%;height:100%;overflow:visible;transform-origin:50% 90%;animation:wgrise .9s cubic-bezier(.2,.9,.3,1.25) both}
+/* WA-73/WA-74: the WeekGo mark (rounded quarter sun, Win's pick). Amber in light and dark; dark ink face (9:1 on the amber).
+   WA-74 "Mix": each action plays the next of four behaviours (open out, peek, sunrise rays, open with rays on big moments). The path is tweened in JS only
+   while it moves; eyes, mouth and rays are CSS (data-open, data-peek, data-face, data-rays on .sun). No hover movement, no idle loop. Reduced motion: still quarter sun. */
+.sun{position:relative;flex:none;display:block;width:38px;height:38px;min-width:0;min-height:0;margin:0;padding:0;border:0;background:none;box-shadow:none;cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.sun svg{display:block;width:100%;height:100%;overflow:visible;transform-origin:50% 90%;animation:wgrise .7s cubic-bezier(.2,.9,.3,1.2) both}
+.sun.sm svg{animation:none}   /* the phone top bar mark stays a still quarter sun (it is rebuilt on every render) */
 .sun .wgm{fill:#EDB544;stroke:#EDB544;stroke-width:8;stroke-linejoin:round}
-.sun .wgs{fill:none;stroke:#1C1C1A;stroke-width:3.4;stroke-linecap:round;transform-box:fill-box;transform-origin:50% 50%;animation:wgsmile 1.1s .5s cubic-bezier(.3,1.4,.5,1) both}
-.sun::before{content:"";position:absolute;inset:-14%;border-radius:50%;background:radial-gradient(closest-side,rgba(237,181,68,.55),rgba(237,181,68,0));opacity:0;animation:wgglow 7s 1.4s ease-in-out infinite;pointer-events:none}
-.sun.sm svg,.sun.sm .wgs,.sun.sm::before{animation:none}   /* the phone top bar is rebuilt on every render: no replay */
-.sun:hover svg,.sun.hop svg{animation:wghop .55s ease-out}
+.sun .face{transform:translate(24px,45px) rotate(-36deg);transition:transform .32s cubic-bezier(.3,1.35,.5,1)}
+.sun .wgs{fill:none;stroke:#1C1C1A;stroke-width:3.4;stroke-linecap:round;transition:opacity .18s}
+.sun .wge{fill:#1C1C1A;transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform .28s cubic-bezier(.3,1.9,.5,1) .06s}
+.sun .wgo{fill:none;stroke:#1C1C1A;stroke-width:3;transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform .22s cubic-bezier(.3,1.9,.5,1)}
+.sun .rays line{stroke:#EDB544;stroke-width:3.4;stroke-linecap:round}
+.sun .rays{transform-origin:32px 32px;transform:rotate(-30deg) scale(.55);opacity:0;transition:transform .4s cubic-bezier(.3,1.5,.5,1),opacity .2s}
+.sun[data-open="1"] .face{transform:translate(32px,38px) scale(1.15)}
+.sun[data-peek="1"] .face{transform:translate(25px,44px) rotate(-36deg) scale(1.12)}
+.sun[data-open="1"] .wge,.sun[data-peek="1"] .wge{transform:scale(1)}
+.sun[data-face=wow] .wge{transform:scale(1.4)}
+.sun[data-face=wow] .wgs{opacity:0}
+.sun[data-face=wow] .wgo{transform:scale(1)}
+.sun[data-face=wink] .wge.r{transform:scale(1.5,.14)}
+.sun[data-rays="1"] .rays{transform:none;opacity:1}
 @keyframes wgrise{0%{opacity:0;transform:translateY(34%) scale(.82)}100%{opacity:1;transform:none}}
-@keyframes wgsmile{0%{transform:rotate(-40deg) scale(.4);opacity:0}100%{transform:none;opacity:1}}
-@keyframes wgglow{0%,100%{opacity:0}50%{opacity:.5}}
-@keyframes wghop{0%,100%{transform:none}40%{transform:translateY(-6%) scale(1.05)}70%{transform:translateY(0) scale(1.01,.98)}}
-@media (prefers-reduced-motion:reduce){.sun svg,.sun .wgs,.sun::before,.sun:hover svg,.sun.hop svg{animation:none!important}}
-/* WA-73: the mark sits LEFT of the name, as in the lockup (84px beside the 78px name, 20px gap) */
-.logo .sun{width:84px;height:84px;margin:0 20px 0 0;align-self:center}
-@media (max-width:699px){.logo .sun{width:42px;height:42px;margin-right:10px}}
-@media (max-width:420px){.logo .sun{width:32px;height:32px;margin-right:8px}}
-@media (min-width:700px) and (max-width:1099px){.logo .sun{width:71px;height:71px;margin-right:17px}}
-html.hasbg.stuck .hr1 .logo .sun{width:52px;height:52px;margin:0 12px 0 0}
+@media (prefers-reduced-motion:reduce){.sun svg{animation:none}.sun .face,.sun .wge,.sun .wgo,.sun .wgs,.sun .rays{transition:none}}
+/* WA-74: the mark and the name share one size (--wf = the name's font size). The mark's flat bottom sits on the baseline and its top on the cap height
+   (the quarter sun is 52/64 of its box: box = 0.887 x name size), its ink starts flush with the date row below, and the ink gap to the W is 0.30 x name size. */
+.logo{--wf:78px}
+@media (max-width:1099px){.logo{--wf:66px}}
+@media (max-width:699px){.logo{--wf:39px}}
+@media (max-width:420px){.logo{--wf:30px}}
+html.hasbg.stuck .hr1 .logo{--wf:48px}
+.logo .brand{font-size:var(--wf)}
+.logo .sun{width:calc(var(--wf)*.887);height:calc(var(--wf)*.887);align-self:flex-start;margin:calc(var(--wf)*-.054) calc(var(--wf)*.207) 0 calc(var(--wf)*-.083)}
 
 /* ---------- WA-71: ticket panel. Desktop: a full-height overlay on the right edge (no margins, no scrollbar shown). Phone: a tall bottom sheet. ---------- */
 .tp{position:fixed;z-index:25;top:0;right:0;bottom:0;width:min(400px,100vw);display:flex;flex-direction:column;background:var(--card);color:var(--ink);box-shadow:-10px 0 30px rgba(9,30,66,.28),0 0 1px rgba(9,30,66,.4);transform:translateX(104%);visibility:hidden;transition:transform .24s cubic-bezier(.65,0,.35,1),visibility 0s linear .24s;outline:none}
@@ -1537,19 +1548,53 @@ function renderNow() {
   sunUpdate();
 }
 
-/* ---------- WA-73: the WeekGo mark (rounded quarter sun with a small smile); drawn once, styled and animated in CSS ---------- */
-const WG_MARK = '<svg viewBox="0 0 64 64" aria-hidden="true"><path class="wgm" d="M10 10A44 44 0 0 1 54 54L10 54Z"/><g transform="translate(24 45) rotate(-36)"><path class="wgs" d="M-7 0Q0 7 7 0"/></g></svg>';
-function sunDo(k) {
-  if (rmMotion()) return;
-  document.querySelectorAll('.sun').forEach(h => { h.classList.remove(k); void h.offsetWidth; h.classList.add(k); clearTimeout(h['_t'+k]); h['_t'+k] = setTimeout(() => h.classList.remove(k), 1200); });
+/* ---------- WA-74: the WeekGo mark. A quarter sun that can open into a full sun. Both shapes are 4 cubic curves, so the path is a plain tween;
+   it only runs (requestAnimationFrame) while the mark moves, nothing runs when idle. Eyes, mouth and rays are CSS. "Mix": every action plays the next of
+   four behaviours: A open out, B peek (eyes pop on the quarter sun), C sunrise (open + rays), D open, rays only on the big moments (a day or the week done). ---------- */
+const WG_Q = [10.00,54.00,10.00,39.33,10.00,24.67,10.00,10.00,21.67,10.00,32.86,14.64,41.11,22.89,49.36,31.14,54.00,42.33,54.00,54.00,39.33,54.00,24.67,54.00,10.00,54.00];
+const WG_C = [16.44,47.56,7.85,38.96,7.85,25.04,16.44,16.44,25.04,7.85,38.96,7.85,47.56,16.44,56.15,25.04,56.15,38.96,47.56,47.56,38.96,56.15,25.04,56.15,16.44,47.56];
+let WG_MARK = '<svg viewBox="0 0 64 64" aria-hidden="true"><g class="rays">';
+for (let k = 0; k < 7; k++) WG_MARK += '<line x1="32" y1="3" x2="32" y2="-2.2" transform="rotate('+(k*51.43).toFixed(2)+' 32 32)"/>';
+WG_MARK += '</g><path class="wgm" d=""/><g class="face"><path class="wgs" d="M-7 0Q0 7 7 0"/><circle class="wge l" cx="-6" cy="-9" r="2.4"/><circle class="wge r" cx="6" cy="-9" r="2.4"/><circle class="wgo" cx="0" cy="1.5" r="2.7"/></g></svg>';
+let wgP = 0, wgOpen = 0, wgPeek = 0, wgFace = '', wgMode = 'A', wgCyc = 0, wgTok = 0, wgRaf = 0, wgHello = false;
+function wgD(p) { const v = WG_Q.map((q, i) => (q + (WG_C[i]-q)*p).toFixed(2)); let d = 'M'+v[0]+' '+v[1]; for (let i = 2; i < 26; i += 6) d += 'C'+v.slice(i, i+6).join(' '); return d+'Z'; }
+function wgApply() {
+  const d = wgD(wgP), rays = (wgMode === 'C' && wgOpen && wgP > .55) || (wgMode === 'D' && wgOpen && wgFace === 'wow');
+  document.querySelectorAll('.sun').forEach(h => {
+    if (!h.firstChild) h.innerHTML = WG_MARK;
+    if (h.classList.contains('sm')) { h.querySelector('.wgm').setAttribute('d', wgD(0)); return; }   // phone top bar: always the still quarter sun
+    h.querySelector('.wgm').setAttribute('d', d); h.dataset.open = wgOpen ? '1' : '0'; h.dataset.peek = wgPeek ? '1' : '0'; h.dataset.rays = rays ? '1' : '0';
+    if (wgFace) h.dataset.face = wgFace; else delete h.dataset.face;
+  });
 }
-function sunUpdate() {
-  document.querySelectorAll('.sun').forEach(h => { if (!h.firstChild) h.innerHTML = WG_MARK; });
+const wgEase = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+const wgTween = (to, ms, tok) => new Promise(res => { const from = wgP, t0 = performance.now(); const step = now => { if (tok !== wgTok) return res(false); const k = Math.min(1, (now-t0)/ms); wgP = from + (to-from)*wgEase(k); wgApply(); if (k < 1) wgRaf = requestAnimationFrame(step); else res(true); }; wgRaf = requestAnimationFrame(step); });
+const wgWait = (ms, tok) => new Promise(res => setTimeout(() => res(tok === wgTok), ms));
+async function wgPlay(kind) {
+  if (rmMotion() || document.hidden) return;
+  const tok = ++wgTok; cancelAnimationFrame(wgRaf);
+  wgMode = 'ABCD'[wgCyc++ % 4];   // Mix: the next behaviour for every action
+  const peekOnly = wgMode === 'B';
+  const open = (face, ms) => { wgFace = face; if (peekOnly) { wgOpen = 0; wgPeek = 1; wgApply(); return wgWait(ms*.7, tok); } wgOpen = 1; wgApply(); return wgTween(1, ms, tok); };
+  const hold = (ms, face) => { if (face !== undefined) { wgFace = face; wgApply(); } return wgWait(ms, tok); };
+  const close = ms => { wgFace = ''; wgOpen = 0; wgPeek = 0; wgApply(); return peekOnly ? wgWait(ms*.5, tok) : wgTween(0, ms, tok); };
+  const steps = {
+    hello: [() => hold(650), () => open('', 420), () => hold(700), () => close(360)],                         // app opens: rises, opens, settles
+    press: [() => open('', 300), () => hold(300), () => hold(380, 'wink'), () => close(320)],                // click on the mark
+    done:  [() => open('', 260), () => hold(380), () => close(300)],                                         // a ticket is marked done
+    wow:   [() => open('wow', 300), () => hold(900), () => hold(420, ''), () => close(340)],                 // the last ticket of a day is done
+    week:  [() => open('wow', 300), () => hold(1100), () => hold(300, ''), () => hold(450, 'wink'), () => close(340)]  // the whole week is done
+  }[kind];
+  for (const st of steps) if (!await st()) return;
 }
-document.addEventListener('click', e => { if (e.target.closest('.sun')) sunDo('hop'); });
-const sunLook = () => {};
-document.addEventListener('mouseover', e => { if (e.target.closest('[data-act=add]')) sunLook(true); });
-document.addEventListener('mouseout', e => { if (e.target.closest('[data-act=add]') && !$('dlg').open) sunLook(false); });
+function wgDone(t) {
+  const mine = S.tasks.filter(x => x.type === 'task' && !cancelled(x)), wk = weekDays(ui.anchor);
+  const inWeek = mine.filter(x => wk.includes(x.day) || (!x.day && x.week === ui.anchor));
+  const dayAll = t.day && mine.filter(x => x.day === t.day).every(x => x.done);
+  wgPlay(inWeek.length && inWeek.every(x => x.done) ? 'week' : dayAll ? 'wow' : 'done');
+}
+function sunUpdate() { wgApply(); if (!wgHello) { wgHello = true; wgPlay('hello'); } }
+document.addEventListener('click', e => { if (e.target.closest('.sun:not(.sm)')) wgPlay('press'); });
 
 /* ---------- actions ---------- */
 function setNotice(html) { const n = $('notice'); n.innerHTML = html || ''; n.hidden = !html; }
@@ -1811,7 +1856,6 @@ function syncForm() {
 }));
 let editing = null;
 let addFrom = null;
-$('dlg').addEventListener('close', () => sunLook(false));
 $('dlg').addEventListener('close', () => setTimeout(() => { const a = document.activeElement; if (!a || a === document.body || $('dlg').contains(a)) focusCard(ui.ret); }, 30));
 function openAdd(day, from) {
   const p = from && S.tasks.find(x => x.id === from); addFrom = p ? p.id : null;
@@ -1841,7 +1885,7 @@ async function saveTask(again) {
   const data = { type:isMeeting?'meeting':'task', title, kind, cat:kind === 'life' ? form.cat : '', size:form.size, day, week:day ? mondayOf(parse(day)) : ((t && t.week) || ui.anchor), due };
   if (t && t.day !== day) delete t.order;
   if (t) Object.assign(t, data); else { const n = Object.assign({ id:uid(), done:false }, addFrom ? { from:addFrom } : {}, data); S.tasks.push(n); ui.ret = n.id; }
-  save(); render(); if (!t) sunDo('spark');
+  save(); render();
   if (again && !t) { $('title').value = ''; $('title').focus(); } else $('dlg').close();
 }
 $('form').addEventListener('submit', e => { e.preventDefault(); saveTask(false); });
@@ -2063,7 +2107,7 @@ let undo = null, undoTimer = null, ptrToggle = false;
 function toggleDone(id) {
   const t = S.tasks.find(x => x.id === id); if (!t || t.type === 'meeting' || roMeeting(id)) return;
   t.done = !t.done; save(); render(); focusCard(id);
-  if (t.done) { sunDo('hop'); sunDo('spark'); }
+  if (t.done) wgDone(t);
   const c = cardEls().get(id);
   if (c && ptrToggle) { c.classList.add('hov'); const off = () => { c.classList.remove('hov'); document.removeEventListener('mousemove', off, true); }; document.addEventListener('mousemove', off, true); }  // the card was just rebuilt under the pointer: keep its hover look until the mouse moves
   if (t.done && !rmMotion() && c) { const k = c.querySelector('.ck'), pth = k && k.querySelector('path'); if (k && k.animate) {   // played by script on the finished, always-correct circle, so nothing can get stuck
