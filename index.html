@@ -658,6 +658,9 @@ body,.comp textarea,.lk,.tag,.sz{line-height:1.5}
   html.hasbg .bar::after{bottom:8px;background:var(--card);box-shadow:0 8px 22px rgba(0,0,0,.16),0 1px 0 var(--border);opacity:0}
   html.hasbg.stuck .bar::after{opacity:1}
   html.hasbg.stuck .bar::before{opacity:0}
+  /* WA-78: while the header is not stuck, the fade must sit behind the page (TODAY chip, cards, columns); once stuck the solid bar goes back on top of scrolling content */
+  html.hasbg:not(.stuck) .bar{z-index:auto}
+  html.hasbg:not(.stuck) main{position:relative}
   html.hasbg .hr1 .logo,html.hasbg .hr2{background:transparent;box-shadow:none;padding-left:0;padding-right:0}
   html.hasbg .hr2{align-self:flex-start}
   html.hasbg .hr1{opacity:var(--hd,1)}                 /* the big title row fades out as you start scrolling, never cut off */
