@@ -925,12 +925,74 @@ html.hasbg.stuck .hr1 .logo{--wf:48px}
   .tpfoot .btn{min-height:44px}
   #tpPills{display:none}
 }
+/* ===== WA-76: the bell (notices), the Loose column against the left edge, header pills for next week ===== */
+.nbell{position:relative}
+.nb{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;border-radius:10px;background:var(--ink);color:var(--onink);font-size:12px;font-weight:700;line-height:20px;text-align:center;padding:0 5px;pointer-events:none;box-shadow:0 0 0 2px var(--card)}
+.pop.nots{width:380px;max-width:calc(100vw - 24px);padding:6px 14px;gap:0}
+.pop.nots h5{margin:8px 0 2px}
+.nitem{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-top:1px solid var(--border);font-size:14px;line-height:1.4;color:var(--ink2)}
+.nitem:first-of-type{border-top:0}
+.pop.nots h5+.nitem{border-top:0}
+.nitem b{color:var(--ink)}
+.nitem .acts{display:flex;flex-wrap:wrap;gap:8px}
+.pop .nitem .btn,.nitem .btn{border:1px solid var(--edge);background:var(--card);border-radius:999px;padding:6px 16px;min-height:32px;font-size:14px;font-weight:500;color:var(--ink);display:inline-flex;align-items:center;justify-content:center}
+.pop .nitem .btn:hover,.nitem .btn:hover{background:var(--hover)}
+.pop .nitem .btn::before{display:none}
+.nitem .btn[aria-pressed=true]{border:2px solid var(--ink);padding:5px 15px}
+.alln{padding:16px 0 12px;text-align:center;color:var(--ink2);font-size:14px}
+.gline{margin-left:auto;display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gline .btn{height:34px;padding:0 14px;font-size:14px}
+.gline .btn.hot{border:2px solid var(--red);padding:0 13px}
+.gline .pop{min-width:260px}
+.gline .pop .gt{flex:1;min-width:0}
+.gline .pop .gd{color:var(--ink2);font-size:13px;white-space:nowrap}
+.gline .gnone{padding:8px 10px;font-size:14px;color:var(--ink2)}
+.shelf{display:none}
+@media (min-width:700px){
+  /* fixed, opaque, the header's own white; it starts where the header's solid white ends (set by shelfPos) so there is no seam */
+  .shelf{position:fixed;z-index:8;left:0;top:var(--sht,0px);bottom:0;width:224px;display:flex;flex-direction:column;overflow:hidden;background:var(--card);border-right:1px solid var(--bstrong);transition:width .22s ease-out}
+  .shelf[hidden]{display:none}
+  .shelf.rail{width:46px}
+  .shelf.rail.peek{width:224px;box-shadow:var(--shm);z-index:9}
+  .shelf.over{background:var(--azsoft)}
+  .shelf .sr,.shelf .so{display:none}
+  .shelf.rail .sr{display:flex}
+  .shelf.open .so,.shelf.peek .so{display:flex}
+  .shelf.peek .sr{display:none}
+  .shelf .so{flex-direction:column;gap:12px;width:224px;min-height:0;flex:1;padding:16px 14px 20px}
+  .shelf .lh{display:flex;align-items:center;gap:8px}
+  .shelf .lh h2{flex:1;font:900 18px/1 var(--fhd);letter-spacing:0;color:var(--ink)}
+  .shelf .cn{flex:none;min-width:22px;height:22px;border-radius:11px;background:var(--ink);color:var(--onink);font-size:12px;font-weight:700;line-height:22px;text-align:center;padding:0 6px}
+  .shelf .cn.z{background:transparent;color:var(--ink2);box-shadow:inset 0 0 0 1px var(--edge)}
+  .shelf .lh .btn.sq{width:28px;height:28px;border-color:transparent;background:transparent}
+  .shelf .lh .btn.sq:hover{background:var(--hover)}
+  .shelf .stack{display:flex;flex-direction:column;gap:8px;overflow-y:auto;min-height:0;padding:2px 2px 8px}
+  .shelf .empty{color:var(--ink2);font-size:14px;line-height:1.4;padding:12px 2px}
+  .shelf .sr{flex:1;min-height:0}
+  .shelf .srb{flex:1;width:100%;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px 0;color:var(--ink2)}
+  .shelf .srb:hover{background:var(--hover)}
+  .shelf .vt{writing-mode:vertical-rl;transform:rotate(180deg);font:900 18px/1 var(--fhd);letter-spacing:0;color:var(--ink);white-space:nowrap}
+  html.hasshelf main{padding-left:calc(var(--shw,0px) + 20px);transition:padding-left .22s ease-out}
+}
+@media (prefers-reduced-motion:reduce){.shelf,html.hasshelf main{transition:none}}
+html.shnt .shelf,html.shnt main{transition:none!important}
+@media (max-width:699px){
+  .mhead{gap:4px}                    /* room for the bell next to Today without cutting the date */
+  .mhead .tdp{padding:0 10px}
+  .mhead .mt b{font-size:17px}
+  .mhead .nbell{position:relative}
+  .mhead .nbell .nb{top:-2px;right:-2px}
+  .nitem{padding:14px 0}
+  .nitem .btn{min-height:44px;padding:0 18px;font-size:15px}
+  .alln{padding:20px 0}
+}
+.card.meeting.done,.card.meeting.done:hover{background:var(--sunken);color:var(--ink2);box-shadow:none}   /* WA-76: a meeting ticked done looks like a done task */
 </style>
 </head>
 <body>
 <header class="bar">
   <div class="hr1"><div class="logo"><button type="button" class="sun" aria-label="WeekGo logo" tabindex="-1"></button><h1 class="brand">WeekGo</h1></div>
-    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="olnote" id="olNote" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><button type="button" class="btn sq maconly" id="mOl" data-act="olrefresh" aria-label="Refresh from Outlook" title="Refresh from Outlook"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></svg></button><button type="button" class="btn sq" id="bTheme" data-act="themecycle"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" title="Week pattern: which days are office, home or client site" aria-label="Week pattern"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" title="Background picture" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button><span class="dd tipdd"><button type="button" class="btn sq" id="bHelp" data-pop="pHelp" aria-haspopup="dialog" aria-expanded="false" aria-label="Tips" title="Tips"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg></button><div class="pop right tips" id="pHelp" role="dialog" aria-label="Tips" hidden><h5>Tips</h5><ul><li><b>Loose tasks</b> have no day yet. They wait in the tray until you place them.</li><li><b>Drag a card</b> onto a day to plan it, or back to the tray.</li><li><b>Right-click a card</b> for Delete or Cancel.</li><li><b>X or Space</b> marks the focused card done. <b>A</b> adds a task.</li><li>The <b>view menu</b> (Week) changes how many days show.</li><li>The <b>refresh button</b> pulls the latest meetings from Outlook.</li></ul><button type="button" class="tipx" data-act="tipclose">Got it</button></div></span></span><button type="button" class="btn main" data-act="add" title="Add task (A)">+ Add task</button></div></div>
+    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="olnote" id="olNote" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><span class="dd"><button type="button" class="btn sq nbell" id="bNote" data-pop="pNote" aria-haspopup="dialog" aria-expanded="false" aria-label="Updates" title="Updates"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4"/></svg><span class="nb" id="nBadge" hidden></span></button><div class="pop right nots" id="pNote" role="dialog" aria-label="Updates" hidden></div></span><button type="button" class="btn sq maconly" id="mOl" data-act="olrefresh" aria-label="Refresh from Outlook" title="Refresh from Outlook"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></svg></button><button type="button" class="btn sq" id="bTheme" data-act="themecycle"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" title="Week pattern: which days are office, home or client site" aria-label="Week pattern"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" title="Background picture" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button><span class="dd tipdd"><button type="button" class="btn sq" id="bHelp" data-pop="pHelp" aria-haspopup="dialog" aria-expanded="false" aria-label="Tips" title="Tips"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg></button><div class="pop right tips" id="pHelp" role="dialog" aria-label="Tips" hidden><h5>Tips</h5><ul><li><b>Loose tasks</b> have no day yet. They wait in the tray until you place them.</li><li><b>Drag a card</b> onto a day to plan it, or back to the tray.</li><li><b>Right-click a card</b> for Delete or Cancel.</li><li><b>X or Space</b> marks the focused card done. <b>A</b> adds a task.</li><li>The <b>view menu</b> (Week) changes how many days show.</li><li>The <b>refresh button</b> pulls the latest meetings from Outlook.</li></ul><button type="button" class="tipx" data-act="tipclose">Got it</button></div></span></span><button type="button" class="btn main" data-act="add" title="Add task (A)">+ Add task</button></div></div>
   <div class="hr2">
     <button type="button" class="btn sq" data-act="prev" aria-label="Previous week" title="Previous week (←)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
     <span class="range" id="range" aria-live="polite"></span>
@@ -943,6 +1005,7 @@ html.hasbg.stuck .hr1 .logo{--wf:48px}
     <span class="dd"><button type="button" class="btn" id="mFilt" data-pop="pFilt" aria-haspopup="menu" aria-expanded="false" title="Choose what to show"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filter<span class="chip" id="mFiltN" hidden></span></button>
       <div class="pop" id="pFilt" role="menu" aria-label="Show" hidden><h5>Show</h5>
         <button type="button" role="menuitemcheckbox" data-act="fk" data-k="work"><span class="tag">Work</span></button><button type="button" role="menuitemcheckbox" data-act="fk" data-k="life"><span class="tag life">Life</span></button><button type="button" role="menuitemcheckbox" data-act="fk" data-k="meeting"><span class="tag meet">Meeting</span></button></div></span>
+    <span class="gline" id="gline" aria-label="Next week at a glance" hidden></span>
   </div>
   <div class="legacy" hidden aria-hidden="true">
 <div class="seg" role="group" aria-label="View"><button type="button" id="vWeek" data-act="view" data-v="week">Week</button><button type="button" id="vMonth" data-act="view" data-v="month">Month</button></div>
@@ -951,9 +1014,7 @@ html.hasbg.stuck .hr1 .logo{--wf:48px}
   <button type="button" class="pill" id="bPat" data-act="pattern" title="Which days are office, work from home or client site">Week pattern</button>
   </div>
 </header>
-<div class="banner" id="notice" hidden></div>
-<div class="banner" id="demo" hidden>These are example tasks so you can try things. <button type="button" data-act="cleardemo">Clear examples</button></div>
-<div class="olbar" id="olBar" hidden></div>
+<aside id="shelf" class="shelf rail" data-drop="tray" aria-label="Loose" hidden></aside>
 <main><div class="board" id="board"></div></main>
 <div id="tpPills" class="tpph"></div>
 <div id="tpScrim" class="tpscrim" hidden></div>
@@ -1426,25 +1487,30 @@ function card(t, inTray) {
   const dot = mk === 'new' || mk === 'changed' ? '<span class="oldot'+(mk === 'changed' ? ' am' : '')+'" role="img" aria-label="'+(mk === 'new' ? 'New' : 'Moved')+'"></span>' : '';
   const was = mk === 'changed' ? '<span class="olwas">Moved from '+(t.mark.was && t.mark.was.day ? fmtDay(t.mark.was.day) : 'another day')+'</span>' : '';
   const olA = CLOUD || !mk || mk === 'new' ? (cx ? '<span class="olwas">Cancelled</span>' : '') : cx ? '<span class="olcxa"><span>Cancelled</span><button type="button" class="olb" data-act="oldismiss" data-id="'+t.id+'">Dismiss</button><button type="button" class="olb" data-act="olrestore" data-id="'+t.id+'">Restore</button></span>' : '<button type="button" class="olb" data-act="olgot" data-id="'+t.id+'">Got it</button>';
-  return '<article class="card s-'+t.size+(life?' life':'')+(meet?' meeting':' hc')+(t.done?' done':'')+(ui.panel === t.id ? ' tpsel' : '')+(mk === 'new' || mk === 'changed' ? ' olm' : '')+(cx ? ' olcx' : '')+'" '+(cx ? '' : 'draggable="true" ')+'tabindex="0" role="group"'+' aria-keyshortcuts="'+(meet ? '' : 'X Space ')+(t.day ? 'Alt+ArrowUp Alt+ArrowDown' : '')+'"'+' aria-label="'+esc(cardName(t))+'" data-id="'+t.id+'">'
-    + (meet ? '' : '<button type="button" class="chk" data-act="done" data-id="'+t.id+'" aria-pressed="'+!!t.done+'" aria-label="'+(t.done?'Mark not done: ':'Mark done: ')+esc(t.title)+'"'+(compact() ? '' : ' tabindex="-1"')+'><span class="ck" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-6.5"/></svg></span></button>')
+  return '<article class="card s-'+t.size+(life?' life':'')+(meet?' meeting hc':' hc')+(t.done?' done':'')+(ui.panel === t.id ? ' tpsel' : '')+(mk === 'new' || mk === 'changed' ? ' olm' : '')+(cx ? ' olcx' : '')+'" '+(cx ? '' : 'draggable="true" ')+'tabindex="0" role="group"'+' aria-keyshortcuts="'+(meet ? '' : 'X Space ')+(t.day ? 'Alt+ArrowUp Alt+ArrowDown' : '')+'"'+' aria-label="'+esc(cardName(t))+'" data-id="'+t.id+'">'
+    + (meet && cx ? '' : '<button type="button" class="chk" data-act="done" data-id="'+t.id+'"'+(meet && CLOUD ? ' disabled' : '')+' aria-pressed="'+!!t.done+'" aria-label="'+(t.done?'Mark not done: ':'Mark done: ')+esc(t.title)+'"'+(compact() ? '' : ' tabindex="-1"')+'><span class="ck" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-6.5"/></svg></span></button>')
     + '<div class="ct">'+esc(t.title)+dot+'</div>'
     + '<div class="cm">'+tag+cat+'<span class="sz">'+SZ[t.size].label+'</span>'+due+sbc+links(t)+was+olA+'</div>'
     + (cx ? '' : '<button type="button" class="more" data-act="menu" data-id="'+t.id+'" aria-label="Move or change '+esc(t.title)+'" aria-haspopup="menu"'+(compact() ? '' : ' tabindex="-1"')+'>⋯</button>')+'</article>';
 }
 const cardsOf = items => { let seenCx = false; return items.map(t => { const h = cancelled(t) && !seenCx ? '<p class="olcxh">Cancelled</p>' : ''; if (cancelled(t)) seenCx = true; return h + card(t); }).join(''); };
-const doneCount = items => { const n = items.filter(t => t.type === 'task').length, k = items.filter(t => t.type === 'task' && t.done).length; return k ? ('<span class="dcn">'+(k === n ? 'All done' : k+' of '+n+' done')+'</span>') : ''; };
+const doneCount = items => { const n = items.filter(t => !cancelled(t)).length, k = items.filter(t => !cancelled(t) && t.done).length; return k ? ('<span class="dcn">'+(k === n ? 'All done' : k+' of '+n+' done')+'</span>') : ''; };
 const isWeekend = d => [0,6].includes(parse(d).getDay());
-function glance() {
-  if (weeksBetween(THIS_MON, ui.anchor) !== 1) return '';
-  const days = weekDays(ui.anchor), dls = S.tasks.filter(t => t.due && !t.done && !cancelled(t) && days.includes(t.due) && vis(t));
+/* WA-76: next week at a glance is two pills in the week-title row (only on next week): the deadlines list and the busiest day */
+function glanceData() {
+  if (weeksBetween(THIS_MON, ui.anchor) !== 1) return null;
+  const days = weekDays(ui.anchor), dls = S.tasks.filter(t => t.due && !t.done && !cancelled(t) && days.includes(t.due) && vis(t)).sort((x, y) => x.due < y.due ? -1 : x.due > y.due ? 1 : 0);
   let busy = null, bl = 0; days.forEach(d => { const l = load(d); if (l > bl) { bl = l; busy = d; } });
-  const loose = S.tasks.filter(t => t.type === 'task' && !t.day && !t.done && !cancelled(t) && t.week === ui.anchor).length;
-  const word = loadWord(bl).toLowerCase();
-  return '<section class="glance" aria-label="Next week at a glance"><h2>Next week at a glance</h2>'
-    + '<span>'+dls.length+' deadline'+(dls.length === 1 ? '' : 's')+(dls.length ? ' · '+dls.slice(0,3).map(t => esc(t.title)+' '+fmtDay(t.due).split(' ')[0]).join(', ') : '')+'</span>'
-    + (bl >= .8 ? '<button type="button" class="pill" data-act="gl" data-t="'+busy+'">'+fmtDay(busy).split(' ')[0]+' is '+word+' · jump to it</button>' : '<span>No day is Busy yet</span>')
-    + '<button type="button" class="pill" data-act="gl" data-t="tray">'+loose+' loose task'+(loose === 1 ? '' : 's')+' · open the tray</button></section>';
+  return { dls, busy, hot: bl >= .8, word: loadWord(bl).toLowerCase() };
+}
+const dlJump = t => t.day || 'loose';
+function glanceChips() {
+  const g = glanceData(), el = $('gline'); if (!el) return;
+  if (!g || ui.view !== 'week') { el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  el.innerHTML = '<span class="dd"><button type="button" class="btn" id="bGl" data-pop="pGl" aria-haspopup="menu" aria-expanded="false">'+g.dls.length+' deadline'+(g.dls.length === 1 ? '' : 's')+'</button>'
+    + '<div class="pop" id="pGl" role="menu" aria-label="Next week’s deadlines" hidden><h5>Next week’s deadlines</h5>'+(g.dls.length ? g.dls.map(t => '<button type="button" role="menuitem" data-act="gl" data-t="'+dlJump(t)+'"><span class="gt">'+esc(t.title)+'</span><span class="gd">'+fmtDay(t.due).split(' ')[0]+'</span></button>').join('') : '<span class="gnone">No deadlines next week.</span>')+'</div></span>'
+    + (g.hot ? '<button type="button" class="btn hot" data-act="gl" data-t="'+g.busy+'">'+fmtDay(g.busy).split(' ')[0]+' is '+g.word+'</button>' : '');
 }
 /* Trello-style add at the bottom of a day: the text box stays open after each card so Win can keep typing */
 const composerHtml = d => ui.compose === d
@@ -1463,8 +1529,7 @@ async function composeAdd() {
 }
 function renderWeek() {
   const days = shownDays(), R = RANGES[ui.range];
-  const tray = S.tasks.filter(t => t.type === 'task' && !t.day && !t.done && t.week === ui.anchor && vis(t));
-  let h = glance() + '<div class="tray" data-drop="tray"><h2>Loose this week</h2>' + (tray.length ? tray.map(t => card(t, true)).join('') : '<span class="empty">Nothing loose.</span>') + '</div>';
+  let h = '';
   if (ui.range === 'work') {
     const we = weekDays(ui.anchor).slice(5), n = S.tasks.filter(t => we.includes(t.day) && !t.done && vis(t)).length;
     if (n) h += '<div class="hidwk"><span>Work week hides Sat and Sun, which hold '+n+' item'+(n === 1 ? '' : 's')+'.</span><button type="button" class="pill" data-act="range" data-r="week">Show the whole week</button></div>';
@@ -1521,18 +1586,70 @@ function render() {
   const hadComp = document.activeElement && document.activeElement.id === 'compT';
   renderNow(); { const t = $('compT'); if (t) { sizeComp(t); if (hadComp) { t.focus(); t.setSelectionRange(t.value.length, t.value.length); } } } if (prev) playFlip(prev, flipId, rmMotion()); dropId = null;
 }
-function olBarRender() {
-  const bar = $('olBar'); if (!bar) return;
-  const m = S.tasks.filter(t => t.type === 'meeting' && t.source === 'outlook' && t.mark), c = k => m.filter(t => t.mark.kind === k).length;
-  const n = c('new'), ch = c('changed'), cx = c('cancelled'), tot = m.length;
-  if (CLOUD || !tot) { bar.hidden = true; ui.olOnly = false; document.body.classList.remove('olonly'); return; }
-  const parts = [n && n+' new', ch && ch+' moved', cx && cx+' cancelled'].filter(Boolean).join(', ');
-  bar.hidden = false;
-  bar.innerHTML = '<span><b>'+tot+' change'+(tot === 1 ? '' : 's')+'</b> since the last refresh'+(ol.last ? ' at '+esc(ol.last.at) : '')+': '+parts+'</span><button type="button" class="btn" data-act="olonly" aria-pressed="'+!!ui.olOnly+'">'+(ui.olOnly ? 'Show everything' : 'Show only changes')+'</button>'+'<button type="button" class="btn" data-act="olseen">Mark all as seen</button>';
-  document.body.classList.toggle('olonly', !!ui.olOnly);
+/* WA-76: every notice lives in one list behind the bell (desktop popover, phone Updates sheet); nothing sits above the week any more */
+function notices() {
+  const n = [], m = S.tasks.filter(t => t.type === 'meeting' && t.source === 'outlook' && t.mark), c = k => m.filter(t => t.mark.kind === k).length;
+  if (!CLOUD && m.length) {
+    const parts = [c('new') && c('new')+' new', c('changed') && c('changed')+' moved', c('cancelled') && c('cancelled')+' cancelled'].filter(Boolean).join(', ');
+    n.push({ k:'changes', t:'<b>'+m.length+' change'+(m.length === 1 ? '' : 's')+'</b> since the last refresh'+(ol.last ? ' at '+esc(ol.last.at) : '')+': '+parts, a:[['olonly', ui.olOnly ? 'Show everything' : 'Show only changes', true], ['olseen', 'Mark all as seen']] });
+  }
+  if (ui.nsun) n.push({ k:'sun', t:'It’s Sunday, so this opened on next week.', a:[['backthis', 'Back to this week'], ['dismiss', 'Dismiss']] });
+  if (S.tasks.some(t => t.demo)) n.push({ k:'demo', t:'These are example tasks so you can try things.', a:[['cleardemo', 'Clear examples']] });
+  return n;
 }
+const noteItem = x => '<div class="nitem"><span>'+x.t+'</span><div class="acts">'+x.a.map(([act, lbl, pr]) => '<button type="button" class="btn" data-act="'+act+'"'+(pr ? ' aria-pressed="'+!!ui.olOnly+'"' : '')+'>'+lbl+'</button>').join('')+'</div></div>';
+/* a click inside the bell popover keeps it open (the list is redrawn under the pointer, so the target is noted before any handler runs); Back to this week closes it */
+let inNote = false;
+document.addEventListener('click', e => { inNote = !!e.target.closest('#pNote') && !e.target.closest('[data-act=backthis]'); }, true);
+function notesRender() {
+  const list = notices();
+  if (!list.some(x => x.k === 'changes')) { ui.olOnly = false; }
+  document.body.classList.toggle('olonly', !!ui.olOnly);
+  const b = $('bNote'), p = $('pNote'), nb = $('nBadge');
+  nb.hidden = !list.length; nb.textContent = list.length;
+  b.setAttribute('aria-label', list.length ? 'Updates, '+list.length+' open' : 'Updates, all caught up');
+  const hadFocus = p.contains(document.activeElement);
+  p.innerHTML = '<h5>Updates</h5>'+(list.length ? list.map(noteItem).join('') : '<div class="alln">All caught up. Nothing needs you.</div>');
+  if (hadFocus) b.focus({ preventScroll:true });
+}
+/* WA-76: Loose is a column docked to the left edge of the window (week view, desktop). It is a fixed, opaque panel in the header's white:
+   224 px open, a 46 px rail folded. Both faces are always in the markup, CSS shows one, so a drag can peek it open without a re-render.
+   The remembered choice is "wa-shelf"; with no choice yet it is open in a wide window and closed in a narrow one (under 1100 px).
+   While a ticket panel is open it folds to the rail (the saved choice is not touched). */
+const SHW = { open:224, rail:46 };
+function shelfPref() { try { const v = localStorage.getItem('wa-shelf'); if (v === '1' || v === '0') return v === '1'; } catch (e) {} return innerWidth >= 1100; }
+const shelfOpen = () => ui.panel === null && shelfPref();
+function shelfSet(on) { try { localStorage.setItem('wa-shelf', on ? '1' : '0'); } catch (e) {} render(); }
+const looseNow = () => S.tasks.filter(t => t.type === 'task' && !t.day && !t.done && !cancelled(t) && t.week === ui.anchor && vis(t));
+const shelfW = () => { const s = $('shelf'); return s && !s.hidden ? (s.classList.contains('rail') ? SHW.rail : SHW.open) : 0; };
+let shelfFirst = true;
+function shelfRender() {
+  const s = $('shelf'), R = document.documentElement, on = !compact() && ui.view === 'week';
+  if (shelfFirst && on) { shelfFirst = false; R.classList.add('shnt'); requestAnimationFrame(() => requestAnimationFrame(() => R.classList.remove('shnt'))); }   // the first draw jumps to its size, it does not glide
+  s.hidden = !on; R.classList.toggle('hasshelf', on);
+  if (!on) { R.style.setProperty('--shw', '0px'); return; }
+  const L = looseNow(), open = shelfOpen(), n = L.length;
+  s.className = 'shelf '+(open ? 'open' : 'rail')+(s.classList.contains('peek') ? ' peek' : '')+(s.classList.contains('over') ? ' over' : '');
+  R.style.setProperty('--shw', (open ? SHW.open : SHW.rail)+'px');
+  s.setAttribute('aria-label', 'Loose, '+n+(n === 1 ? ' card' : ' cards'));
+  const fold = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>';
+  const unfold = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+  s.innerHTML = '<div class="sr"><button type="button" class="srb" data-act="shelf" data-on="1" aria-expanded="false" aria-label="Open Loose, '+n+(n === 1 ? ' card' : ' cards')+'"><span class="cn'+(n ? '' : ' z')+'">'+n+'</span><span class="vt">Loose</span>'+unfold+'</button></div>'
+    + '<div class="so"><div class="lh"><h2>Loose</h2><span class="cn'+(n ? '' : ' z')+'">'+n+'</span><button type="button" class="btn sq" data-act="shelf" data-on="0" aria-expanded="true" aria-label="Fold Loose to a thin rail" title="Fold Loose">'+fold+'</button></div>'
+    + (n ? '<div class="stack">'+L.map(t => card(t, true)).join('')+'</div>' : '<p class="empty">Nothing loose.<br>Drag a card here to set it aside for later.</p>')+'</div>';
+  shelfPos();
+}
+/* the shelf starts where the header's solid white ends (20 px above the header's lower edge) and runs to the bottom of the window */
+function shelfPos() {
+  const bar = document.querySelector('.bar'), s = $('shelf'); if (!bar || !s) return;
+  s.style.setProperty('--sht', Math.max(0, Math.round(bar.getBoundingClientRect().bottom - 20))+'px');
+}
+addEventListener('scroll', () => requestAnimationFrame(shelfPos), { passive:true });
+addEventListener('resize', () => requestAnimationFrame(shelfPos));
+/* drag a card toward the shelf: a folded shelf opens over the days (they do not move), and folds again when the drag ends */
+function shelfPeek(on) { const s = $('shelf'); if (s && !s.hidden && s.classList.contains('rail')) s.classList.toggle('peek', on); else if (!on && s) s.classList.remove('peek'); }
 function renderNow() {
-  olBarRender();
+  notesRender();
   if (compact()) renderM(); else {
     $('vWeek').setAttribute('aria-pressed', ui.view === 'week'); $('vMonth').setAttribute('aria-pressed', ui.view === 'month');
     document.querySelectorAll('[data-act=filter]').forEach(b => b.setAttribute('aria-pressed', b.dataset.f === ui.filter));
@@ -1543,8 +1660,9 @@ function renderNow() {
     $('range').textContent = rangeLabel(); $('rel').textContent = relLabel();
     $('board').className = 'board' + (ui.view === 'week' ? ' r'+RANGES[ui.range].n : '');
     $('board').innerHTML = ui.view === 'week' ? renderWeek() : renderMonth();
+    glanceChips();
   }
-  $('demo').hidden = !S.tasks.some(t => t.demo);
+  shelfRender();
   closeMenu(); if (sheet) fillSheet(); if ($('pat').open) fillPat();
   panelSync();
   sunUpdate();
@@ -1599,7 +1717,7 @@ function sunUpdate() { wgApply(); if (!wgHello) { wgHello = true; wgPlay('hello'
 document.addEventListener('click', e => { if (e.target.closest('.sun:not(.sm)')) wgPlay('press'); });
 
 /* ---------- actions ---------- */
-function setNotice(html) { const n = $('notice'); n.innerHTML = html || ''; n.hidden = !html; }
+function setNotice(on) { ui.nsun = !!on; }   // the only notice that is set by hand is the Sunday one; the others come from the data
 function go(delta) {
   if (compact()) { if (ui.view === 'week') { ui.day = add(ui.day || ui.anchor, delta); ui.anchor = mondayOf(parse(ui.day)); } else ui.anchor = add(ui.anchor, delta*28); }
   else if (rangeOn() && RANGES[ui.range].n <= 3) { ui.first = add(ui.first, delta*RANGES[ui.range].step); ui.anchor = mondayOf(parse(ui.first)); }
@@ -1689,7 +1807,8 @@ function openMenu(id, btn) {
   if (compact()) { ui.menu = id; ui.armDel = null; openSheet('menu'); return; }
   const r = btn.getBoundingClientRect();
   let h = '<div class="menu" role="menu" style="left:'+Math.max(8, Math.min(r.left-150, innerWidth-210))+'px;top:'+Math.min(r.bottom+4, innerHeight-200)+'px">';
-  if (t.type !== 'meeting') h += '<button type="button" role="menuitem" data-act="followup" data-id="'+id+'">Add a follow-up…</button><button type="button" role="menuitem" data-act="done" data-id="'+id+'">'+(t.done?'Mark not done':'Mark done')+'</button><hr>';
+  if (t.type !== 'meeting') h += '<button type="button" role="menuitem" data-act="followup" data-id="'+id+'">Add a follow-up…</button>';
+  if (!roMeeting(id)) h += '<button type="button" role="menuitem" data-act="done" data-id="'+id+'">'+(t.done?'Mark not done':'Mark done')+'</button><hr>';
   h += '<button type="button" role="menuitem" data-act="del" data-id="'+id+'">'+icon('trash')+'Delete</button></div>';
   $('menuhost').innerHTML = h.replace(/<button /g, '<button tabindex="-1" '); ui.menu = id;
   const first = $('menuhost').querySelector('button:not([disabled])'); if (first) first.focus();
@@ -1871,7 +1990,7 @@ function openEdit(id) {
   if (t.type !== 'meeting') { openPanel(id); return; }   // WA-71: tickets open in the panel; meetings keep the old pop-up
   closeMenu(); editing = id; ui.ret = id;
   form = { kind: t.type === 'meeting' ? 'meeting' : t.kind, cat: t.cat || '', size: t.size, again:false };
-  $('dlgT').textContent = 'Edit task'; $('bAnother').hidden = true; $('bDel').hidden = false; $('bDone').hidden = t.type === 'meeting'; $('bDone').textContent = t.done ? 'Mark not done' : 'Mark done'; $('bSave').textContent = 'Save changes';
+  $('dlgT').textContent = 'Edit task'; $('bAnother').hidden = true; $('bDel').hidden = false; $('bDone').hidden = roMeeting(t.id); $('bDone').textContent = t.done ? 'Mark not done' : 'Mark done'; $('bSave').textContent = 'Save changes';
   addFrom = null; $('fFromNote').hidden = true; $('fFollow').hidden = t.type === 'meeting';
   fillDialog(t.day); $('title').value = t.title; $('fDue').value = t.due || ''; drawDueChips(); drawFollow(t);
   $('dlg').classList.remove('typing'); $('dlg').showModal();
@@ -1925,7 +2044,7 @@ const TPW = 400;
 let tpPrev = null, tpTimer = null, tpKey = '', tpRaf = 0;
 const tpTask = () => S.tasks.find(x => x.id === ui.panel && x.type === 'task');
 const tpMain = () => document.querySelector('main');
-const tpBand = () => { const m = tpMain().getBoundingClientRect(); return { lo:m.left + 8, hi:document.documentElement.clientWidth - Math.min(TPW, innerWidth) - 8 }; };
+const tpBand = () => { const m = tpMain().getBoundingClientRect(); return { lo:m.left + shelfW() + 8, hi:document.documentElement.clientWidth - Math.min(TPW, innerWidth) - 8 }; };
 /* lock the board at its current width and make room, so opening the panel never squeezes the columns */
 function tpLayout() {
   const on = ui.panel !== null, desk = !compact(), b = $('board');
@@ -2107,7 +2226,7 @@ function focusNeighbor(n) {
 /* ---------- done and delete (delete can be undone for a few seconds, links included) ---------- */
 let undo = null, undoTimer = null, ptrToggle = false;
 function toggleDone(id) {
-  const t = S.tasks.find(x => x.id === id); if (!t || t.type === 'meeting' || roMeeting(id)) return;
+  const t = S.tasks.find(x => x.id === id); if (!t || roMeeting(id)) return;   // WA-76: meetings can be ticked done on the Mac; on the phone they stay read-only
   t.done = !t.done; save(); render(); focusCard(id);
   if (t.done) wgDone(t);
   const c = cardEls().get(id);
@@ -2171,7 +2290,7 @@ document.addEventListener('click', e => {
   else if (a === 'range') setRange(b.dataset.r);
   else if (a === 'cleardemo') { S.tasks = S.tasks.filter(t => !t.demo); save(); render(); }
   else if (a === 'backthis') goToday();
-  else if (a === 'dismiss') setNotice('');
+  else if (a === 'dismiss') { setNotice(''); render(); }
   else if (a === 'tipclose') { const h = $('bHelp'); if (h) h.focus(); }
   else if (a === 'reveal') reveal(b.dataset.id);
   else if (a === 'followup') { closeMenu(); openAdd(null, b.dataset.id); }
@@ -2204,7 +2323,13 @@ document.addEventListener('click', e => {
   else if (a === 'cloudset') { closeSheet(); showSetup(); }
   else if (a === 'clouddisc') { closeSheet(); cloudDisconnect(); }
   else if (a === 'cloudnow') { cloudSync(); }
-  else if (a === 'gl') { if (b.dataset.t !== 'tray' && !document.querySelector('[data-drop="'+b.dataset.t+'"]')) { showDay(b.dataset.t); render(); } const z = document.querySelector('[data-drop="'+b.dataset.t+'"]'); if (z) { z.scrollIntoView({ behavior:'smooth', block:'center' }); z.classList.add('pulse'); setTimeout(() => z.classList.remove('pulse'), 1600); } }
+  else if (a === 'nj') { closeSheet(); ui.day = b.dataset.d; render(); }
+  else if (a === 'gl') {
+    const k = b.dataset.t;
+    if (k === 'loose') { if (!shelfPref()) { try { localStorage.setItem('wa-shelf', '1'); } catch (x) {} render(); } if (compact()) { openSheet('loose'); } else { const z = $('shelf'); z.classList.add('pulse'); setTimeout(() => z.classList.remove('pulse'), 1600); } }
+    else { if (!document.querySelector('[data-drop="'+k+'"]')) { showDay(k); render(); } const z = document.querySelector('[data-drop="'+k+'"]'); if (z) { z.scrollIntoView({ behavior:'smooth', block:'center' }); z.classList.add('pulse'); setTimeout(() => z.classList.remove('pulse'), 1600); } }
+  }
+  else if (a === 'shelf') { const on = b.dataset.on === '1'; shelfSet(on); const f = document.querySelector(on ? '#shelf .so [data-act=shelf]' : '#shelf .srb'); if (f) f.focus({ preventScroll:true }); }
 });
 document.addEventListener('input', e => { if (e.target.id === 'compT') { ui.draft = e.target.value; sizeComp(e.target); } });
 document.addEventListener('submit', e => { if (e.target.classList && e.target.classList.contains('comp')) { e.preventDefault(); composeAdd(); } });
@@ -2227,14 +2352,16 @@ document.addEventListener('dragstart', e => {
   const z = c.closest('[data-drop]'), id = dragId;
   setTimeout(() => { if (dragId !== id) return; if (z && /^\d/.test(z.dataset.drop)) { phEl = document.createElement('div'); phEl.className = 'ph'; phEl.style.height = phH+'px'; phEl.setAttribute('aria-hidden', 'true'); c.parentNode.insertBefore(phEl, c); } c.classList.add('dragging'); }, 0);
 });
-document.addEventListener('dragend', () => { dragId = null; removePh(); document.querySelectorAll('.dragging,.over').forEach(x => x.classList.remove('dragging','over')); });
+document.addEventListener('dragend', () => { dragId = null; shelfPeek(false); removePh(); document.querySelectorAll('.dragging,.over').forEach(x => x.classList.remove('dragging','over')); });
 document.addEventListener('dragover', e => {
+  if (dragId) { const s = $('shelf'); if (s && !s.hidden) { if (e.clientX < SHW.rail + 70) shelfPeek(true); else if (e.clientX > SHW.open + 60) shelfPeek(false); } }
   const z = e.target.closest('[data-drop]'); if (!z || !dragId) return; e.preventDefault();
   document.querySelectorAll('.over').forEach(x => x !== z && x.classList.remove('over'));
   if (!/^\d/.test(z.dataset.drop)) { removePh(); z.classList.add('over'); return; }
   placePh(z, dropSpot(e, z));
 });
 document.addEventListener('drop', e => {
+  shelfPeek(false);
   const z = e.target.closest('[data-drop]'); if (!z || !dragId) return; e.preventDefault();
   const id = dragId; dragId = null; let sp = null;
   if (phEl && phEl.parentNode === z) {
@@ -2260,7 +2387,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && ui.menu) { closeMenu(); return; }
   if ((e.key === 'ContextMenu' || (e.key === 'F10' && e.shiftKey)) && e.target.classList && e.target.classList.contains('card') && !$('dlg').open) { e.preventDefault(); const r = e.target.getBoundingClientRect(); openCtx(e.target.dataset.id, r.left + 24, r.top + 28); return; }
   if (e.key === 'Enter' && e.target.classList && e.target.classList.contains('card') && !$('dlg').open) { e.preventDefault(); openEdit(e.target.dataset.id); return; }
-  if ((e.key === 'x' || e.key === 'X' || e.key === ' ') && !e.altKey && !e.metaKey && !e.ctrlKey && e.target.classList && e.target.classList.contains('card') && !e.target.classList.contains('meeting') && !$('dlg').open) { e.preventDefault(); toggleDone(e.target.dataset.id); return; }
+  if ((e.key === 'x' || e.key === 'X' || e.key === ' ') && !e.altKey && !e.metaKey && !e.ctrlKey && e.target.classList && e.target.classList.contains('card') && !$('dlg').open) { e.preventDefault(); toggleDone(e.target.dataset.id); return; }
   if (e.altKey && !e.metaKey && !e.ctrlKey && !e.shiftKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown') && e.target.classList && e.target.classList.contains('card') && !$('dlg').open) { e.preventDefault(); moveStep(e.target.dataset.id, e.key === 'ArrowUp' ? -1 : 1, true); return; }
   if ($('dlg').open || $('pat').open || e.metaKey || e.ctrlKey || e.altKey) return;
   const tag = (e.target.tagName || '').toLowerCase(); if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
@@ -2314,9 +2441,10 @@ function gridM() {
   return h + '</div><div class="legend"><span><span class="mk"><i class="w"></i></span>Work</span><span><span class="mk"><i class="lf"></i></span>Life</span><span><span class="mk"><i class="m"></i></span>Meeting</span><span><span class="mk"><i class="d"></i></span>Deadline</span><span class="chip" style="font-size:14px">Tinted week = heavy</span></div>';
 }
 function renderM() {
-  fixDay();
+  fixDay(); const nN = notices().length;
   const wk = ui.view === 'week', away = wk ? ui.day !== TODAY : ui.anchor !== THIS_MON;
-  $('mhead').innerHTML = '<button type="button" class="sun sm" aria-label="Week mood"></button><button type="button" class="ar" data-act="prev" aria-label="'+(wk?'Previous day':'Previous 4 weeks')+'">‹</button><div class="mt" aria-live="polite"><b>'+(wk ? fmtDay(ui.day)+' '+MN[parse(ui.day).getMonth()] : rangeLabel())+'</b><span>'+(wk && ui.day === TODAY ? 'Today' : relLabel())+'</span></div><button type="button" class="ar" data-act="next" aria-label="'+(wk?'Next day':'Next 4 weeks')+'">›</button>' + (away ? '<button type="button" class="tdp" data-act="today">Today</button>' : '');
+  $('mhead').innerHTML = '<button type="button" class="sun sm" aria-label="Week mood"></button><button type="button" class="ar" data-act="prev" aria-label="'+(wk?'Previous day':'Previous 4 weeks')+'">‹</button><div class="mt" aria-live="polite"><b>'+(wk ? fmtDay(ui.day)+' '+MN[parse(ui.day).getMonth()] : rangeLabel())+'</b><span>'+(wk && ui.day === TODAY ? 'Today' : relLabel())+'</span></div><button type="button" class="ar" data-act="next" aria-label="'+(wk?'Next day':'Next 4 weeks')+'">›</button>' + (away ? '<button type="button" class="tdp" data-act="today">Today</button>' : '')
+    + '<button type="button" class="ar nbell" data-act="sheet" data-s="notes" aria-label="'+(nN ? 'Updates, '+nN+' open' : 'Updates, all caught up')+'">'+'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4"/></svg>'+(nN ? '<span class="nb">'+nN+'</span>' : '')+'</button>';
   $('mbody').innerHTML = wk
     ? '<div class="pl">'+stripM()+dayList(ui.day)+'</div><div class="pr ag" aria-label="The whole week">'+weekDays(ui.anchor).map(d => dayList(d, true)).join('')+'</div>'
     : '<div class="pl">'+gridM()+'</div><div class="pr">'+dayList(ui.day)+'</div>';
@@ -2342,11 +2470,15 @@ function fillSheet() {
     const L = looseList(); title = 'Loose this week · '+L.length;
     h = L.length ? L.map(t => '<div class="lz">'+card(t)+'<button type="button" class="btn b44" data-act="place" data-id="'+t.id+'" aria-expanded="'+(ui.placing===t.id)+'">Place on a day</button>'+(ui.placing===t.id ? dayChips(weekDays(ui.anchor), t.id, null, false) : '')+'</div>').join('')
       : '<p class="mempty">Nothing loose for the week of '+fmtShort(ui.anchor)+'. A task with no day waits here.</p>';
+  } else if (sheet === 'notes') {
+    title = 'Updates'; const list = notices(), g = glanceData();
+    h = (list.length ? list.map(noteItem).join('') : '<p class="alln">All caught up. Nothing needs you.</p>')
+      + (g ? '<div class="nitem"><span><b>Next week</b>: '+g.dls.length+' deadline'+(g.dls.length === 1 ? '' : 's')+(g.dls.length ? ' ('+g.dls.slice(0,4).map(x => esc(x.title)+' '+fmtDay(x.due).split(' ')[0]).join(', ')+')' : '')+(g.hot ? ' · '+fmtDay(g.busy).split(' ')[0]+' is '+g.word : '')+'</span>'+(g.hot ? '<div class="acts"><button type="button" class="btn" data-act="nj" data-d="'+g.busy+'">Jump to '+fmtDay(g.busy).split(' ')[0]+'</button></div>' : '')+'</div>' : '');
   } else if (sheet === 'menu') {
     const t = S.tasks.find(x => x.id === ui.menu); if (!t) { closeSheet(); return; }
     title = t.title;
     h = '<div class="acts"><button type="button" class="row44" data-act="edit" data-id="'+t.id+'">Edit…</button>'
-      + (t.type !== 'meeting' ? '<button type="button" class="row44" data-act="done" data-id="'+t.id+'">'+(t.done?'Mark not done':'Mark done')+'</button><button type="button" class="row44" data-act="followup" data-id="'+t.id+'">Add a follow-up…</button>' : '')
+      + (!roMeeting(t.id) ? '<button type="button" class="row44" data-act="done" data-id="'+t.id+'">'+(t.done?'Mark not done':'Mark done')+'</button>' : '') + (t.type !== 'meeting' ? '<button type="button" class="row44" data-act="followup" data-id="'+t.id+'">Add a follow-up…</button>' : '')
       + (ui.armDel === t.id ? '<button type="button" class="row44 dng" data-act="del" data-id="'+t.id+'">Tap again to delete</button>' : '<button type="button" class="row44" data-act="delask" data-id="'+t.id+'">Delete</button>') + '</div>';
   } else if (sheet === 'where') {
     const d = ui.whereDay, w = whereOf(d), cur = w ? w.type : 'none', own = !!(S.where && S.where.days && S.where.days[d]);
@@ -2495,7 +2627,7 @@ document.querySelectorAll('.ic-wk').forEach(e => e.innerHTML = IC.work); documen
   if (RANGES[ui.range].n <= 3) { ui.first = TODAY; ui.anchor = THIS_MON; }
   else if (new Date().getDay() === 0) {
     ui.anchor = add(THIS_MON, 7);
-    setNotice('It’s Sunday, so this opened on next week. <button type="button" data-act="backthis">Back to this week</button> <button type="button" data-act="dismiss" aria-label="Dismiss">Dismiss</button>');
+    setNotice(true);
   }
   applyTheme(); render();
   dayWatch();
@@ -2584,6 +2716,7 @@ document.querySelectorAll('.ic-wk').forEach(e => e.innerHTML = IC.work); documen
     const t = e.target.closest('[data-pop]');
     if (t) { const p = $(t.dataset.pop), was = !p.hidden; closePops(); if (!was) { p.hidden = false; t.setAttribute('aria-expanded', 'true'); const f = p.querySelector('button'); if (f && e.detail === 0) f.focus(); } return; }
     if (e.target.closest('[data-act=fk],#pHelp ul')) return;
+    if (inNote) return;
     closePops();
   });
   document.addEventListener('keydown', e => {
