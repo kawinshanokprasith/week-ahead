@@ -99,11 +99,6 @@ main{padding:16px max(16px,2.5vw) 48px;overflow-x:auto}
 .prow .seg{display:flex}.prow .seg button{flex:1;padding:5px 8px;font-size:14px;white-space:nowrap}
 .note0.pn{margin:-6px 0 0}
 /* Send to Notion (WA-79): a small arrow in each day's header opens one dialog; nothing here is Azure except the dialog's one main button */
-.chr{display:flex;align-items:center;gap:4px;flex:none}
-.ntb{border:0;background:transparent;color:var(--ink2);width:28px;height:28px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;padding:0;flex:none}
-.ntb:hover,.ntb:focus-visible{background:var(--chover);color:var(--ink)}
-.ntb[data-sent]{color:var(--ink)}
-.ntb svg{width:16px;height:16px}
 #nt{width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 32px)}
 .ntw{display:flex;flex-direction:column;gap:14px;padding:24px;overflow:auto;max-height:calc(100vh - 34px)}
 .ntw h2{font:900 26px/1.2 Kondolar,Georgia,serif}
@@ -118,7 +113,7 @@ main{padding:16px max(16px,2.5vw) 48px;overflow-x:auto}
 .ntset ol{margin:0;padding-left:22px;font-size:14px;line-height:1.5;color:var(--ink)}
 .ntset li{margin:0 0 6px}
 .ntset input[type=password]{width:100%;border:1px solid var(--edge);background:var(--bg);border-radius:10px;padding:9px 12px;color:var(--ink);font-size:15px}
-@media (max-width:760px){.ntb{width:36px;height:36px}}
+
 .add{border:0;background:transparent;border-radius:8px;width:28px;height:28px;font-size:18px;color:var(--ink2)}
 .add:hover{background:var(--hover)}
 .fill{height:12px;border-radius:6px;background:var(--border);overflow:hidden;display:flex}
@@ -1016,7 +1011,7 @@ html.shnt .shelf,html.shnt main{transition:none!important}
 <body>
 <header class="bar">
   <div class="hr1"><div class="logo"><button type="button" class="sun" aria-label="WeekGo logo" tabindex="-1"></button><h1 class="brand">WeekGo</h1></div>
-    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="olnote" id="olNote" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><span class="dd"><button type="button" class="btn sq nbell" id="bNote" data-pop="pNote" aria-haspopup="dialog" aria-expanded="false" aria-label="Updates" title="Updates"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4"/></svg><span class="nb" id="nBadge" hidden></span></button><div class="pop right nots" id="pNote" role="dialog" aria-label="Updates" hidden></div></span><button type="button" class="btn sq maconly" id="mOl" data-act="olrefresh" aria-label="Refresh from Outlook" title="Refresh from Outlook"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></svg></button><button type="button" class="btn sq" id="bTheme" data-act="themecycle"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" title="Week pattern: which days are office, home or client site" aria-label="Week pattern"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" title="Background picture" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button><span class="dd tipdd"><button type="button" class="btn sq" id="bHelp" data-pop="pHelp" aria-haspopup="dialog" aria-expanded="false" aria-label="Tips" title="Tips"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg></button><div class="pop right tips" id="pHelp" role="dialog" aria-label="Tips" hidden><h5>Tips</h5><ul><li><b>Loose tasks</b> have no day yet. They wait in the tray until you place them.</li><li><b>Drag a card</b> onto a day to plan it, or back to the tray.</li><li><b>Right-click a card</b> for Delete or Cancel.</li><li><b>X or Space</b> marks the focused card done. <b>A</b> adds a task.</li><li>The <b>view menu</b> (Week) changes how many days show.</li><li>The <b>refresh button</b> pulls the latest meetings from Outlook.</li><li>The <b>arrow on a day</b> sends that day to your Notion plan.</li></ul><button type="button" class="tipx" data-act="tipclose">Got it</button></div></span></span><button type="button" class="btn main" data-act="add" title="Add task (A)">+ Add task</button></div></div>
+    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="olnote" id="olNote" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><span class="dd"><button type="button" class="btn sq nbell" id="bNote" data-pop="pNote" aria-haspopup="dialog" aria-expanded="false" aria-label="Updates" title="Updates"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4"/></svg><span class="nb" id="nBadge" hidden></span></button><div class="pop right nots" id="pNote" role="dialog" aria-label="Updates" hidden></div></span><button type="button" class="btn sq maconly" id="mOl" data-act="olrefresh" aria-label="Refresh from Outlook" title="Refresh from Outlook"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></svg></button><button type="button" class="btn sq maconly nbell" id="bNt" data-act="ntopen" aria-label="Notion sync" title="Notion sync"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h4"/></svg><span class="nb" id="ntDot" hidden>!</span></button><button type="button" class="btn sq" id="bTheme" data-act="themecycle"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" title="Week pattern: which days are office, home or client site" aria-label="Week pattern"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" title="Background picture" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button><span class="dd tipdd"><button type="button" class="btn sq" id="bHelp" data-pop="pHelp" aria-haspopup="dialog" aria-expanded="false" aria-label="Tips" title="Tips"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg></button><div class="pop right tips" id="pHelp" role="dialog" aria-label="Tips" hidden><h5>Tips</h5><ul><li><b>Loose tasks</b> have no day yet. They wait in the tray until you place them.</li><li><b>Drag a card</b> onto a day to plan it, or back to the tray.</li><li><b>Right-click a card</b> for Delete or Cancel.</li><li><b>X or Space</b> marks the focused card done. <b>A</b> adds a task.</li><li>The <b>view menu</b> (Week) changes how many days show.</li><li>The <b>refresh button</b> pulls the latest meetings from Outlook.</li><li>The <b>Notion button</b> sets up the automatic sync with your IBMDT Daily Plan (this week and next week).</li></ul><button type="button" class="tipx" data-act="tipclose">Got it</button></div></span></span><button type="button" class="btn main" data-act="add" title="Add task (A)">+ Add task</button></div></div>
   <div class="hr2">
     <button type="button" class="btn sq" data-act="prev" aria-label="Previous week" title="Previous week (←)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
     <span class="range" id="range" aria-live="polite"></span>
@@ -1552,18 +1547,11 @@ async function composeAdd() {
   ui.draft = ''; save(); render(); const t = $('compT'); if (t) { t.focus(); t.scrollIntoView({ block:'nearest' }); }
   say('Added “'+title+'” to '+fmtDay(d));
 }
-/* ---------- Send to Notion (WA-79) ----------
-   The server (not this page) talks to Notion and keeps the token in the data folder; this page only sends the day's list when Win presses the button. */
-const nt = { st:null, day:null, busy:false, show:false, msg:'', out:{} };       // out[day] = {kind:'sending'|'sent'|'error', ...}
-const ntItems = d => dayItems(d, true).filter(t => !cancelled(t)).map(t => ({ id:t.id, type:t.type === 'meeting' ? 'meeting' : 'task', title:t.title, done:!!t.done, time:t.time || '' }));
-const ntSent = d => { const o = nt.out[d]; return !!(o && o.kind === 'sent' && o.sig === JSON.stringify(ntItems(d))); };
-const NT_ICON = '<path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M5 14v5h14v-5"/>', NT_OK = '<path d="M5 12.5l4.5 4.5L19 7.5"/>';
-function ntBtn(d) {
-  if (CLOUD) return '';
-  const ok = ntSent(d);
-  return '<button type="button" class="ntb maconly" data-act="ntopen" data-d="'+d+'"'+(ok ? ' data-sent="1"' : '')+' aria-label="'+(ok ? fmtDay(d)+' is in Notion. Open to send again' : 'Send '+fmtDay(d)+' to Notion')+'" title="'+(ok ? 'Sent to Notion at '+nt.out[d].at : 'Send this day to Notion')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(ok ? NT_OK : NT_ICON)+'</svg></button>';
-}
-async function ntLoad() { try { const r = await fetch('/api/notion'); nt.st = r.ok ? await r.json() : null; } catch (e) { nt.st = null; } }
+/* ---------- Notion sync (WA-79) ----------
+   No buttons: the server keeps this week and next week in step with Win's IBMDT Daily Plan in Notion, by itself. WeekGo -> Notion is done
+   by the server. Notion -> WeekGo comes through a small inbox (/api/notion): this page applies each change itself and then says so, so the
+   page stays the only writer of the task file. The one button (header) only opens the one-time token spot and the status. */
+const nt = { st:null, show:false, msg:'', saving:false, applying:false };
 async function ntPost(p, b) {
   try {
     const r = await fetch(p, { method:'POST', headers:{'Content-Type':'application/json','X-Week-Ahead':'1'}, body:JSON.stringify(b) });
@@ -1571,67 +1559,84 @@ async function ntPost(p, b) {
     return r.ok ? j : { error:j.error || 'Something went wrong. Try again.', kind:j.kind || 'other' };
   } catch (e) { return { error:'WeekGo can’t reach its own server. Is the app running from its own folder?', kind:'net' }; }
 }
+const ntProblem = () => !!(nt.st && (!nt.st.token || ['auth','nodb','error'].includes((nt.st.status || {}).state)));
+const ntLine = st => !st ? 'WeekGo’s own server did not answer.' : !st.token ? 'Not connected yet.' : !st.database ? 'Connected, but Notion can’t see IBMDT Daily Plan yet.'
+  : st.status.state === 'ok' ? 'Syncing this week and next week with IBMDT Daily Plan'+(st.status.last_ok ? '. Last checked '+st.status.last_ok.slice(11, 16)+'.' : '.')
+  : st.status.state === 'working' ? 'Checking Notion…' : st.status.message || 'Waiting for the first check…';
+function ntDot() {
+  const b = $('bNt'), d = $('ntDot'); if (!b || !d) return;
+  d.hidden = !ntProblem(); b.title = 'Notion sync. ' + ntLine(nt.st); b.setAttribute('aria-label', 'Notion sync. ' + ntLine(nt.st));
+}
+/* apply what Notion changed (the server left it in the inbox); each change is safe to apply twice, then the server is told */
+function ntApply(ops) {
+  const done = []; let n = 0;
+  ops.forEach(o => {
+    const t = S.tasks.find(x => x.id === (o.op === 'add' ? o.task.id : o.id));
+    if (o.op === 'add') { if (!t && !(S.del && S.del[o.task.id])) { S.tasks.push(o.task); n++; } }
+    else if (t && (o.op === 'set' || o.op === 'subset' || o.op === 'subadd')) {
+      if (o.op === 'set') { if ('done' in o) t.done = !!o.done; if (o.title) t.title = o.title; n++; }
+      else if (o.op === 'subset') { const x = subsOf(t).find(y => y.id === o.sid); if (x) { if ('done' in o) x.done = !!o.done; if (o.title) x.title = o.title; n++; } }
+      else if (!subsOf(t).some(y => y.id === o.sub.id)) { t.subtasks = subsOf(t).concat([o.sub]); n++; }
+    }
+    done.push(o.oid);
+  });
+  return { done, n };
+}
+async function ntPoll() {
+  if (CLOUD || nt.applying) return;
+  try {
+    const r = await fetch('/api/notion'); nt.st = r.ok ? await r.json() : null;
+    const ops = nt.st && nt.st.ops || [];
+    const busy = saveTimer || $('dlg').open || $('nt').open || ui.compose || ui.panel !== null;
+    if (ops.length && !busy) {
+      nt.applying = true;
+      const { done, n } = ntApply(ops);
+      if (n) { save(); render(); say(n+' change'+(n === 1 ? '' : 's')+' from Notion'); }
+      await ntPost('/api/notion/ack', { oids:done });
+      nt.applying = false;
+    }
+  } catch (e) { nt.st = null; nt.applying = false; }
+  ntDot(); if (typeof notesRender === 'function') notesRender(); if ($('nt').open) ntDraw();
+}
 function ntDraw() {
-  const d = nt.day, st = nt.st, items = d ? ntItems(d) : [], nm = items.filter(i => i.type === 'meeting').length, ready = !!(st && st.token && st.database);
-  const o = nt.out[d] || null, last = st && st.last && st.last[d], wkend = d && isWeekend(d), day = d ? fmtDay(d)+' '+MN[parse(d).getMonth()] : '';
-  let h = '<h2 id="ntT">Send to Notion</h2>';
-  if (d) h += '<p class="ntd"><b>'+esc(day)+'</b> · '+items.length+' item'+(items.length === 1 ? '' : 's')+(nm ? ' ('+nm+' meeting'+(nm === 1 ? '' : 's')+')' : '')+'</p>'
-    + '<p>'+(wkend ? 'It goes into the <b>Weekend</b> page of your IBMDT Daily Plan, under To Do, with the day in front.' : 'It goes into this week’s page in your <b>IBMDT Daily Plan</b>, under '+['Monday','Tuesday','Wednesday','Thursday','Friday'][(parse(d).getDay()+6)%7]+': meetings in Key Events, tasks in Tasks. Done ones arrive ticked.')+' Pressing again updates it. Nothing in Notion is ever deleted.</p>';
-  let s = '', bad = false;
-  if (!st) { s = '<b>Can’t check Notion settings.</b> WeekGo’s own server did not answer.'; bad = true; }
-  else if (o && o.kind === 'sending') s = '<b>Sending…</b> This can take a few seconds.';
-  else if (o && o.kind === 'error') { bad = true; s = '<b>Couldn’t send.</b> '+esc(o.text); }
-  else if (o && o.kind === 'sent') { const c = o.counts || {}; s = '<b>Sent at '+esc(o.at)+'.</b> '+[c.added ? c.added+' added' : '', c.updated ? c.updated+' updated' : '', (c.adopted || 0) + (c.unchanged || 0) ? ((c.adopted || 0) + (c.unchanged || 0))+' already there' : ''].filter(Boolean).join(', ')+'. <a href="'+esc(o.url)+'" target="_blank" rel="noopener">Open “'+esc(o.title)+'” in Notion</a>'+(ntSent(d) ? '' : '<br>This day has changed since. Send again to update Notion.'); }
-  else if (last && last.url) s = 'Last sent at '+esc(last.at)+'. <a href="'+esc(last.url)+'" target="_blank" rel="noopener">Open “'+esc(last.title)+'” in Notion</a>';
-  else if (st && !st.token) s = '<b>Notion isn’t set up yet.</b> It takes about five minutes, once. Follow the steps below.';
-  else if (st && !st.database) { bad = true; s = '<b>Notion can’t see IBMDT Daily Plan yet.</b> Do step 3 below, then press Save token again.'; }
-  if (s) h += '<div class="nts'+(bad ? ' bad' : '')+'" id="ntS" role="status" aria-live="polite">'+s+'</div>';
-  const busy = !!(o && o.kind === 'sending');
-  h += '<div class="row sp">'
-    + '<button type="button" class="btn" data-act="ntclose">Close</button>'
-    + (ready ? '<button type="button" class="btn" data-act="ntsettings" aria-expanded="'+nt.show+'">Notion settings</button>' : '')
-    + (ready ? '<button type="button" class="btn main" data-act="ntsend" id="ntGo"'+(busy || !items.length ? ' disabled' : '')+'>'+(busy ? 'Sending…' : !items.length ? 'Nothing on this day yet' : o && o.kind === 'error' ? 'Try again' : o && o.kind === 'sent' || last ? 'Send again' : 'Send to Notion')+'</button>'
-        : '')
-    + '</div>';
-  if (nt.show || (st && !ready)) {
+  const st = nt.st, ready = !!(st && st.token && st.database), bad = ntProblem();
+  let h = '<h2 id="ntT">Notion sync</h2>'
+    + '<p>WeekGo keeps <b>this week and next week</b> in step with your <b>IBMDT Daily Plan</b> in Notion, by itself, both ways. Nothing in Notion is ever deleted, and WeekGo only changes the lines it put there or boxes you tick or add.</p>'
+    + '<div class="nts'+(bad ? ' bad' : '')+'" id="ntS" role="status" aria-live="polite"><b>'+(ready && st.status.state === 'ok' ? 'On.' : bad ? 'Needs you.' : 'Status.')+'</b> '+esc(ntLine(st))+'</div>'
+    + '<p>Meetings go under <b>Key Events</b> and tasks under <b>Tasks</b> in each weekday’s toggle (weekends: <b>To Do</b>, with the day in front). A box you add under <b>Tasks</b> or <b>Self</b> in Notion becomes a Work task; a box under a box becomes a subtask. Done ones are ticked on both sides.</p>';
+  if (ready) h += '<div class="row"><button type="button" class="btn" data-act="ntsettings" aria-expanded="'+nt.show+'">'+(nt.show ? 'Hide token and steps' : 'Token and steps')+'</button></div>';
+  if (nt.show || !ready) {
     h += '<div class="ntset"><h3>Connect Notion once</h3><ol>'
       + '<li>Open <a href="https://app.notion.com/developers/connections" target="_blank" rel="noopener">Notion’s Developer tools → Connections</a> (older Notion called these “integrations”) and press <b>New connection</b>. Call it <b>WeekGo</b>, keep <b>API token</b> selected (not OAuth) and press <b>Create connection</b>.</li>'
       + '<li>On the next page copy the <b>token</b> (it starts with ntn_). In its access settings choose <b>IBMDT Daily Plan</b> and allow Read, Update and Insert content.</li>'
       + '<li>In Notion open your <b>IBMDT Daily Plan</b> database itself (the list of weeks). If step 2 didn’t already give it access: press <b>•••</b> at the top right, choose <b>Connections</b> and add <b>WeekGo</b>.</li>'
-      + '<li>Paste the secret here and press Save token.</li></ol>'
+      + '<li>Paste the token here and press Save token. You only do this once.</li></ol>'
       + '<div><label class="l" for="ntTok">Notion token</label><input type="password" id="ntTok" autocomplete="off" autocapitalize="off" spellcheck="false" data-1p-ignore placeholder="ntn_…"></div>'
-      + '<div class="row"><button type="button" class="btn" data-act="ntsave" id="ntSave"'+(nt.saving ? ' disabled' : '')+'>'+(nt.saving ? 'Checking…' : 'Save token')+'</button>'+(st && st.token ? '<button type="button" class="btn" data-act="ntforget">Remove token</button>' : '')+'</div>'
+      + '<div class="row"><button type="button" class="btn main" data-act="ntsave" id="ntSave"'+(nt.saving ? ' disabled' : '')+'>'+(nt.saving ? 'Checking…' : 'Save token')+'</button>'+(st && st.token ? '<button type="button" class="btn" data-act="ntforget">Remove token</button>' : '')+'</div>'
       + '<p id="ntMsg" role="status" aria-live="polite">'+esc(nt.msg)+'</p>'
-      + '<p>The token stays on this Mac, in WeekGo’s data folder. It is never put in the phone page, in GitHub or in your task file. Your meeting and task titles go to your own Notion only when you press Send.</p></div>';
+      + '<p>The token stays on this Mac, in WeekGo’s data folder. It is never put in the phone page, in GitHub or in your task file. Your task and meeting titles go to your own Notion, as soon as you make a change.</p></div>';
   }
+  h += '<div class="row sp"><button type="button" class="btn" data-act="ntclose">Close</button></div>';
   $('ntB').innerHTML = h;
 }
-async function ntOpen(d) {
-  nt.day = d; nt.show = false; nt.msg = ''; nt.st = null; ntDraw(); if (!$('nt').open) $('nt').showModal();
-  await ntLoad(); nt.show = !!(nt.st && !(nt.st.token && nt.st.database)); ntDraw();
-  const f = $('ntGo') && !$('ntGo').disabled ? $('ntGo') : $('nt').querySelector('button'); if (f) f.focus();
-}
-async function ntSend() {
-  const d = nt.day; if (!d || nt.busy) return;
-  const items = ntItems(d), sig = JSON.stringify(items); nt.busy = true; nt.out[d] = { kind:'sending' }; ntDraw();
-  const j = await ntPost('/api/notion/send', { day:d, items }); nt.busy = false;
-  if (j.ok) { nt.out[d] = { kind:'sent', at:j.at, url:j.url, title:j.title, counts:j.counts, sig }; await ntLoad(); say(fmtDay(d)+' sent to Notion'); }
-  else { nt.out[d] = { kind:'error', text:j.error }; if (['setup','auth','nodb','perm','badtoken'].includes(j.kind)) { nt.show = true; await ntLoad(); } }
-  ntDraw(); render(); const g = $('ntGo'); if (g && !g.disabled) g.focus();
+async function ntOpen() {
+  nt.show = false; nt.msg = ''; await ntPoll(); ntDraw(); if (!$('nt').open) $('nt').showModal();
+  const f = $('ntTok') || $('nt').querySelector('button'); if (f) f.focus();
 }
 async function ntSave() {
   const el = $('ntTok'), tok = el ? el.value.trim() : ''; if (!tok || nt.saving) { if (el) el.focus(); return; }
   nt.saving = true; nt.msg = ''; ntDraw();
   const j = await ntPost('/api/notion/token', { token:tok }); nt.saving = false;
-  if (j.ok) { await ntLoad(); nt.msg = j.database ? 'Connected. I can see IBMDT Daily Plan.' : 'The token works, but Notion can’t see IBMDT Daily Plan yet. Do step 3, then press Save token again.'; nt.show = !j.database; if (j.database && nt.out[nt.day] && nt.out[nt.day].kind === 'error') delete nt.out[nt.day]; }
-  else nt.msg = j.error;
-  ntDraw();
+  nt.msg = j.ok ? (j.database ? 'Connected. WeekGo can see IBMDT Daily Plan and will start syncing in a moment.' : 'The token works, but Notion can’t see IBMDT Daily Plan yet. Do steps 2 and 3, then press Save token again.') : j.error;
+  if (j.ok) { try { const r = await fetch('/api/notion'); nt.st = r.ok ? await r.json() : nt.st; } catch (e) {} nt.show = !j.database; }
+  ntDot(); ntDraw();
 }
 document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target && e.target.id === 'ntTok') { e.preventDefault(); ntSave(); } });
 async function ntForget() {
-  if (!confirm('Remove the Notion token from this Mac? You can paste it again any time.')) return;
-  await ntPost('/api/notion/forget', {}); await ntLoad(); nt.msg = 'Token removed.'; nt.show = true; ntDraw();
+  if (!confirm('Remove the Notion token from this Mac? Sync stops until you paste it again.')) return;
+  await ntPost('/api/notion/forget', {}); await ntPoll(); nt.msg = 'Token removed.'; nt.show = true; ntDraw();
 }
+if (!CLOUD) { setInterval(() => { if (!document.hidden) ntPoll(); }, 5000); document.addEventListener('visibilitychange', () => { if (!document.hidden) ntPoll(); }); setTimeout(ntPoll, 900); }
 function renderWeek() {
   const days = shownDays(), R = RANGES[ui.range];
   let h = '';
@@ -1645,7 +1650,7 @@ function renderWeek() {
     const items = dayItems(d);
     const l = load(d), st = '<span class="lw">'+loadHtml(l)+'</span>' + doneCount(items);
     h += '<section class="col'+(isWeekend(d)?' wk':'')+(d===TODAY?' today':'')+'" data-drop="'+d+'" aria-label="'+fmtDay(d)+'">'
-      + '<div class="ch"><h3>'+fmtDay(d)+'</h3><span class="chr">'+(whereAny() ? whereTag(d) : '')+ntBtn(d)+'</span></div>'
+      + '<div class="ch"><h3>'+fmtDay(d)+'</h3>'+(whereAny() ? whereTag(d) : '')+'</div>'
       + '<div class="fill'+(l>=.8?' hi':'')+'" role="img" aria-label="'+barLabel(l)+'">'+barIn(l)+'</div><div class="stat">'+st+'</div>'
       + cardsOf(items) + composerHtml(d) + '</section>';
   });
@@ -1698,6 +1703,7 @@ function notices() {
     const parts = [c('new') && c('new')+' new', c('changed') && c('changed')+' moved', c('cancelled') && c('cancelled')+' cancelled'].filter(Boolean).join(', ');
     n.push({ k:'changes', t:'<b>'+m.length+' change'+(m.length === 1 ? '' : 's')+'</b> since the last refresh'+(ol.last ? ' at '+esc(ol.last.at) : '')+': '+parts, a:[['olonly', ui.olOnly ? 'Show everything' : 'Show only changes', true], ['olseen', 'Mark all as seen']] });
   }
+  if (!CLOUD && ntProblem()) n.push({ k:'notion', t:'<b>'+(nt.st && !nt.st.token ? 'Notion isn’t connected.' : 'Notion sync is paused.')+'</b> '+esc(ntLine(nt.st)), a:[['ntopen', nt.st && !nt.st.token ? 'Connect Notion' : 'Notion sync']] });
   if (ui.nsun) n.push({ k:'sun', t:'It’s Sunday, so this opened on next week.', a:[['backthis', 'Back to this week'], ['dismiss', 'Dismiss']] });
   if (S.tasks.some(t => t.demo)) n.push({ k:'demo', t:'These are example tasks so you can try things.', a:[['cleardemo', 'Clear examples']] });
   return n;
@@ -2410,8 +2416,7 @@ document.addEventListener('click', e => {
   }
   else if (a === 'sheet') openSheet(b.dataset.s);
   else if (a === 'pattern') openPattern();
-  else if (a === 'ntopen') ntOpen(b.dataset.d);
-  else if (a === 'ntsend') ntSend();
+  else if (a === 'ntopen') ntOpen();
   else if (a === 'ntsave') ntSave();
   else if (a === 'ntforget') ntForget();
   else if (a === 'ntsettings') { nt.show = !nt.show; ntDraw(); if (nt.show) { const t = $('ntTok'); if (t) t.focus(); } }
@@ -2522,7 +2527,7 @@ function dayList(d, small) {
   const items = dayItems(d);
   const l = load(d), H = small ? 'h3' : 'h2';
   return '<section class="dlist"'+(small ? '' : ' id="dl"')+' aria-label="'+fmtDay(d)+'"><div class="dh"><'+H+'>'+(d===TODAY?'Today · ':'')+fmtDay(d)+' '+MN[parse(d).getMonth()]+'</'+H+'>'
-    + (ui.view === 'week' ? whereTag(d, true) : '') + ntBtn(d)
+    + (ui.view === 'week' ? whereTag(d, true) : '')
     + (!small && ui.view === 'month' ? '<button type="button" class="pill" data-act="goto" data-d="'+d+'">Open this week</button>' : '')
     + '<div class="fbw"><div class="fb'+(l>=.8?' hi':'')+'" role="img" aria-label="'+barLabel(l)+'">'+barIn(l)+'</div><span class="fw">'+fullWord(l)+'</span></div></div>'
     + (items.length ? cardsOf(items) : '<p class="mempty">Nothing here yet. Tap Add to put something on this day.</p>') + '</section>';
