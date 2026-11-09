@@ -2727,10 +2727,10 @@ function olRender() {
   const b = $('mOl'), n = $('olNote'); if (!b || !n) return;
   const waiting = !!(ol.req && ol.req.status === 'waiting' && !ol.req.stale);   // WA-81: a request older than 10 minutes (the server says so) no longer spins
   const noAnswer = !waiting && !!(ol.req && ol.req.stale && ol.req.age < 86400);   // earlier days: stay quiet
-  const line = ol.err || (waiting ? 'Asked Claude, waiting. Tell Claude “refresh” in the hub chat. Nothing leaves this Mac. Click to cancel.' : noAnswer ? 'No answer, try again' : ol.last ? ol.last.line : 'Never refreshed. Press the button, then tell Claude “refresh”.');
+  const line = ol.err || (waiting ? 'Syncing with Outlook. Claude is asked to read your calendar: tell Claude “refresh” in the hub chat. Nothing leaves this Mac. Click to cancel.' : noAnswer ? 'Outlook sync did not finish, try again' : ol.last ? ol.last.line : 'Never refreshed. Press the button, then tell Claude “refresh”.');
   b.setAttribute('aria-disabled', 'false'); b.classList.toggle('waiting', waiting);   // WA-81: never disabled, a click while waiting cancels
-  wTip(b, ol.err ? 'Outlook · Problem' : waiting ? 'Outlook · Waiting' : noAnswer ? 'Outlook · No answer' : 'Outlook'); b.setAttribute('aria-label', waiting ? line : 'Refresh from Outlook. ' + line);
-  n.textContent = ol.err || (waiting ? 'Asked Claude, waiting… ' : noAnswer ? 'No answer, try again' : '');
+  wTip(b, ol.err ? 'Outlook · Problem' : waiting ? 'Outlook · Syncing' : noAnswer ? 'Outlook · Not finished' : 'Outlook'); b.setAttribute('aria-label', waiting ? line : 'Refresh from Outlook. ' + line);
+  n.textContent = ol.err || (waiting ? 'Syncing with Outlook… ' : noAnswer ? 'Outlook sync did not finish, try again' : '');
   if (waiting && !ol.err) { const c = document.createElement('button'); c.type = 'button'; c.className = 'olb'; c.textContent = 'Cancel'; c.onclick = olCancel; n.appendChild(c); }   // visible only while something needs attention; the full line is in the tooltip and the changes bar
 }
 async function olPoll() {
