@@ -1087,6 +1087,25 @@ html.shnt .shelf,html.shnt main{transition:none!important}
 .bx .rh::after{content:"";position:absolute;left:50%;bottom:2px;width:22px;height:3px;margin-left:-11px;border-radius:2px;background:currentColor;opacity:.35}
 .bx:hover .rh::after,.bx.sel .rh::after{opacity:.8}
 .bx.dragging{opacity:.4}
+/* WA-93: the board's round tick on boxes and chips: shows on hover or focus, a done one stays (green, as on cards); never starts a drag */
+.tk{position:absolute;left:4px;top:3px;width:18px;height:18px;padding:0;border:0;background:transparent;border-radius:50%;display:grid;place-items:center;color:inherit;cursor:pointer;opacity:0;transition:opacity .12s;z-index:1;-webkit-user-drag:none}
+.tk .ck{width:18px;height:18px;border-width:2px}
+.tk .ck svg{width:11px;height:11px}
+.bx.tiny .tk{top:50%;margin-top:-9px}
+.bx.hk{transition:padding-left .12s ease-out}
+.bx.hk:hover,.bx.hk:focus-within,.bx.hk.done,.bx.hk.hov{padding-left:26px}
+.bx.hk:hover .tk,.bx.hk:focus-within .tk,.bx.hk.hov .tk,.bx.done .tk{opacity:1}
+.bx.done .tk{transition:none}
+@media (hover:hover){.tk:hover .ck{border-color:var(--ink);background:var(--hover)}}
+.bx.done .ck,.bx.done .tk:hover .ck,.tc.done .ck{background:var(--okg);border-color:var(--okg)}
+.bx.done .ck svg,.tc.done .ck svg{stroke-dashoffset:0}
+.tc .tk{position:static;width:12px;height:12px;flex:none;display:none;opacity:1}
+.tc .tk .ck{width:16px;height:16px;margin:-2px}
+.tc.hk:hover .tk,.tc.hk:focus-within .tk,.tc.hk.hov .tk,.tc.done .tk{display:grid}
+.tc.hk:hover .dot,.tc.hk:focus-within .dot,.tc.hk.hov .dot,.tc.done .dot{display:none}
+.tc.done{background:var(--sunken);color:var(--ink2)}
+.tc.done .tt{text-decoration:line-through}
+@media (prefers-reduced-motion:reduce){.tk,.bx.hk{transition:none!important}}
 .tbghost{position:absolute;left:41%;right:3px;border:2px dashed var(--aztext);background:var(--azsoft);color:var(--aztext);border-radius:6px;font-size:12px;font-weight:600;padding:1px 6px;z-index:6;pointer-events:none;overflow:hidden;white-space:nowrap;font-variant-numeric:tabular-nums}
 /* WA-89: drag out a new box on an empty part of a lane. My plan: the work tint; Meetings: paper with a dashed edge */
 .tgw .dc[data-drop]:not(.picking){cursor:cell}
@@ -1097,10 +1116,6 @@ html.shnt .shelf,html.shnt main{transition:none!important}
 .tbghost.mk.kc{opacity:.85}
 .ftime{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0;font-size:14px;color:var(--ink2);font-variant-numeric:tabular-nums}
 .ftime svg{flex:none}
-.tbbar{position:fixed;z-index:12;bottom:20px;left:calc(var(--shw,0px) + 24px);display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--card);color:var(--ink);border:1px solid var(--border);border-radius:10px;padding:8px 12px;box-shadow:var(--shm);font-size:14px;max-width:calc(100vw - var(--shw,0px) - 32px)}
-.tbbar b{max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tbbar .btn{font-size:13px;padding:3px 11px;min-height:30px}
-.tbbar .kh{font-size:12px;color:var(--ink2)}
 .tbhint{position:fixed;z-index:12;bottom:20px;left:calc(50% + var(--shw,0px) / 2);transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:var(--ink);color:var(--card);border-radius:999px;padding:8px 18px;font-size:14px;box-shadow:var(--shm)}
 .tbhint .lnk{color:var(--card)}
 .eod{position:fixed;z-index:13;right:24px;bottom:24px;width:480px;max-width:calc(100vw - 32px);max-height:calc(100vh - 140px);overflow:auto;background:var(--card);color:var(--ink);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shm);display:flex;flex-direction:column;gap:10px}
@@ -1122,18 +1137,42 @@ html.shnt .shelf,html.shnt main{transition:none!important}
 .tgw.tgph{overflow:visible;box-shadow:none}
 .tgw.tgph .tgtop{position:static}
 .tgw.tgph .tgh .tgd{padding:6px 8px}
+/* WA-88: header range (C9 B), date pill (C7 B), edge pull bar (C6 B), wheel glide */
+.hr2 .apair{display:inline-flex;gap:4px}
+.hr2 [data-act=today]+.apair{margin-left:4px}
+.hr2 .rbox{display:inline-flex;flex-direction:column;justify-content:center;gap:3px;min-width:300px;line-height:1}
+.hr2 .rbox .range{line-height:1.05;padding:0 4px}
+.hr2 .reb{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);padding:0 4px;min-height:14px;line-height:14px}
+.dpill{position:fixed;z-index:40;left:50%;top:150px;transform:translate(-50%,-6px);opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;background:var(--card);color:var(--ink);border:1px solid var(--bstrong);border-radius:999px;padding:8px 20px;font-size:18px;font-weight:600;line-height:1.3;box-shadow:var(--shm);white-space:nowrap}
+.dpill.on{opacity:1;transform:translate(-50%,0)}
+.dpull{position:fixed;z-index:40;right:14px;top:46%;display:flex;align-items:center;gap:10px;flex-direction:row-reverse;opacity:0;transition:opacity .2s;pointer-events:none}
+.dpull.left{right:auto;flex-direction:row}
+.dpull.on,.dpull.bump{opacity:1}
+.dpull::before{content:"";position:absolute;width:10px;height:120px;border-radius:5px;background:var(--border);right:0;top:50%;transform:translateY(-50%);z-index:-1}
+.dpull.left::before{right:auto;left:0}
+.dpull i{display:block;width:10px;height:0;min-height:4px;max-height:120px;border-radius:5px;background:var(--ink);box-shadow:0 0 0 1px var(--card)}
+.dpull span{background:var(--card);color:var(--ink);border:1px solid var(--bstrong);border-radius:999px;padding:6px 14px;font-size:15px;font-weight:600;box-shadow:var(--shm);white-space:nowrap}
+.dpull.bump span{animation:dpbump .35s ease-out}
+@keyframes dpbump{40%{transform:translateX(-8px)}}
+.dpull.left.bump span{animation-name:dpbumpl}
+@keyframes dpbumpl{40%{transform:translateX(8px)}}
+.board.gl{overflow:clip}
+.tgw.gl{overflow-x:hidden}
+.tgw.gl .gut{position:relative;z-index:3;background:var(--card)}
+.mvp{overflow:hidden;position:relative;padding:3px;margin:-3px}
+.mgrid.mhd{margin-bottom:6px}
+.mvp.gl .mrows{will-change:transform}
+@media (prefers-reduced-motion:reduce){.dpill,.dpull{transition:none}.dpull.bump span{animation:none}}
 </style>
 </head>
 <body>
 <header class="bar">
   <div class="hr1"><div class="logo"><button type="button" class="sun" aria-label="Weekko logo" tabindex="-1"></button><h1 class="brand">Weekko</h1></div>
-    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="olnote" id="olNote" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><span class="dd"><button type="button" class="btn sq nbell" id="bNote" data-pop="pNote" aria-haspopup="dialog" aria-expanded="false" aria-label="Updates" data-tip="Updates"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4"/></svg><span class="nb" id="nBadge" hidden></span></button><div class="pop right nots" id="pNote" role="dialog" aria-label="Updates" hidden></div></span><button type="button" class="btn sq maconly" id="mOl" data-act="olrefresh" aria-label="Refresh from Outlook" data-tip="Outlook"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></svg></button><button type="button" class="btn sq maconly nbell" id="bNt" data-act="ntopen" aria-label="Notion sync" data-tip="Notion"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h4"/></svg><span class="nb" id="ntDot" hidden>!</span></button><button type="button" class="btn sq" id="bTheme" data-act="themecycle" data-tip="Theme"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" data-tip="Week pattern" aria-label="Week pattern: which days are office, home or client site"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" data-tip="Photo" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button><span class="dd tipdd"><button type="button" class="btn sq" id="bHelp" data-pop="pHelp" aria-haspopup="dialog" aria-expanded="false" aria-label="Tips" data-tip="Help"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg></button><div class="pop right tips" id="pHelp" role="dialog" aria-label="Tips" hidden><h5>Tips</h5><ul><li><b>Loose tasks</b> have no day yet. They wait in the tray until you place them.</li><li><b>Drag a card</b> onto a day to plan it, or back to the tray.</li><li><b>Right-click a card</b> for Delete or Cancel.</li><li><b>X or Space</b> marks the focused card done. <b>A</b> adds a task.</li><li>The <b>view menu</b> (Week) changes how many days show.</li><li><b>Timebox</b> (or <b>T</b>) shows your days in hours. Drag a task into a time; timeboxes are private and never go to Outlook.</li><li>The <b>refresh button</b> pulls the latest meetings from Outlook.</li><li>The <b>Notion button</b> sets up the automatic sync with your IBMDT Daily Plan (this week and next week).</li></ul><button type="button" class="tipx" data-act="tipclose">Got it</button></div></span></span><button type="button" class="btn main" data-act="add" data-tip="Add task · A">+ Add task</button></div></div>
+    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="olnote" id="olNote" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><span class="dd"><button type="button" class="btn sq nbell" id="bNote" data-pop="pNote" aria-haspopup="dialog" aria-expanded="false" aria-label="Updates" data-tip="Updates"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4"/></svg><span class="nb" id="nBadge" hidden></span></button><div class="pop right nots" id="pNote" role="dialog" aria-label="Updates" hidden></div></span><button type="button" class="btn sq maconly" id="mOl" data-act="olrefresh" aria-label="Refresh from Outlook" data-tip="Outlook"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></svg></button><button type="button" class="btn sq maconly nbell" id="bNt" data-act="ntopen" aria-label="Notion sync" data-tip="Notion"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h4"/></svg><span class="nb" id="ntDot" hidden>!</span></button><button type="button" class="btn sq" id="bSnd" data-act="sound" data-tip="Sound" aria-pressed="true" aria-label="Sound when the dates move"></button><button type="button" class="btn sq" id="bTheme" data-act="themecycle" data-tip="Theme"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" data-tip="Week pattern" aria-label="Week pattern: which days are office, home or client site"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" data-tip="Photo" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button><span class="dd tipdd"><button type="button" class="btn sq" id="bHelp" data-pop="pHelp" aria-haspopup="dialog" aria-expanded="false" aria-label="Tips" data-tip="Help"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg></button><div class="pop right tips" id="pHelp" role="dialog" aria-label="Tips" hidden><h5>Tips</h5><ul><li><b>Loose tasks</b> have no day yet. They wait in the tray until you place them.</li><li><b>Drag a card</b> onto a day to plan it, or back to the tray.</li><li><b>Right-click a card</b> for Delete or Cancel.</li><li><b>X or Space</b> marks the focused card done. <b>A</b> adds a task.</li><li>The <b>view menu</b> (Week) changes how many days show.</li><li><b>Timebox</b> (or <b>T</b>) shows your days in hours. Drag a task into a time; timeboxes are private and never go to Outlook.</li><li>The <b>refresh button</b> pulls the latest meetings from Outlook.</li><li>The <b>Notion button</b> sets up the automatic sync with your IBMDT Daily Plan (this week and next week).</li></ul><button type="button" class="tipx" data-act="tipclose">Got it</button></div></span></span><button type="button" class="btn main" data-act="add" data-tip="Add task · A">+ Add task</button></div></div>
   <div class="hr2">
-    <button type="button" class="btn sq" data-act="prev" aria-label="Previous week" title="Previous week (←)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
-    <span class="range" id="range" aria-live="polite"></span>
-    <button type="button" class="btn sq" data-act="next" aria-label="Next week" title="Next week (→)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
-    <span class="chip" id="rel"></span>
     <button type="button" class="btn" data-act="today">Today</button>
+    <span class="apair"><button type="button" class="btn sq" data-act="prev" aria-label="Previous week" title="Previous week (←)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" class="btn sq" data-act="next" aria-label="Next week" title="Next week (→)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></span>
+    <span class="rbox"><span class="reb" id="rel"></span><span class="range" id="range" aria-live="polite"></span></span>
     <div class="seg mode" id="modeSeg" role="group" aria-label="Show as (T)" title="Board or Timebox (T)"><button type="button" data-act="mode" data-v="board" aria-pressed="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="4.5" height="16" rx="1"/><rect x="10" y="4" width="4.5" height="11" rx="1"/><rect x="16" y="4" width="4" height="7" rx="1"/></svg>Board</button><button type="button" data-act="mode" data-v="time" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/></svg>Timebox</button></div>
     <span class="dd" id="tbSetW" hidden><button type="button" class="btn" id="mGrid" data-pop="pGrid" aria-haspopup="menu" aria-expanded="false" title="Slot size and hours shown"><span id="mGridT">30 min · 8–19</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
       <div class="pop" id="pGrid" role="menu" aria-label="Slot size and hours shown" hidden><h5>Slot size</h5><button type="button" role="menuitemradio" data-act="tbslot" data-slot="15">15 min</button><button type="button" role="menuitemradio" data-act="tbslot" data-slot="30">30 min</button><button type="button" role="menuitemradio" data-act="tbslot" data-slot="60">1 hour</button><h5>Hours shown</h5><button type="button" role="menuitemradio" data-act="tbhours" data-hours="8">08:00 – 19:00</button><button type="button" role="menuitemradio" data-act="tbhours" data-hours="7">07:00 – 22:00</button></div></span>
@@ -1154,6 +1193,7 @@ html.shnt .shelf,html.shnt main{transition:none!important}
 </header>
 <aside id="shelf" class="shelf rail" data-drop="tray" aria-label="Loose" hidden></aside>
 <main><div class="board" id="board"></div></main>
+<div class="dpill" id="dpill" aria-hidden="true"></div><div class="dpull" id="dpull" aria-hidden="true"><i></i><span></span></div>
 <div id="tpPills" class="tpph"></div>
 <div id="tpScrim" class="tpscrim" hidden></div>
 <aside id="tp" class="tp" role="dialog" aria-label="Ticket details" tabindex="-1" inert><div id="tpIn" class="tpin"></div></aside>
@@ -1570,7 +1610,13 @@ function fillPat() { $('patB').innerHTML = patternHtml(); }
 const weekDays = mon => [0,1,2,3,4,5,6].map(n => add(mon, n));
 /* range modes (WA-31, desktop only): Day / 3 days start at ui.first; Work week and Week start at the Monday ui.anchor. ui.anchor is always the Monday of the first shown day, so the loose tray, glance and add dialog keep meaning "this week". */
 const rangeOn = () => !compact() && ui.view === 'week';
-const shownDays = () => { const R = RANGES[effRange()]; return R.n <= 3 ? [0,1,2].slice(0,R.n).map(n => add(ui.first, n)) : weekDays(ui.anchor).slice(0, R.n); };
+/* WA-88 C3: the wheel moves Week and Work week one day at a time, so they can start mid-week. ui.off is how many shown days the first one sits after
+   the Monday ui.anchor (Work week counts weekdays only). It only counts while ui.offAt === ui.anchor, so anything else that sets ui.anchor
+   (Today, a month click, revealing a task, Sunday's next week) lands back on a Monday on its own. ui.anchor stays the Monday of the first shown day. */
+const wOff = () => RANGES[effRange()].n > 3 && ui.offAt === ui.anchor ? (ui.off || 0) : 0;
+const nthDay = (mon, i, n) => n === 5 ? add(mon, Math.floor(i/5)*7 + ((i%5)+5)%5) : add(mon, i);
+const shownDays = () => { const R = RANGES[effRange()]; return R.n <= 3 ? [0,1,2].slice(0,R.n).map(n => add(ui.first, n)) : [...Array(R.n).keys()].map(k => nthDay(ui.anchor, wOff()+k, R.n)); };
+function setOff(mon, off) { ui.anchor = mon; ui.off = off; ui.offAt = mon; }
 function setRange(r) {
   if (!RANGES[r] || r === ui.range) return;
   const small = RANGES[r].n <= 3, wasSmall = RANGES[ui.range].n <= 3;
@@ -1583,17 +1629,19 @@ function setRange(r) {
 function showDay(d) {
   ui.anchor = mondayOf(parse(d)); ui.day = d; if (compact()) return;
   if (RANGES[effRange()].n <= 3) { if (!shownDays().includes(d)) ui.first = d; }
+  else if (!shownDays().includes(d)) ui.off = 0;
   else if (ui.range === 'work' && isWeekend(d)) { ui.range = 'week'; try { localStorage.setItem('wa-range', 'week'); } catch (e) {} }
 }
 const weeksBetween = (a,b) => Math.round((parse(b) - parse(a)) / 604800000);
 function rangeLabel() {
   const R = RANGES[effRange()], small = rangeOn() && R.n <= 3;
-  if (small && R.n === 1) { const d = parse(ui.first); return DN[(d.getDay()+6)%7]+' '+d.getDate()+' '+MN[d.getMonth()]; }
-  const n = ui.view === 'week' ? (rangeOn() ? R.n - 1 : 6) : 34, a = small ? ui.first : ui.anchor, b = add(a, n), da = parse(a), db = parse(b);
+  if (small && R.n === 1) { const d = parse(ui.first); return d.getDate()+' '+MN[d.getMonth()]; }   // WA-88 C9: dates only, never day names
+  const sd = rangeOn() ? shownDays() : null, a = sd ? sd[0] : ui.anchor, b = sd ? sd[sd.length-1] : add(a, ui.view === 'week' ? 6 : 34), da = parse(a), db = parse(b);
   return da.getMonth() === db.getMonth() ? da.getDate()+' – '+db.getDate()+' '+MN[db.getMonth()] : da.getDate()+' '+MN[da.getMonth()]+' – '+db.getDate()+' '+MN[db.getMonth()];
 }
 function relLabel() {
   if (rangeOn() && RANGES[effRange()].n <= 3) { const k = Math.round((parse(ui.first) - parse(TODAY)) / 86400000); return k === 0 ? 'Today' : k === 1 ? 'Tomorrow' : k === -1 ? 'Yesterday' : k > 0 ? 'In '+k+' days' : -k+' days ago'; }
+  if (rangeOn() && wOff()) return '';   // WA-88 C9: no label while the days start mid-week
   const w = weeksBetween(THIS_MON, ui.anchor);
   return w === 0 ? 'This week' : w === 1 ? 'Next week' : w === -1 ? 'Last week' : w > 0 ? 'In '+w+' weeks' : -w+' weeks ago';
 }
@@ -1639,7 +1687,7 @@ const doneCount = items => { const n = items.filter(t => !cancelled(t)).length, 
 const isWeekend = d => [0,6].includes(parse(d).getDay());
 /* WA-76: next week at a glance is two pills in the week-title row (only on next week): the deadlines list and the busiest day */
 function glanceData() {
-  if (weeksBetween(THIS_MON, ui.anchor) !== 1) return null;
+  if (weeksBetween(THIS_MON, ui.anchor) !== 1 || wOff()) return null;
   const days = weekDays(ui.anchor), dls = S.tasks.filter(t => t.due && !t.done && !cancelled(t) && days.includes(t.due) && vis(t)).sort((x, y) => x.due < y.due ? -1 : x.due > y.due ? 1 : 0);
   let busy = null, bl = 0; days.forEach(d => { const l = load(d); if (l > bl) { bl = l; busy = d; } });
   return { dls, busy, hot: bl >= .8, word: loadWord(bl).toLowerCase() };
@@ -1785,7 +1833,9 @@ function renderWeek() {
   const days = shownDays(), R = RANGES[ui.range];
   let h = '';
   if (ui.range === 'work') {
-    const we = weekDays(ui.anchor).slice(5), n = S.tasks.filter(t => we.includes(t.day) && !t.done && vis(t)).length;
+    const sd = days, span = []; for (let d = sd[0]; d <= sd[sd.length-1]; d = add(d, 1)) span.push(d);
+    let we = span.filter(isWeekend); if (!we.length) we = [add(sd[sd.length-1], 1), add(sd[sd.length-1], 2)];
+    const n = S.tasks.filter(t => we.includes(t.day) && !t.done && vis(t)).length;
     if (n) h += '<div class="hidwk"><span>Work week hides Sat and Sun, which hold '+n+' item'+(n === 1 ? '' : 's')+'.</span><button type="button" class="pill" data-act="range" data-r="week">Show the whole week</button></div>';
   }
   if (days.includes(TODAY)) h += '<div class="tdrow" style="--n:'+R.n+'" aria-hidden="true">'+days.map(d => '<div>'+(d===TODAY?'<span class="tdy">Today</span>':'')+'</div>').join('')+'</div>';
@@ -1801,7 +1851,7 @@ function renderWeek() {
   return h + '</div>';
 }
 function renderMonth() {
-  let h = '<div class="mgrid"><div></div>' + DN.map(n => '<div class="mh">'+n+'</div>').join('');
+  let h = '<div class="mgrid mhd"><div></div>' + DN.map(n => '<div class="mh">'+n+'</div>').join('') + '</div><div class="mvp"><div class="mgrid mrows">';   // WA-88 C8: the rows slide in their own box
   for (let w = 0; w < 5; w++) {
     const mon = add(ui.anchor, w*7), days = weekDays(mon);
     const full = days.filter(d => load(d) >= .8).length, dl = S.tasks.filter(t => t.due && !t.done && !cancelled(t) && days.includes(t.due) && vis(t)).length;
@@ -1818,7 +1868,7 @@ function renderMonth() {
       h += '<button type="button" class="mc'+(i>4?' wk':'')+(d===TODAY?' today':'')+(heavy?' hv':'')+'" data-act="goto" data-d="'+d+'" aria-label="'+fmtDay(d)+' '+MN[parse(d).getMonth()]+', '+dots.length+' items'+(kinds.length ? ', '+kinds.map(k => k === 'changed' ? 'moved' : k).join(' and ')+' meeting' : '')+'. Open this week"><span class="n">'+(day===1||w===0&&i===0?MN[parse(d).getMonth()]+' ':'')+day+'</span><span class="dots">'+shown+'</span>'+omk+'</button>';
     });
   }
-  return h + '</div><div class="legend"><span><i></i>Meeting</span><span><i class="t"></i>Work task</span><span><i class="l"></i>Life task</span><span><i class="d"></i>Deadline</span><span class="chip">Heavy = 2+ Busy days or 3+ deadlines</span><span>Click a day or a week to open it.</span></div>';
+  return h + '</div></div><div class="legend"><span><i></i>Meeting</span><span><i class="t"></i>Work task</span><span><i class="l"></i>Life task</span><span><i class="d"></i>Deadline</span><span class="chip">Heavy = 2+ Busy days or 3+ deadlines</span><span>Click a day or a week to open it.</span></div>';
 }
 /* ---------- WA-84: Timebox mode. The same tasks, laid out in hours (Win's picks C1 B to C8 B, 10 Nov 2026).
    A task gets a time with `start` ('HH:MM') and `mins` and keeps its `day`. The real length is the truth and the size follows it (C4 B),
@@ -1893,18 +1943,48 @@ function tbChip(t, ro) {
   const meet = t.type === 'meeting', life = !meet && t.kind === 'life', sp = span(t), live = !ro && !meet;
   const tl = sp ? toHM(sp[0]) : meet ? 'No time' : dtx(tbLen(t));
   const lab = esc(mTitle(t))+(meet ? ', meeting' : life ? ', life' : ', work')+(sp ? ', at '+toHM(sp[0])+', outside the hours shown' : ', no time yet')+(live ? '. Enter gives it the next free time; or click it, then click a time.' : '');
-  return '<span class="tc'+(meet ? ' meet' : life ? ' life' : '')+(ui.tbPick === t.id ? ' sel' : '')+(sp ? ' out' : '')+'" data-id="'+t.id+'"'+(live ? ' draggable="true" tabindex="0" role="button" aria-pressed="'+(ui.tbPick === t.id)+'" aria-label="'+lab+'"' : '')+'>'
-    + '<span class="dot" aria-hidden="true"></span><span class="tt">'+esc(mTitle(t))+'</span><span class="tl">'+tl+'</span></span>';
+  const hk = !ro && !cancelled(t);
+  return '<span class="tc'+(meet ? ' meet' : life ? ' life' : '')+(ui.tbPick === t.id ? ' sel' : '')+(sp ? ' out' : '')+(t.done ? ' done' : '')+(hk ? ' hk' : '')+'" data-id="'+t.id+'"'+(live ? ' draggable="true" tabindex="0" role="button" aria-pressed="'+(ui.tbPick === t.id)+'" aria-keyshortcuts="Enter X Shift+F10" aria-label="'+lab+'"' : '')+'>'
+    + '<span class="dot" aria-hidden="true"></span>'+(hk ? tbTick(t) : '')+'<span class="tt">'+esc(mTitle(t))+'</span><span class="tl">'+tl+'</span></span>';
 }
 function tbBox(t, p, ro) {
   const meet = t.type === 'meeting', life = !meet && t.kind === 'life', sp = span(t), len = sp[1] - sp[0], tiny = p.h < 40, sel = ui.tbSel === t.id, live = !ro && !meet && !t.done;
   const meta = toHM(sp[0])+'–'+toHM(sp[1])+(meet ? '' : ' · '+dtx(len));
-  return '<div class="bx '+(meet ? 'meet' : 'task')+(life ? ' life' : '')+(t.done ? ' done' : '')+(tiny ? ' tiny' : '')+(sel ? ' sel' : '')+'" data-id="'+t.id+'" style="top:'+p.top.toFixed(1)+'px;height:'+Math.max(18, p.h - 2).toFixed(1)+'px;left:'+p.l.toFixed(2)+'%;width:calc('+p.w.toFixed(2)+'% - 3px)"'
-    + (ro ? '' : meet ? ' tabindex="-1"' : ' tabindex="0" role="button" aria-pressed="'+sel+'"'+(live ? ' draggable="true" aria-keyshortcuts="ArrowUp ArrowDown Shift+ArrowUp Shift+ArrowDown ArrowLeft ArrowRight Delete X"' : ''))
+  const hk = !ro && !cancelled(t);
+  return '<div class="bx '+(meet ? 'meet' : 'task')+(life ? ' life' : '')+(t.done ? ' done' : '')+(tiny ? ' tiny' : '')+(sel ? ' sel' : '')+(hk ? ' hk' : '')+'" data-id="'+t.id+'" style="top:'+p.top.toFixed(1)+'px;height:'+Math.max(18, p.h - 2).toFixed(1)+'px;left:'+p.l.toFixed(2)+'%;width:calc('+p.w.toFixed(2)+'% - 3px)"'
+    + (ro ? '' : meet ? ' tabindex="-1"' : ' tabindex="0" role="button" aria-pressed="'+sel+'"'+(live ? ' draggable="true" aria-keyshortcuts="ArrowUp ArrowDown Shift+ArrowUp Shift+ArrowDown ArrowLeft ArrowRight Delete X Shift+F10"' : ''))
     + ' aria-label="'+esc(mTitle(t))+', '+(meet ? 'meeting, ' : '')+meta+(meet ? '' : ', '+SZ[t.size].label)+(t.done ? ', done' : '')+'">'
-    + '<span class="bt">'+(t.done ? '<span class="dk">'+TICK+'</span>' : '')+esc(mTitle(t))+'</span><span class="bm">'+(tiny ? (meet ? toHM(sp[0]) : dtx(len)) : meta)+'</span>'
+    + (hk ? tbTick(t) : '') + '<span class="bt">'+(t.done && !hk ? '<span class="dk">'+TICK+'</span>' : '')+esc(mTitle(t))+'</span><span class="bm">'+(tiny ? (meet ? toHM(sp[0]) : dtx(len)) : meta)+'</span>'
     + (live ? '<span class="rh" data-rh="'+t.id+'" aria-hidden="true" title="Drag to change the length"></span>' : '')+'</div>';
 }
+/* WA-93: the board's tick circle (tabindex -1: the keyboard uses X), and the right-click menu for a box or chip */
+const tbTick = t => '<button type="button" class="tk" data-act="done" data-id="'+t.id+'" tabindex="-1" draggable="false" aria-pressed="'+!!t.done+'" aria-label="'+(t.done ? 'Mark not done: ' : 'Mark done: ')+esc(mTitle(t))+'"><span class="ck" aria-hidden="true">'+TICK+'</span></button>';
+function tbCtxItems(t) {   // [act, label] in menu order; '-' is a divider, a string alone is a note line
+  const ol = t.type === 'meeting' && t.source === 'outlook', cx = cancelled(t), L = [];
+  if (ol) L.push('From Outlook');
+  if (!cx) L.push(['done', t.done ? 'Mark not done' : 'Mark done']);
+  if (!ol) L.push(['tbedit', 'Edit details']);
+  if (t.type === 'task' && isBox(t)) L.push(['tbnotime', 'No time'], '-', ['tblen', 'Shorter', -1], ['tblen', 'Longer', 1]);
+  L.push('-', [cx ? 'cxrestore' : 'cxl', cx ? 'Restore' : 'Cancel'], ['del', 'Delete']);
+  if (ol) L.push('A refresh from Outlook brings it back');
+  return L;
+}
+function tbCtx(id, x, y) {
+  const t = S.tasks.find(v => v.id === id); if (!t || CLOUD || !tbOn()) return false;
+  showCtx(x, y, tbCtxItems(t).map(i => i === '-' ? '<hr>' : typeof i === 'string' ? '<small>'+i+'</small>'
+    : '<button type="button" role="menuitem" data-act="'+i[0]+'" data-id="'+id+'"'+(i[2] ? ' data-v="'+i[2]+'" aria-label="'+i[1]+' by '+tb.slot+' minutes"' : '')+'>'+(i[0] === 'del' ? icon('trash') : '')+i[1]+'</button>').join(''), id);
+  const m = $('menuhost').firstChild, r = m.getBoundingClientRect();   // never clip at the window edges (this menu is taller than the card one)
+  m.style.left = Math.max(8, Math.min(x, innerWidth - r.width - 8))+'px'; m.style.top = Math.max(8, Math.min(y, innerHeight - r.height - 8))+'px';
+  return true;
+}
+/* pressing the tick never starts a move, a resize or a new box */
+let tkDown = null;
+document.addEventListener('pointerdown', e => {
+  const k = e.target.closest && e.target.closest('#board .tk'); if (!k) return;
+  const h = k.closest('[draggable=true]'); tkDown = h || true; if (h) h.draggable = false;
+}, true);
+document.addEventListener('pointerup', () => { if (tkDown) { const h = tkDown; tkDown = null; if (h !== true) setTimeout(() => { if (h.isConnected) h.draggable = true; }, 0); } }, true);
+document.addEventListener('dragstart', e => { if (tkDown) e.preventDefault(); }, true);
 /* the grid: day heads, the "No time yet" row (C3 A), then the hours. ro = read-only (phone, phone page) */
 function tbGrid(days, ro, phone) {
   const [H0, H1] = tbHours(), ph = tbPH(), body = (H1 - H0) * ph, now = new Date(), nm = now.getHours()*60 + now.getMinutes();
@@ -1934,17 +2014,12 @@ function tbGrid(days, ro, phone) {
   }).join('') + '</div></div>';
   return h;
 }
-function tbBar() {   // the selected box (C3 A): Shorter / Longer / No time / Done
-  const t = S.tasks.find(x => x.id === ui.tbSel); if (!t || !isBox(t) || CLOUD) return '';
-  return '<div class="tbbar" role="toolbar" aria-label="Timebox: '+esc(t.title)+'"><b>'+esc(t.title)+'</b><span class="mut">'+fmtDay(t.day)+' · '+boxLabel(t)+' · '+SZ[t.size].label+'</span>'
-    + '<button type="button" class="btn" data-act="tblen" data-v="-1" aria-label="Shorter by '+tb.slot+' minutes">Shorter</button><button type="button" class="btn" data-act="tblen" data-v="1" aria-label="Longer by '+tb.slot+' minutes">Longer</button>'
-    + '<button type="button" class="btn" data-act="tbunbox">No time</button><button type="button" class="btn" data-act="tbdone">'+(t.done ? 'Not done' : 'Done')+'</button><button type="button" class="btn" data-act="tbopen">Details</button>'
-    + '<span class="kh">↑↓ move · ⇧↑↓ length · ←→ day · Delete no time · Esc</span></div>';
-}
+/* WA-94: no selected-box bar any more. Selecting a box says its title, day and time (live region); the keys, the bottom edge and the right-click menu do the rest */
+const tbSay = t => say('Selected “'+t.title+'”, '+fmtDay(t.day)+', '+boxLabel(t)+', '+SZ[t.size].label+'. Arrows move, Shift+arrows change the length, X done, Delete no time, Shift+F10 menu, Esc lets go');
 function renderTB() {
   const days = shownDays(), pick = ui.tbPick && S.tasks.find(x => x.id === ui.tbPick);
   return '<p class="tbnote">'+LOCK+'<span>'+(CLOUD ? 'Times are set on the Mac. This page only shows them.' : 'Timeboxes are private and never go to Outlook.')+(tbNarrow() && RANGES[ui.range].n > 3 ? ' A narrow window shows 3 days.' : '')+'</span></p>'
-    + tbGrid(days, CLOUD, false) + tbBar()
+    + tbGrid(days, CLOUD, false)
     + (pick ? '<div class="tbhint" role="status">Click a time for “'+esc(pick.title)+'”<button type="button" class="lnk" data-act="tbpickx">Cancel</button></div>' : '');
 }
 /* phone (C7 B): one day, two lanes, read-only */
@@ -1958,7 +2033,7 @@ function hoursDay(d) {
 let tbScroll = null;
 function tbFit() {
   const g = $('tgw'); if (!g || g.classList.contains('tgph')) return;
-  g.style.height = Math.max(420, Math.round(innerHeight - g.getBoundingClientRect().top - (ui.tbSel || ui.tbPick ? 84 : 24)))+'px';   // room for the box bar
+  g.style.height = Math.max(420, Math.round(innerHeight - g.getBoundingClientRect().top - (ui.tbPick ? 84 : 24)))+'px';   // room for the pick hint
   if (tbScroll === null) tbScroll = tb.hours === '7' ? tbPH() : 0;
   g.scrollTop = tbScroll;
 }
@@ -2007,6 +2082,7 @@ function tbAuto(id) {
 function tbClick(e) {
   if (!tbOn() || CLOUD) return false;
   const tg = e.target;
+  if (tg.closest('#board .tk')) return false;   // WA-93: the tick toggles done (the data-act handler)
   if (tg.closest('[data-rh]') || mkEat) { mkEat = false; return true; }
   const hm = tg.closest('#board .bx.meet[data-id]');   // WA-89: a hand-made meeting opens its details on double-click (Outlook ones stay locked)
   if (hm && !ui.tbPick && e.detail >= 2) { const t = S.tasks.find(x => x.id === hm.dataset.id); if (t && t.source !== 'outlook') { openEdit(t.id); return true; } }
@@ -2015,9 +2091,9 @@ function tbClick(e) {
   const chip = tg.closest('#board .tc[data-id][role=button]');
   if (chip) { const t = S.tasks.find(x => x.id === chip.dataset.id); if (!t) return true; ui.tbPick = ui.tbPick === t.id ? null : t.id; ui.tbSel = null; render(); tbChipFocus(t.id); if (ui.tbPick) say('Now click a time for “'+t.title+'”. Esc cancels.'); return true; }
   const box = tg.closest('#board .bx.task[data-id]');
-  if (box) { const id = box.dataset.id; if (e.detail >= 2) { openEdit(id); return true; } ui.tbSel = ui.tbSel === id ? null : id; render(); tbFocus(id); return true; }
+  if (box) { const id = box.dataset.id; if (e.detail >= 2) { openEdit(id); return true; } ui.tbSel = ui.tbSel === id ? null : id; render(); tbFocus(id); const t = S.tasks.find(x => x.id === id); if (ui.tbSel && t) tbSay(t); return true; }
   if (ui.tbPick && !tg.closest('[data-act],.tbhint')) { const id = ui.tbPick; ui.tbPick = null; render(); tbChipFocus(id); return true; }
-  if (ui.tbSel && !tg.closest('.tbbar,[data-act=tblen],[data-act=tbunbox],[data-act=tbdone],[data-act=tbopen]')) { ui.tbSel = null; render(); }
+  if (ui.tbSel && !tg.closest('.menu')) { ui.tbSel = null; render(); }
   return false;
 }
 function tbKey(e) {
@@ -2027,14 +2103,16 @@ function tbKey(e) {
   if (e.key === 'Escape' && (ui.tbPick || ui.tbSel)) { e.preventDefault(); const id = ui.tbPick || ui.tbSel, pk = !!ui.tbPick; ui.tbPick = null; ui.tbSel = null; render(); pk ? tbChipFocus(id) : tbFocus(id); return true; }
   if (tg.classList && tg.classList.contains('dc') && tg.dataset.drop && !e.metaKey && !e.ctrlKey && !e.altKey) return kcKey(e, tg);   // WA-89: the keyboard slot
   const cl = tg.classList; if (!cl || !tg.dataset || !tg.dataset.id || e.metaKey || e.ctrlKey || e.altKey) return false;
+  if ((cl.contains('tc') || cl.contains('bx')) && (e.key === 'ContextMenu' || (e.key === 'F10' && e.shiftKey))) { e.preventDefault(); const r = tg.getBoundingClientRect(); tbCtx(tg.dataset.id, r.left + 16, r.top + Math.min(24, r.height)); return true; }   // WA-93
   if (cl.contains('tc')&& (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); tbAuto(tg.dataset.id); return true; }
+  if (cl.contains('tc') && (e.key === 'x' || e.key === 'X')) { e.preventDefault(); toggleDone(tg.dataset.id); return true; }
   if (!cl.contains('bx') || !cl.contains('task')) return false;
   const t = S.tasks.find(x => x.id === tg.dataset.id); if (!t || !isBox(t)) return false;
   const k = e.key, s = hmMin(t.start);
   if (k === 'ArrowUp' || k === 'ArrowDown') { e.preventDefault(); const dir = k === 'ArrowUp' ? -1 : 1; if (t.done) return true; if (e.shiftKey) tbResize(t, dir * tb.slot); else tbMove(t, t.day, s + dir * tb.slot); return true; }
   if (k === 'ArrowLeft' || k === 'ArrowRight') { e.preventDefault(); if (!t.done) tbMove(t, add(t.day, k === 'ArrowLeft' ? -1 : 1), s); return true; }
   if (k === 'Delete' || k === 'Backspace') { e.preventDefault(); tbUnbox(t.id); return true; }
-  if (k === 'Enter') { e.preventDefault(); if (ui.tbSel !== t.id) { ui.tbSel = t.id; render(); tbFocus(t.id); } else openEdit(t.id); return true; }
+  if (k === 'Enter') { e.preventDefault(); if (ui.tbSel !== t.id) { ui.tbSel = t.id; render(); tbFocus(t.id); tbSay(t); } else openEdit(t.id); return true; }
   if (k === 'x' || k === 'X' || k === ' ') { e.preventDefault(); toggleDone(t.id); tbFocus(t.id); return true; }
   return false;
 }
@@ -2048,7 +2126,7 @@ let rz = null;
 document.addEventListener('pointerdown', e => {
   if (CLOUD || e.button > 0 || !e.target.closest) return;
   const box = e.target.closest('#board .bx.task[data-id]'), h = box && box.querySelector('[data-rh]'); if (!h) return;
-  const r = box.getBoundingClientRect(); if (!e.target.closest('[data-rh]') && !rzHit(r.top, r.bottom, e.clientY)) return;
+  const r = box.getBoundingClientRect(); if (e.target.closest('.tk') || (!e.target.closest('[data-rh]') && !rzHit(r.top, r.bottom, e.clientY))) return;
   const t = S.tasks.find(x => x.id === h.dataset.rh), col = box.closest('.dc'); if (!t || !col || !isBox(t)) return;
   e.preventDefault(); e.stopPropagation();
   rz = { t, box, col, mins:tbLen(t), id:e.pointerId }; box.classList.add('sel', 'rz'); box.draggable = false;
@@ -2307,7 +2385,7 @@ function renderNow() {
   shelfRender(); eodRender();
   closeMenu(); if (sheet) fillSheet(); if ($('pat').open) fillPat();
   panelSync();
-  sunUpdate();
+  sunUpdate(); if (GL.x) glApply();
 }
 
 /* ---------- WA-74: the WeekGo mark. A quarter sun that can open into a full sun. Both shapes are 4 cubic curves, so the path is a plain tween;
@@ -2363,9 +2441,155 @@ function setNotice(on) { ui.nsun = !!on; }   // the only notice that is set by h
 function go(delta) {
   if (compact()) { if (ui.view === 'week') { ui.day = add(ui.day || ui.anchor, delta); ui.anchor = mondayOf(parse(ui.day)); } else ui.anchor = add(ui.anchor, delta*28); }
   else if (rangeOn() && RANGES[effRange()].n <= 3) { ui.first = add(ui.first, delta*RANGES[effRange()].step); ui.anchor = mondayOf(parse(ui.first)); }
-  else ui.anchor = add(ui.anchor, delta*7);
+  else { const o = wOff(); setOff(add(ui.anchor, delta*7), o); }
   setNotice(''); render();
 }
+/* ---------- WA-88: the sideways wheel (Win's picks C1 D to C9 B, 10 Nov 2026). Desktop only; the phone keeps its swipe.
+   Week and Timebox: a thumb-wheel click is one day (steady steps: at most one every 0.15 s, extra input is thrown away, no cap per turn).
+   A trackpad swipe follows the fingers, momentum included, and lands on a whole day. A board wider than the window scrolls its hidden
+   columns first; at the edge a fresh turn fills a pull bar and then moves one day. Month: the sideways wheel does nothing, the normal
+   wheel slides the rows and lands on a whole row. Every date step makes a soft thud (Web Audio, no files) unless sound is off. ---------- */
+const SND = (() => {   // the pickboard's 'Soft thud' recipe at Win's 15%
+  let ctx = null, last = 0; const vol = .15;
+  const ac = () => { try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); } catch (e) { ctx = null; } return ctx; };
+  function env(g, t, a, peak, dec) { g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + a + dec); }
+  function osc(c, out, f0, f1, t, glide, a, peak, dec) {
+    const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + glide);
+    env(g, t, a, peak, dec); o.connect(g).connect(out); o.start(t); o.stop(t + a + dec + .05);
+  }
+  function noise(c, out, t, len, f, q, peak) {
+    const n = Math.max(1, Math.floor(c.sampleRate * len)), b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0);
+    for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3);
+    const s = c.createBufferSource(), bq = c.createBiquadFilter(), g = c.createGain(); s.buffer = b; bq.type = 'lowpass'; bq.frequency.value = f; bq.Q.value = q; g.gain.value = peak;
+    s.connect(bq).connect(g).connect(out); s.start(t);
+  }
+  return {
+    unlock() { ac(); },   // browsers only let sound start after a click or a key, so the first one wakes it
+    play(dir) {
+      if (!ctx || ctx.state !== 'running') return; const now = performance.now(); if (now - last < 55) return; last = now;   // never a rattle
+      const c = ctx, out = c.createGain(), lp = c.createBiquadFilter(), k = dir < 0 ? .93 : 1, t = c.currentTime + .005;   // a touch lower going back
+      out.gain.value = Math.pow(vol, 1.6) * .9; lp.type = 'lowpass'; lp.frequency.value = 1400; out.connect(lp).connect(c.destination);
+      osc(c, out, 118 * k, 68 * k, t, .06, .003, .9, .12); noise(c, out, t, .05, 380 * k, .7, .7);
+    },
+  };
+})();
+addEventListener('pointerdown', () => SND.unlock(), true); addEventListener('keydown', () => SND.unlock(), true);
+/* C2 B: on by default, remembered; quiet when macOS "Play user interface sound effects" is off (the Mac server reads that setting) */
+let sndOn = true, macUi = true;
+try { sndOn = localStorage.getItem('wa-sound') !== '0'; } catch (e) {}
+const SPK = on => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/>'+(on ? '<path d="M16.5 8.5a5 5 0 0 1 0 7"/>' : '<path d="M17 9l5 6M22 9l-5 6"/>')+'</svg>';
+function sndDraw() {
+  const b = $('bSnd'); if (!b) return; b.innerHTML = SPK(sndOn); b.setAttribute('aria-pressed', sndOn);
+  b.dataset.tip = sndOn && !macUi ? 'Sound · muted by macOS' : 'Sound';
+  b.setAttribute('aria-label', 'Sound when the dates move'+(sndOn && !macUi ? ' (macOS interface sounds are off, so it stays quiet)' : ''));
+}
+function sndToggle() { sndOn = !sndOn; try { localStorage.setItem('wa-sound', sndOn ? '1' : '0'); } catch (e) {} sndDraw(); say(sndOn ? 'Sound on: a soft thud when the dates move' : 'Sound off'); if (sndOn) { SND.unlock(); setTimeout(() => dateSound(1), 30); } }
+function dateSound(dir) { if (sndOn && macUi && !compact()) SND.play(dir); }
+async function macPoll() { if (CLOUD) return; try { const r = await fetch('/api/macsound', { cache:'no-store' }); if (r.ok) { const j = await r.json(); macUi = j.ui !== false; sndDraw(); } } catch (e) {} }
+sndDraw(); if (!CLOUD) { setTimeout(macPoll, 1200); addEventListener('focus', macPoll); }
+/* one date step: a day in Week, Work week, Day and 3 days; a row (one week) in Month */
+function stepDate(dir) {
+  if (ui.view === 'month') ui.anchor = add(ui.anchor, dir*7);
+  else if (RANGES[effRange()].n <= 3) { ui.first = add(ui.first, dir); ui.anchor = mondayOf(parse(ui.first)); }
+  else { const L = RANGES[effRange()].n; let o = wOff() + dir, m = ui.anchor; while (o >= L) { o -= L; m = add(m, 7); } while (o < 0) { o += L; m = add(m, -7); } setOff(m, o); }
+  setNotice(''); render(); dateSound(dir); pillShow();
+}
+/* the date pill under the header (C7 B): the first day in view, gone 0.9 s after the last move */
+let pillT = 0;
+function pillShow() {
+  const p = $('dpill'), bar = document.querySelector('.bar'), m = document.querySelector('main'); if (!p || !bar) return;
+  const d = ui.view === 'month' ? ui.anchor : shownDays()[0], r = m.getBoundingClientRect();
+  p.textContent = (ui.view === 'month' ? 'Week of ' : '')+fmtDay(d)+' '+MN[parse(d).getMonth()];
+  p.style.top = Math.round(bar.getBoundingClientRect().bottom + 14)+'px'; p.style.left = Math.round(r.left + r.width/2 + (shelfW() ? shelfW()/2 : 0))+'px';
+  p.classList.add('on'); clearTimeout(pillT); pillT = setTimeout(() => p.classList.remove('on'), 900);
+}
+/* the glide: after a step the new days start where the old ones were and slide home (Reduce motion: they just appear) */
+const GL = { x:0, raf:0, hold:false };
+const glMonth = () => ui.view === 'month';
+function glEls() {
+  if (glMonth()) return [...document.querySelectorAll('#board .mrows')];
+  if (tbOn()) return [...document.querySelectorAll('#tgw .tgh > :not(.gut), #tgw .tgr > :not(.gut), #tgw .tgb > :not(.gut)')];
+  return [...document.querySelectorAll('#board > .week, #board > .tdrow')];
+}
+function glPitch() {   // the distance between two days (or two month rows)
+  if (glMonth()) { const r = document.querySelectorAll('#board .mrows > .mw'); return r.length > 1 ? r[1].offsetTop - r[0].offsetTop : 120; }
+  const c = tbOn() ? document.querySelectorAll('#tgw .tgb .dc') : document.querySelectorAll('#board .week > .col');
+  return c.length > 1 ? c[1].getBoundingClientRect().left - c[0].getBoundingClientRect().left : c.length ? c[0].offsetWidth : 200;
+}
+function glApply() {
+  const on = Math.abs(GL.x) >= .5, b = $('board'); if (!on && !b.classList.contains('gl')) return;
+  b.classList.toggle('gl', on); const t = $('tgw'); if (t) t.classList.toggle('gl', on); const v = b.querySelector('.mvp'); if (v) v.classList.toggle('gl', on);
+  const tr = on ? (glMonth() ? 'translateY(' : 'translateX(')+GL.x.toFixed(1)+'px)' : '';
+  glEls().forEach(e => { e.style.transform = tr; });
+}
+function glKick() {
+  if (rmMotion()) { GL.x = 0; glApply(); return; }
+  if (GL.raf) return; let lt = 0;
+  const f = t => { const dt = Math.min(48, t - (lt || t)); lt = t; if (GL.hold) { GL.raf = 0; return; } GL.x *= Math.exp(-dt / 75); if (Math.abs(GL.x) < .5) GL.x = 0; glApply(); GL.raf = GL.x ? requestAnimationFrame(f) : 0; };
+  GL.raf = requestAnimationFrame(f);
+}
+function glStep(dir) { const P = glPitch(); stepDate(dir); if (rmMotion()) return; GL.x = Math.max(-2.5*P, Math.min(2.5*P, GL.x + dir*P)); glApply(); glKick(); }
+/* free movement (trackpad, Month's normal wheel): follow the delta, step whenever half a day (row) is crossed, land on a whole one when it stops */
+function rawMove(dx) {
+  const P = glPitch(); g.acc += dx;
+  const half = rmMotion() ? P : P/2;   // Reduce motion: no following, a step per whole day
+  while (g.acc >= half) { g.acc -= P; stepDate(1); }
+  while (g.acc <= -half) { g.acc += P; stepDate(-1); }
+  if (!rmMotion()) { GL.hold = true; GL.x = -g.acc; glApply(); }
+}
+const WH_TH = 34, WH_COOL = 150, WH_IDLE = 260, WH_PULL = 150;   // ~one thumb-wheel click = one step; at most one step every 0.15 s; a turn ends after 0.26 s still; edge pull length
+let g = null, gIdle = 0;
+const mainEl = () => document.querySelector('main');
+const ovfX = () => { const m = mainEl(); return m.scrollWidth > m.clientWidth + 1; };
+const canScrollX = d => { const m = mainEl(); return d > 0 ? m.scrollLeft < m.scrollWidth - m.clientWidth - 1 : m.scrollLeft > 0; };
+function pullDraw(d, how, frac) {
+  const pu = $('dpull'); if (!pu) return; pu.classList.toggle('left', d < 0);
+  const r = mainEl().getBoundingClientRect(); if (d < 0) pu.style.left = Math.round(r.left + 14 + shelfW())+'px'; else pu.style.left = '';
+  const word = d > 0 ? 'next' : 'previous';
+  if (how === 'bump') { pu.querySelector('span').textContent = 'End of the board · turn again for the '+word+' day'; pu.querySelector('i').style.height = '0'; pu.classList.remove('on', 'bump'); void pu.offsetWidth; pu.classList.add('bump'); }
+  else { pu.querySelector('span').textContent = 'Keep turning for the '+word+' day'; pu.querySelector('i').style.height = Math.min(100, frac*100)+'%'; pu.classList.remove('bump'); pu.classList.add('on'); }
+}
+function gEnd() {
+  if (!g) return; const was = g; g = null; clearTimeout(gIdle);
+  if (was.raw) { GL.hold = false; glKick(); }
+  const pu = $('dpull'); if (pu) pu.classList.remove('on', 'bump');
+}
+function feed(dx, pad) {
+  const now = performance.now(), d = Math.sign(dx); if (!d) return;
+  if (!g || now - g.t > WH_IDLE || (!g.raw && d !== g.d)) { gEnd(); g = { t:now, d, acc:0, last:-1e9, fired:false, edge:ovfX() && !canScrollX(d), pull:0, raw:false, bumped:false }; }
+  g.t = now; clearTimeout(gIdle); gIdle = setTimeout(gEnd, WH_IDLE);
+  if (ovfX() && !g.raw) {   // C6 B: hidden columns first, then a deliberate pull at the edge
+    if (g.fired) return;   // the rest of the turn that pulled in a new day does nothing
+    if (canScrollX(d)) { mainEl().scrollLeft += dx; g.edge = false; return; }
+    if (!g.edge) { if (!g.bumped) { g.bumped = true; pullDraw(d, 'bump'); } return; }
+    g.pull += Math.abs(dx); pullDraw(d, 'pull', g.pull / WH_PULL);
+    if (g.pull >= WH_PULL) { g.fired = true; $('dpull').classList.remove('on'); glStep(d); }
+    return;
+  }
+  if (pad) { g.raw = true; rawMove(dx); return; }   // C5 C: the trackpad glides freely, momentum included
+  g.acc += dx;
+  if (Math.abs(g.acc) >= WH_TH) { if (now - g.last >= WH_COOL) { g.last = now; glStep(Math.sign(g.acc)); } g.acc = 0; }   // C4 B
+}
+/* Month (C8): the normal wheel slides the rows. A mouse click always moves at least a third of a row, so one click lands on the next row. */
+function feedRows(dy, pad) {
+  const now = performance.now();
+  if (!g || now - g.t > WH_IDLE) { gEnd(); g = { t:now, d:Math.sign(dy), acc:0, raw:true }; }
+  g.t = now; clearTimeout(gIdle); gIdle = setTimeout(gEnd, WH_IDLE);
+  rawMove(pad ? dy : Math.sign(dy) * Math.max(Math.abs(dy), glPitch()*.35 + 1));
+}
+/* trackpads send small pixel deltas (fractional in Chrome; in WebKit the old wheelDelta is exactly 3x the delta); a mouse wheel sends whole clicks */
+const isPad = e => e.deltaMode === 0 && (!Number.isInteger(e.deltaX) || !Number.isInteger(e.deltaY) || (e.wheelDeltaX !== undefined && (e.wheelDeltaX || e.wheelDeltaY) && Math.abs(e.wheelDeltaX) === Math.abs(e.deltaX) * 3 && Math.abs(e.wheelDeltaY) === Math.abs(e.deltaY) * 3));
+document.addEventListener('wheel', e => {
+  if (compact() || e.ctrlKey || !e.target.closest || !e.target.closest('main') || document.querySelector('dialog[open]') || ui.menu) return;
+  const k = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1, dx = e.deltaX * k, dy = e.deltaY * k, side = Math.abs(dx) > Math.abs(dy);
+  if (ui.view === 'month') {
+    if (side) { e.preventDefault(); return; }   // C8: the sideways wheel does nothing in Month
+    if (!e.target.closest('.mvp') || !dy) return;
+    e.preventDefault(); feedRows(dy, isPad(e)); return;
+  }
+  if (!side || ui.view !== 'week') return;   // the normal wheel scrolls the page and the Timebox hours as before
+  e.preventDefault(); feed(dx, isPad(e));
+}, { passive:false });
 /* WA-62: follow the real day without a reload. dayRoll() compares the clock with the cached TODAY; if the day changed it moves TODAY and THIS_MON, keeps Win on "today" / "this week" if he was there (and leaves any other view alone), and re-renders. Called at the next midnight, every minute (covers sleep), when the tab or home-screen app is shown again, and on focus. */
 function dayRoll() {
   const nt = iso(new Date()); if (nt === TODAY) return;
@@ -2387,7 +2611,7 @@ function dayWatch() {
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { dayRoll(); arm(); } });
   addEventListener('focus', dayRoll); addEventListener('pageshow', () => { dayRoll(); arm(); });
 }
-function goToday() { ui.anchor = THIS_MON; ui.day = TODAY; ui.first = TODAY; setNotice(''); render(); }
+function goToday() { ui.anchor = THIS_MON; ui.off = 0; ui.day = TODAY; ui.first = TODAY; setNotice(''); render(); }
 function askWeekend(title, day) {
   return new Promise(res => {
     const d = $('wk'); $('wkText').textContent = '“' + title + '” is a work task. Move it to ' + fmtDay(day) + ' anyway?';
@@ -2483,6 +2707,8 @@ document.addEventListener('contextmenu', e => {
   const tg = e.target; if (!tg.closest) return;
   if (tg.closest('.menu')) { e.preventDefault(); return; }
   if (tg.closest('dialog,#sheet,input,textarea,select,a[href]') || document.querySelector('dialog[open]')) return;
+  const tbx = tg.closest('#board .bx[data-id], #board .tc[data-id]');   // WA-93: timebox boxes and chips
+  if (tbx) { if (tbCtx(tbx.dataset.id, e.clientX, e.clientY)) e.preventDefault(); return; }
   const card = tg.closest('.card');
   if (card) { if (openCtx(card.dataset.id, e.clientX, e.clientY)) e.preventDefault(); return; }
   if (ui.menu) closeMenu();
@@ -2869,7 +3095,7 @@ function reveal(id) {
 
 /* ---------- keyboard focus: after the board is redrawn, put focus back on the card the action was about ---------- */
 const cardById = id => id && [...document.querySelectorAll('#board .card[data-id="'+id+'"], #mbody .card[data-id="'+id+'"]')].find(e => e.getClientRects().length);
-function focusCard(id) { const el = cardById(id); if (el) el.focus(); return !!el; }
+function focusCard(id) { const el = cardById(id); if (el) el.focus(); else if (id && tbOn()) return tbFocus(id) || tbChipFocus(id); return !!el; }
 function neighborOf(id) {
   const el = cardById(id); if (!el) return null;
   const n = [el.nextElementSibling, el.previousElementSibling].find(x => x && x.classList.contains('card'));
@@ -2887,7 +3113,7 @@ function toggleDone(id) {
   const t = S.tasks.find(x => x.id === id); if (!t || roMeeting(id)) return;   // WA-76: meetings can be ticked done on the Mac; on the phone they stay read-only
   t.done = !t.done; save(); render(); focusCard(id);
   if (t.done) wgDone(t);
-  const c = cardEls().get(id);
+  const c = cardEls().get(id) || (tbOn() ? document.querySelector('#board .bx[data-id="'+id+'"], #board .tc[data-id="'+id+'"]') : null);
   if (c && ptrToggle) { c.classList.add('hov'); const off = () => { c.classList.remove('hov'); document.removeEventListener('mousemove', off, true); }; document.addEventListener('mousemove', off, true); }  // the card was just rebuilt under the pointer: keep its hover look until the mouse moves
   if (t.done && !rmMotion() && c) { const k = c.querySelector('.ck'), pth = k && k.querySelector('path'); if (k && k.animate) {   // played by script on the finished, always-correct circle, so nothing can get stuck
     k.animate([{ transform:'scale(.7)', boxShadow:'0 0 0 0 '+getComputedStyle(k).backgroundColor }, { transform:'scale(1.14)', offset:.55 }, { transform:'scale(1)', boxShadow:'0 0 0 9px transparent' }], { duration:340, easing:'cubic-bezier(.3,1.5,.5,1)' });
@@ -2929,8 +3155,9 @@ document.addEventListener('click', e => {
   else if (a === 'filter') { ui.filter = b.dataset.f; render(); }
   else if (a === 'vpick') { const v = b.dataset.v; if (v === 'month') $('vMonth').click(); else { if (ui.view === 'month') $('vWeek').click(); setRange(v); } }
   else if (a === 'fk') { const k = b.dataset.k; if (k === 'meeting') ui.hideMeet = !ui.hideMeet; else { let w = ui.filter === 'all' || ui.filter === 'work', l = ui.filter === 'all' || ui.filter === 'life'; if (k === 'work') w = !w; else l = !l; ui.filter = w && l ? 'all' : w ? 'work' : l ? 'life' : 'none'; } render(); }
-  else if (a === 'prev') go(-1);
-  else if (a === 'next') go(1);
+  else if (a === 'prev') { go(-1); dateSound(-1); }
+  else if (a === 'next') { go(1); dateSound(1); }
+  else if (a === 'sound') sndToggle();
   else if (a === 'today') goToday();
   else if (a === 'ckind') { const ta = $('compT'); ui.draft = ta ? ta.value : ui.draft; ui.ckind = ui.ckind === 'life' ? 'work' : 'life'; render(); const t = $('compT'); if (t) t.focus(); }
   else if (a === 'add') { if (b.classList.contains('addb')) openCompose(b.dataset.day); else openAdd(b.dataset.day); }
@@ -2938,7 +3165,9 @@ document.addEventListener('click', e => {
   else if (a === 'menu') { ui.menu === b.dataset.id ? closeMenu() : openMenu(b.dataset.id, b); }
   else if (a === 'move') move(b.dataset.id, b.dataset.to);
   else if (a === 'step') moveStep(b.dataset.id, +b.dataset.dir);
-  else if (a === 'done') { ptrToggle = e.detail > 0 && !!b.closest('.card'); toggleDone(b.dataset.id); ptrToggle = false; }
+  else if (a === 'done') { if (b.closest('.menu')) closeMenu(); ptrToggle = e.detail > 0 && !!b.closest('.card,#board .bx,#board .tc'); toggleDone(b.dataset.id); ptrToggle = false; }
+  else if (a === 'tbedit') { closeMenu(); openEdit(b.dataset.id); }
+  else if (a === 'tbnotime') { closeMenu(); tbUnbox(b.dataset.id); }
   else if (a === 'del') delTask(b.dataset.id);
   else if (a === 'cxl') { const t = S.tasks.find(v => v.id === b.dataset.id); closeMenu(); if (t) setMark(t.id, { kind:'cancelled', since:new Date().toISOString(), was:{ day:t.day, start:t.time || '' } }, 'Cancelled'); }
   else if (a === 'cxrestore') { closeMenu(); setMark(b.dataset.id, null, 'Restored'); }
@@ -2949,7 +3178,7 @@ document.addEventListener('click', e => {
   else if (a === 'range') setRange(b.dataset.r);
   else if (a === 'mode') { if (b.dataset.v !== ui.mode) setMode(b.dataset.v); }
   else if (a === 'tbslot' || a === 'tbhours') { if (a === 'tbslot') tb.slot = +b.dataset.slot; else tb.hours = b.dataset.hours; tbScroll = null; try { localStorage.setItem('wa-tbslot', tb.slot); localStorage.setItem('wa-tbhours', tb.hours); } catch (x) {} render(); const m = $('mGrid'); if (m) m.focus({ preventScroll:true }); }
-  else if (a === 'tblen' || a === 'tbunbox' || a === 'tbdone' || a === 'tbopen') { const t = S.tasks.find(x => x.id === ui.tbSel); if (t) { if (a === 'tblen') tbResize(t, +b.dataset.v * tb.slot); else if (a === 'tbunbox') tbUnbox(t.id); else if (a === 'tbdone') { toggleDone(t.id); tbFocus(t.id); } else openEdit(t.id); } }
+  else if (a === 'tblen') { closeMenu(); const t = S.tasks.find(x => x.id === b.dataset.id); if (t && isBox(t)) tbResize(t, +b.dataset.v * tb.slot); }
   else if (a === 'tbpickx') { const id = ui.tbPick; ui.tbPick = null; render(); tbChipFocus(id); }
   else if (a === 'eod') eodDo(b.dataset.id, b.dataset.v);
   else if (a === 'eodall') { const L = eodList(); L.forEach(t => eodDo(t.id, 'row', true)); save(); render(); say(L.length+' moved, no time'); }
@@ -3071,8 +3300,8 @@ document.addEventListener('keydown', e => {
   const tag = (e.target.tagName || '').toLowerCase(); if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
   if ((e.key === 'm' || e.key === 'M') && e.target.classList && e.target.classList.contains('card')) { e.preventDefault(); openMenu(e.target.dataset.id, e.target.querySelector('.more')); }
   else if (e.key === 'a' || e.key === 'A') { e.preventDefault(); openAdd(); }
-  else if (e.key === 'ArrowLeft') go(-1);
-  else if (e.key === 'ArrowRight') go(1);
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); dateSound(-1); }   // WA-88: preventDefault stops the macOS alert sound
+  else if (e.key === 'ArrowRight') { e.preventDefault(); go(1); dateSound(1); }
 });
 
 /* ---------- phone and tablet layout (under 700 wide (WA-47, was 1024)): same data, same functions, a different shell ---------- */
