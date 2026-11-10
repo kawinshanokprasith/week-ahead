@@ -776,7 +776,7 @@ html{background-color:var(--bg)}
 
 /* WA-40: day tag without the circle. Bare duotone 28 px icon, all blue, at the right edge of the day name; a soft tile only on hover or focus; blue dot = changed for this day; "Where?" on hover for empty days; TODAY sits in its own row above the columns so nothing in a column moves. */
 .ch{min-height:40px;padding:0 4px 0 8px;gap:6px}
-.ch h3,.col.today .ch h3{font-size:22px;line-height:1.2}
+.ch h3,.col.today .ch h3,.tgh .dn h3{font-size:22px;line-height:1.2}   /* WA-92: Timebox day names use the board's day title size */
 .wtag,.wtag.own,.wtag.none{width:auto;height:auto;min-width:36px;min-height:36px;padding:4px;border:0;border-radius:8px;background:transparent;color:var(--aztext);position:relative;line-height:0}
 .wtag svg{width:28px;height:28px;display:block}.wtag svg *{stroke-width:1.6}
 .wtag:hover,.wtag:focus-visible{background:var(--azsoft)}
@@ -1009,6 +1009,10 @@ html.shnt .shelf,html.shnt main{transition:none!important}
 .wtip{position:fixed;z-index:60;left:0;top:0;pointer-events:none;background:var(--card);color:var(--ink);border:1px solid var(--edge);border-radius:4px;padding:4px 9px;font-size:13px;font-weight:500;line-height:1.35;white-space:nowrap;opacity:0;transition:opacity .12s}
 .wtip.on{opacity:1}
 @media (prefers-reduced-motion:reduce){.wtip{transition:none}}
+/* WA-91: zoom hint ("110%") the Mac shell shows on Cmd + / - / 0; counter-scaled by the page zoom so it always looks the same size */
+.zhint{position:fixed;z-index:70;left:50%;top:0;pointer-events:none;transform-origin:50% 0;background:var(--card);color:var(--ink);border:1px solid var(--edge);border-radius:4px;padding:5px 12px;font-size:13px;font-weight:600;line-height:1.35;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:0;transition:opacity .25s}
+.zhint.on{opacity:1;transition:none}
+@media (prefers-reduced-motion:reduce){.zhint{transition:none}}
 
 /* ===== WA-84: Timebox mode (Win's picks C1 B to C8 B, 10 Nov 2026). The day in hours: Meetings | My plan lanes, a "No time yet" row, private boxes ===== */
 .seg.mode button{display:inline-flex;align-items:center;gap:6px}
@@ -1025,8 +1029,8 @@ html.shnt .shelf,html.shnt main{transition:none!important}
 .tgh{border-bottom:1px solid var(--border)}
 .tgh .tgd{padding:10px 10px 8px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;min-width:0}
 .tgh .tgd.today{background:var(--azsoft)}
-.tgh .dn{display:flex;align-items:center;gap:8px}
-.tgh .dn h3{margin:0;font:900 18px/1.2 var(--fhd);color:var(--ink);white-space:nowrap}
+.tgh .dn{display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px;min-height:40px}
+.tgh .dn h3{margin:0;font-family:var(--fhd);font-weight:900;color:var(--ink);white-space:nowrap}
 .tgh .tgd.today .dn h3{color:var(--aztext)}
 .tgh .tdy{display:inline-flex;border-radius:3px;background:var(--az);color:var(--onaz);font:700 11px/1 var(--fnt);text-transform:uppercase;letter-spacing:.06em;padding:4px 6px}
 .tgh .fill{height:8px;margin:0}
@@ -1078,11 +1082,20 @@ html.shnt .shelf,html.shnt main{transition:none!important}
 .bx.sel{outline:2px solid var(--ink);outline-offset:1px;z-index:5}
 .bx.task:focus-visible{z-index:5}
 .bx.rz{cursor:ns-resize}
-.bx .rh{position:absolute;left:0;right:0;bottom:0;height:9px;cursor:ns-resize;touch-action:none}
+.bx .rh{position:absolute;left:0;right:0;bottom:0;height:10px;max-height:50%;cursor:ns-resize;touch-action:none;-webkit-user-drag:none}
 .bx .rh::after{content:"";position:absolute;left:50%;bottom:2px;width:22px;height:3px;margin-left:-11px;border-radius:2px;background:currentColor;opacity:.35}
 .bx:hover .rh::after,.bx.sel .rh::after{opacity:.8}
 .bx.dragging{opacity:.4}
 .tbghost{position:absolute;left:41%;right:3px;border:2px dashed var(--aztext);background:var(--azsoft);color:var(--aztext);border-radius:6px;font-size:12px;font-weight:600;padding:1px 6px;z-index:6;pointer-events:none;overflow:hidden;white-space:nowrap;font-variant-numeric:tabular-nums}
+/* WA-89: drag out a new box on an empty part of a lane. My plan: the work tint; Meetings: paper with a dashed edge */
+.tgw .dc[data-drop]:not(.picking){cursor:cell}
+.tgw .dc:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+.tgw .dc .bx.meet{cursor:default}
+.tbghost.mk{left:41%;right:3px;border:1px solid color-mix(in srgb,var(--wk-dot) 40%,transparent);border-left:4px solid var(--wk-dot);background:var(--wk-chip);color:var(--wk-on);padding:2px 7px;font-size:12px}
+.tbghost.mk.ml{left:3px;right:auto;width:calc(40% - 6px);border:2px dashed var(--bstrong);background:var(--sunken);color:var(--ink);white-space:normal;line-height:1.3}
+.tbghost.mk.kc{opacity:.85}
+.ftime{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0;font-size:14px;color:var(--ink2);font-variant-numeric:tabular-nums}
+.ftime svg{flex:none}
 .tbbar{position:fixed;z-index:12;bottom:20px;left:calc(var(--shw,0px) + 24px);display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--card);color:var(--ink);border:1px solid var(--border);border-radius:10px;padding:8px 12px;box-shadow:var(--shm);font-size:14px;max-width:calc(100vw - var(--shw,0px) - 32px)}
 .tbbar b{max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tbbar .btn{font-size:13px;padding:3px 11px;min-height:30px}
@@ -1179,7 +1192,7 @@ html.shnt .shelf,html.shnt main{transition:none!important}
 <dialog id="dlg" aria-labelledby="dlgT">
   <form id="form" method="dialog">
     <h2 id="dlgT">Add a task</h2>
-    <div><label class="l" for="title">What needs doing?</label><input type="text" id="title" autocomplete="off" required placeholder="Send budget summary" enterkeyhint="done"></div><button type="button" id="fSum" class="fsum"></button>
+    <div><label class="l" for="title">What needs doing?</label><input type="text" id="title" autocomplete="off" required placeholder="Send budget summary" enterkeyhint="done"></div><button type="button" id="fSum" class="fsum"></button><p class="ftime" id="fTime" hidden></p>
     <div class="pickers"><div><span class="l">Type</span><div class="seg full" id="fKind" role="radiogroup" aria-label="Type"><button type="button" role="radio" data-kind="work"><svg class="ic-wk" viewBox="0 0 16 16" aria-hidden="true"></svg>Work</button><button type="button" role="radio" data-kind="life"><svg class="ic-lf" viewBox="0 0 16 16" aria-hidden="true"></svg>Life</button><button type="button" role="radio" data-kind="meeting">Meeting</button></div></div>
     <div id="fCatWrap" hidden><span class="l">Category</span><div class="row" id="fCat"></div></div>
     <div><span class="l">Size</span><div class="seg full" id="fSize" role="radiogroup" aria-label="Size"><button type="button" role="radio" data-size="quick">Quick</button><button type="button" role="radio" data-size="half">Half-day</button><button type="button" role="radio" data-size="full">Full-day</button></div></div>
@@ -1915,7 +1928,7 @@ function tbGrid(days, ro, phone) {
   h += '</div>' + days.map(d => {
     const nowL = d === TODAY && nm > H0*60 && nm < H1*60 ? '<div class="now" style="top:'+((nm - H0*60) / 60 * ph).toFixed(1)+'px" aria-hidden="true"><i></i></div>' : '';
     const eve = H1 > 18 ? '<div class="eve" style="top:'+((18 - H0) * ph)+'px" aria-hidden="true"></div>' : '';
-    return '<div class="dc'+(d === TODAY ? ' today' : '')+(ui.tbPick && !ro ? ' picking' : '')+'"'+(ro ? '' : ' data-drop="g:'+d+'"')+' data-d="'+d+'" style="height:'+body+'px" role="group" aria-label="'+fmtDay(d)+' in hours">'
+    return '<div class="dc'+(d === TODAY ? ' today' : '')+(ui.tbPick && !ro ? ' picking' : '')+'"'+(ro ? '' : ' data-drop="g:'+d+'" tabindex="0" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter"')+' data-d="'+d+'" style="height:'+body+'px" role="group" aria-label="'+fmtDay(d)+' in hours'+(ro ? '' : '. Arrow keys pick a time and a lane, Enter adds a box there')+'">'
       + eve + P[d].boxes.map(([t, p]) => tbBox(t, p, ro)).join('') + nowL + '</div>';
   }).join('') + '</div></div>';
   return h;
@@ -1993,7 +2006,9 @@ function tbAuto(id) {
 function tbClick(e) {
   if (!tbOn() || CLOUD) return false;
   const tg = e.target;
-  if (tg.closest('[data-rh]')) return true;
+  if (tg.closest('[data-rh]') || mkEat) { mkEat = false; return true; }
+  const hm = tg.closest('#board .bx.meet[data-id]');   // WA-89: a hand-made meeting opens its details on double-click (Outlook ones stay locked)
+  if (hm && !ui.tbPick && e.detail >= 2) { const t = S.tasks.find(x => x.id === hm.dataset.id); if (t && t.source !== 'outlook') { openEdit(t.id); return true; } }
   const col = tg.closest('#board .dc[data-drop]');
   if (col && ui.tbPick) { tbPut(ui.tbPick, col.dataset.d, Math.floor(tbMinAt(col, e.clientY) / tb.slot) * tb.slot, 'keep'); return true; }
   const chip = tg.closest('#board .tc[data-id][role=button]');
@@ -2009,8 +2024,9 @@ function tbKey(e) {
   if ((e.key === 't' || e.key === 'T') && !e.metaKey && !e.ctrlKey && !e.altKey && !typing && !document.querySelector('dialog[open]') && ui.view === 'week') { e.preventDefault(); setMode(ui.mode === 'time' ? 'board' : 'time'); return true; }
   if (!tbOn() || CLOUD || typing || document.querySelector('dialog[open]')) return false;
   if (e.key === 'Escape' && (ui.tbPick || ui.tbSel)) { e.preventDefault(); const id = ui.tbPick || ui.tbSel, pk = !!ui.tbPick; ui.tbPick = null; ui.tbSel = null; render(); pk ? tbChipFocus(id) : tbFocus(id); return true; }
+  if (tg.classList && tg.classList.contains('dc') && tg.dataset.drop && !e.metaKey && !e.ctrlKey && !e.altKey) return kcKey(e, tg);   // WA-89: the keyboard slot
   const cl = tg.classList; if (!cl || !tg.dataset || !tg.dataset.id || e.metaKey || e.ctrlKey || e.altKey) return false;
-  if (cl.contains('tc') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); tbAuto(tg.dataset.id); return true; }
+  if (cl.contains('tc')&& (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); tbAuto(tg.dataset.id); return true; }
   if (!cl.contains('bx') || !cl.contains('task')) return false;
   const t = S.tasks.find(x => x.id === tg.dataset.id); if (!t || !isBox(t)) return false;
   const k = e.key, s = hmMin(t.start);
@@ -2021,15 +2037,23 @@ function tbKey(e) {
   if (k === 'x' || k === 'X' || k === ' ') { e.preventDefault(); toggleDone(t.id); tbFocus(t.id); return true; }
   return false;
 }
-/* drag the bottom edge to change the length */
+/* drag the bottom edge to change the length.
+   WA-90: the whole bottom band of a box resizes (RZB px tall, full width, its border included), decided by where the press lands rather than
+   by hitting the small handle; a short box keeps at least half its height for moving. While resizing, the box stops being draggable so the
+   browser (and the Mac shell's WebKit) can't start a move instead. */
+const RZB = 10;
+const rzHit = (top, bottom, y) => y <= bottom + 1 && y >= bottom - Math.min(RZB, (bottom - top) / 2);
 let rz = null;
 document.addEventListener('pointerdown', e => {
-  const h = e.target.closest && e.target.closest('#board [data-rh]'); if (!h || CLOUD || e.button > 0) return;
-  const t = S.tasks.find(x => x.id === h.dataset.rh), box = h.closest('.bx'), col = h.closest('.dc'); if (!t || !box || !col || !isBox(t)) return;
+  if (CLOUD || e.button > 0 || !e.target.closest) return;
+  const box = e.target.closest('#board .bx.task[data-id]'), h = box && box.querySelector('[data-rh]'); if (!h) return;
+  const r = box.getBoundingClientRect(); if (!e.target.closest('[data-rh]') && !rzHit(r.top, r.bottom, e.clientY)) return;
+  const t = S.tasks.find(x => x.id === h.dataset.rh), col = box.closest('.dc'); if (!t || !col || !isBox(t)) return;
   e.preventDefault(); e.stopPropagation();
-  rz = { t, box, col, mins:tbLen(t), id:e.pointerId }; box.classList.add('sel', 'rz');
-  try { h.setPointerCapture(e.pointerId); } catch (x) {}
+  rz = { t, box, col, mins:tbLen(t), id:e.pointerId }; box.classList.add('sel', 'rz'); box.draggable = false;
+  try { box.setPointerCapture(e.pointerId); } catch (x) {}
 }, true);
+document.addEventListener('mousedown', e => { if (rz) e.preventDefault(); }, true);   // WebKit starts a native drag from mousedown
 document.addEventListener('pointermove', e => {
   if (!rz) return;
   const [H0, H1] = tbHours(), ph = tbPH(), s = hmMin(rz.t.start);
@@ -2040,7 +2064,7 @@ document.addEventListener('pointermove', e => {
   const bm = rz.box.querySelector('.bm'); if (bm) bm.textContent = toHM(s)+'–'+toHM(end)+' · '+dtx(rz.mins)+' · '+SZ[sizeOfMins(rz.mins)].label;
 });
 function rzEnd() {
-  if (!rz) return; const { t, mins } = rz; rz = null;
+  if (!rz) return; const { t, mins } = rz; rz = null; mkEat = true; setTimeout(() => { mkEat = false; }, 0);   // the click that follows is not a select
   if (mins !== tbLen(t)) { tbSet(t, t.day, hmMin(t.start), mins); save(); say('“'+t.title+'” '+dtx(mins)+', now '+SZ[t.size].label); }
   ui.tbSel = t.id; render(); tbFocus(t.id);
 }
@@ -2056,6 +2080,86 @@ function tbDragOver(e, z) {
   const a = Math.max(s, H0*60), b = Math.min(s + len, H1*60);
   tbGhost.style.top = ((a - H0*60) / 60 * ph)+'px'; tbGhost.style.height = Math.max(18, (b - a) / 60 * ph - 2)+'px';
   tbGhost.textContent = toHM(s)+'–'+toHM(s + len); tbGhost.dataset.s = s;
+}
+/* ---------- WA-89: drag out a new box, like Outlook. Press on an empty part of a lane and drag (down or up): My plan makes a task,
+   Meetings a hand-made meeting (no source, so the Outlook refresh never touches it; the phone gets it as "Meeting HH:MM").
+   Letting go opens the add dialog with the day, start and length filled in. A plain click gives the default length, Esc cancels.
+   Keyboard: a focused day column shows a slot; arrows move it (←→ also switch lane and day), Enter adds a box there. ---------- */
+const MK_DEF = lane => lane === 'meet' ? Math.max(30, tb.slot) : 30;   // a click: tasks 30 min, meetings 30 min or one slot
+/* from the slot pressed to the slot under the pointer, either way; at least one slot; inside the hours shown */
+function mkRange(a, b, slot, H0, H1) {
+  const lo = H0*60, hi = H1*60, s0 = Math.max(lo, Math.min(Math.floor(a / slot) * slot, hi - slot)), c = Math.max(lo, Math.min(b, hi));
+  return c >= s0 ? [s0, Math.min(hi, Math.max(s0 + slot, Math.ceil(c / slot) * slot))] : [Math.floor(c / slot) * slot, s0 + slot];
+}
+const mkAt = (a, len, slot, H0, H1) => { const s = Math.max(H0*60, Math.min(Math.floor(a / slot) * slot, H1*60 - len)); return [s, s + len]; };
+/* the time fields a new box gets: a task start/mins (its size follows the length, C4 B), a meeting time/end */
+const mkFields = (type, s, mins) => type === 'meeting' ? { time:toHM(s), end:toHM(s + mins) } : { start:toHM(s), mins, size:sizeOfMins(mins) };
+const mkLane = (col, x) => { const r = col.getBoundingClientRect(); return (x - r.left) / r.width < .405 ? 'meet' : 'plan'; };
+let mk = null, mkEat = false, mkEsc = false, mkGhost = null, mkBack = null, kc = null;
+const mkOff = () => { if (mkGhost) { mkGhost.remove(); mkGhost = null; } };
+function mkDraw(col, lane, s, e, kb) {
+  const H0 = tbHours()[0], ph = tbPH();
+  if (!mkGhost || mkGhost.parentNode !== col) { mkOff(); mkGhost = document.createElement('div'); mkGhost.setAttribute('aria-hidden', 'true'); col.appendChild(mkGhost); }
+  mkGhost.className = 'tbghost mk'+(lane === 'meet' ? ' ml' : '')+(kb ? ' kc' : '');
+  mkGhost.style.top = ((s - H0*60) / 60 * ph)+'px'; mkGhost.style.height = Math.max(18, (e - s) / 60 * ph - 2)+'px';
+  mkGhost.textContent = toHM(s)+'–'+toHM(e)+(e - s > tb.slot || !kb ? ' · '+dtx(e - s) : '');
+}
+function mkOpen(d, lane, s, mins, kb) {
+  ui.tbSel = null; kc = null; mkOff(); mkBack = { d, id:null, kb:!!kb };
+  openAdd(d, null, { meet:lane === 'meet', s, mins });
+}
+document.addEventListener('pointerdown', e => {
+  if (!tbOn() || CLOUD || rz || e.button !== 0 || ui.tbPick || e.metaKey || e.ctrlKey || !e.target.closest) return;
+  const col = e.target.closest('#board .dc[data-drop]'); if (!col || e.target.closest('.bx')) return;
+  e.preventDefault(); if (document.activeElement === col) col.blur();
+  mk = { col, d:col.dataset.d, lane:mkLane(col, e.clientX), a:tbMinAt(col, e.clientY), y:e.clientY, moved:false, id:e.pointerId, r:null };
+  try { col.setPointerCapture(e.pointerId); } catch (x) {}
+});
+document.addEventListener('pointermove', e => {
+  if (!mk || e.pointerId !== mk.id || (!mk.moved && Math.abs(e.clientY - mk.y) < 5)) return;
+  mk.moved = true; const [H0, H1] = tbHours();
+  mk.r = mkRange(mk.a, tbMinAt(mk.col, e.clientY), tb.slot, H0, H1); mkDraw(mk.col, mk.lane, mk.r[0], mk.r[1]);
+});
+function mkEnd(e) {
+  const eat = () => { mkEat = true; setTimeout(() => { mkEat = false; }, 0); };
+  if (mkEsc) { mkEsc = false; eat(); return; }
+  if (!mk || e.pointerId !== mk.id) return; const m = mk; mk = null; mkOff();
+  if (e.type === 'pointercancel' || (!m.moved && ui.tbSel)) return;   // a plain click with a box selected only lets go of it
+  const [H0, H1] = tbHours(), r = m.moved ? m.r : mkAt(m.a, MK_DEF(m.lane), tb.slot, H0, H1);
+  eat(); mkOpen(m.d, m.lane, r[0], r[1] - r[0], false);
+}
+document.addEventListener('pointerup', mkEnd);
+document.addEventListener('pointercancel', mkEnd);
+document.addEventListener('keydown', e => {
+  if (!mk || e.key !== 'Escape') return; e.preventDefault(); e.stopPropagation();
+  try { mk.col.releasePointerCapture(mk.id); } catch (x) {} mk = null; mkOff(); mkEsc = true; say('No box added');
+}, true);
+/* after the dialog: the new box (a task is selected so its bar shows), or back to the day column when it came from the keyboard */
+$('dlg').addEventListener('close', () => {
+  if (!mkBack) return; const b = mkBack; mkBack = null;
+  setTimeout(() => { if (b.id && tbFocus(b.id)) return; const c = b.kb && document.querySelector('#board .dc[data-d="'+b.d+'"]'); if (c) c.focus({ preventScroll:true }); }, 50);
+});
+/* the keyboard slot */
+const kcSay = () => (kc.lane === 'meet' ? 'Meetings' : 'My plan')+', '+toHM(kc.s)+'. Enter adds '+(kc.lane === 'meet' ? 'a meeting' : 'a timebox')+' here.';
+function kcShow(col) {
+  const d = col.dataset.d, [H0, H1] = tbHours();
+  if (!kc || kc.d !== d) kc = { d, lane:kc ? kc.lane : 'plan', s:kc ? kc.s : 9*60 };
+  const r = mkAt(Math.max(H0*60, Math.min(kc.s, H1*60 - tb.slot)), MK_DEF(kc.lane), tb.slot, H0, H1); kc.s = Math.max(H0*60, Math.min(Math.floor(kc.s / tb.slot) * tb.slot, H1*60 - tb.slot));
+  mkDraw(col, kc.lane, r[0], r[1], true); mkGhost.scrollIntoView({ block:'nearest', inline:'nearest' });
+}
+document.addEventListener('focusin', e => { const c = e.target; if (c.classList && c.classList.contains('dc') && c.dataset.drop && tbOn() && !CLOUD && !mk) { kcShow(c); say(kcSay()); } });
+document.addEventListener('focusout', e => { if (e.target.classList && e.target.classList.contains('dc') && mkGhost && mkGhost.classList.contains('kc')) mkOff(); });
+function kcKey(e, col) {
+  if (!kc || kc.d !== col.dataset.d) kcShow(col);
+  const k = e.key, [H0, H1] = tbHours();
+  if (k === 'Enter' || k === ' ') { e.preventDefault(); const r = mkAt(kc.s, MK_DEF(kc.lane), tb.slot, H0, H1); mkOpen(kc.d, kc.lane, r[0], r[1] - r[0], true); return true; }
+  if (k === 'ArrowUp' || k === 'ArrowDown') kc.s += (k === 'ArrowUp' ? -1 : 1) * tb.slot;
+  else if (k === 'ArrowLeft' || k === 'ArrowRight') {
+    const l = k === 'ArrowLeft'; e.preventDefault();
+    if (kc.lane === (l ? 'plan' : 'meet')) kc.lane = l ? 'meet' : 'plan';
+    else { const cs = [...document.querySelectorAll('#board .dc[data-drop]')], n = cs[cs.indexOf(col) + (l ? -1 : 1)]; if (n) { kc.lane = l ? 'plan' : 'meet'; kc.d = n.dataset.d; n.focus({ preventScroll:true }); } return true; }
+  } else return false;
+  e.preventDefault(); kcShow(col); say(kcSay()); return true;
 }
 /* ---------- C8 B: the end-of-day check. Boxes that ended and are not done (today after 18:00, or from the last 3 days) ask where they go.
    "Later" hides the card for today and leaves a line in the bell. ---------- */
@@ -2515,17 +2619,19 @@ function syncForm() {
 let editing = null;
 let addFrom = null;
 $('dlg').addEventListener('close', () => setTimeout(() => { const a = document.activeElement; if (!a || a === document.body || $('dlg').contains(a)) focusCard(ui.ret); }, 30));
-function openAdd(day, from) {
-  const p = from && S.tasks.find(x => x.id === from); addFrom = p ? p.id : null;
+let addAt = null;   // WA-89: a box dragged out in Timebox mode: { meet, s, mins }
+function openAdd(day, from, at) {
+  const p = from && S.tasks.find(x => x.id === from); addFrom = p ? p.id : null; addAt = at && day ? { meet:!!at.meet, s:at.s, mins:at.mins } : null;
   ui.ret = p ? p.id : null; editing = null; form = p ? { kind: p.kind === 'life' ? 'life' : 'work', cat: p.cat || '', size:'quick', again:false } : { kind: day && isWeekend(day) ? 'life' : 'work', cat:'', size:'half', again:false }; $('title').value = '';
   $('dlgT').textContent = p ? 'Add a follow-up' : 'Add a task'; $('bAnother').hidden = false; $('bDel').hidden = $('bDone').hidden = true; $('bSave').textContent = 'Save task';
   $('fFollow').hidden = true; $('fFromNote').hidden = !p; if (p) $('fFromNote').textContent = '↰ Follows “' + p.title + '”';
+  if (addAt) { if (addAt.meet) form.kind = 'meeting'; form.size = sizeOfMins(addAt.mins); $('bAnother').hidden = true; addTitles(); }
   fillDialog(day); $('dlg').classList.toggle('typing', compact()); $('dlg').showModal(); $('title').focus(); sumUpdate(); drawDayChips();
 }
 function openEdit(id) {
   const t = S.tasks.find(x => x.id === id); if (!t || roMeeting(id)) return;
   if (t.type !== 'meeting') { openPanel(id); return; }   // WA-71: tickets open in the panel; meetings keep the old pop-up
-  closeMenu(); editing = id; ui.ret = id;
+  closeMenu(); editing = id; ui.ret = id; addAt = null;
   form = { kind: t.type === 'meeting' ? 'meeting' : t.kind, cat: t.cat || '', size: t.size, again:false };
   $('dlgT').textContent = 'Edit task'; $('bAnother').hidden = true; $('bDel').hidden = false; $('bDone').hidden = roMeeting(t.id); $('bDone').textContent = t.done ? 'Mark not done' : 'Mark done'; $('bSave').textContent = 'Save changes';
   addFrom = null; $('fFromNote').hidden = true; $('fFollow').hidden = t.type === 'meeting';
@@ -2533,6 +2639,16 @@ function openEdit(id) {
   $('dlg').classList.remove('typing'); $('dlg').showModal();
   if (!compact()) { $('title').focus(); $('title').select(); }
 }
+/* WA-89: the time line under the title for a box dragged out in Timebox mode */
+function addTitles() { if (editing) return; const m = addAt && form.kind === 'meeting'; $('dlgT').textContent = !addAt ? (addFrom ? 'Add a follow-up' : 'Add a task') : m ? 'Add a meeting' : 'Add a timebox'; $('bSave').textContent = m ? 'Save meeting' : 'Save task'; }
+function drawFTime() {
+  const el = $('fTime'); el.hidden = !addAt; if (!addAt) { el.innerHTML = ''; return; }
+  const d = $('fDay').value, m = form.kind === 'meeting', e = Math.min(1440, addAt.s + addAt.mins);
+  el.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
+    + '<span>'+(d || m ? (d ? fmtDay(d)+' · ' : '')+toHM(addAt.s)+'–'+toHM(e)+' · '+dtx(e - addAt.s)+' · in '+(m ? 'Meetings' : 'My plan') : 'Loose, so no time')+'</span>'
+    + '<button type="button" class="lnk" data-ftx>Remove time</button>';
+}
+$('fDay').addEventListener('change', () => { drawDayChips(); });
 async function saveTask(again) {
   const title = $('title').value.trim(); if (!title) { $('title').focus(); return; }
   let day = $('fDay').value || null; const due = $('fDue').value || null;
@@ -2543,7 +2659,8 @@ async function saveTask(again) {
   const data = { type:isMeeting?'meeting':'task', title, kind, cat:kind === 'life' ? form.cat : '', size:form.size, day, week:day ? mondayOf(parse(day)) : ((t && t.week) || ui.anchor), due };
   if (t && t.day !== day) delete t.order;
   if (t && isBox(t) && t.size !== data.size) t.mins = DUR[data.size];   // WA-84: size picked by hand on a timebox = that size's length
-  if (t) { Object.assign(t, data); if (!t.day) tbUnset(t); } else { const n = Object.assign({ id:uid(), done:false }, addFrom ? { from:addFrom } : {}, data); S.tasks.push(n); ui.ret = n.id; }
+  if (t) { Object.assign(t, data); if (!t.day) tbUnset(t); } else { const n = Object.assign({ id:uid(), done:false }, addFrom ? { from:addFrom } : {}, data); S.tasks.push(n); ui.ret = n.id;
+    if (addAt && n.day) { Object.assign(n, mkFields(n.type, addAt.s, addAt.mins)); if (mkBack) { mkBack.id = n.id; if (isBox(n)) ui.tbSel = n.id; } } }   // WA-89: the dragged-out time
   save(); render();
   if (again && !t) { $('title').value = ''; $('title').focus(); } else $('dlg').close();
 }
@@ -2555,8 +2672,9 @@ $('dlg').addEventListener('click', e => {
   else if (b.dataset.dlg === 'del') { const id = editing; $('dlg').close(); delTask(id); }
   else if (b.dataset.dlg === 'done') { const id = editing; $('dlg').close(); toggleDone(id); }
   else if (b.dataset.dlg === 'another') saveTask(true);
-  else if (b.dataset.kind) { form.kind = b.dataset.kind; if (form.kind !== 'life') form.cat = ''; syncForm(); }
-  else if (b.dataset.size) { form.size = b.dataset.size; syncForm(); }
+  else if (b.dataset.kind) { form.kind = b.dataset.kind; if (form.kind !== 'life') form.cat = ''; if (addAt && form.kind !== 'meeting') form.size = sizeOfMins(addAt.mins); syncForm(); addTitles(); drawFTime(); }
+  else if (b.dataset.size) { form.size = b.dataset.size; if (addAt && form.kind !== 'meeting') addAt.mins = DUR[form.size]; syncForm(); drawFTime(); }   // WA-84 C4 B: a size picked by hand sets the length
+  else if (b.hasAttribute('data-ftx')) { addAt = null; addTitles(); drawFTime(); $('title').focus(); }
   else if (b.hasAttribute('data-catnew')) drawCats(true);
   else if (b.hasAttribute('data-catok')) addCat();
   else if (b.dataset.catdel) { S.cats = (S.cats || []).filter(c => c !== b.dataset.catdel); if (form.cat === b.dataset.catdel) form.cat = ''; save(); drawCats(false); }
@@ -3089,6 +3207,7 @@ function drawDayChips() {
     return '<button type="button" class="chp'+(o.value && isWeekend(o.value)?' wkd':'')+'" data-dayv="'+o.value+'" aria-pressed="'+(o.value===v)+'">'+lbl+'</button>';
   }).join('');
   const on = $('fDayChips').querySelector('[aria-pressed=true]'); if (on && $('dlg').open) on.scrollIntoView({ inline:'center', block:'nearest' });
+  drawFTime();
 }
 function sumUpdate() {
   const d = $('fDay').value, k = form.kind === 'meeting' ? 'Meeting' : form.kind === 'life' ? 'Life' : 'Work';
@@ -3341,6 +3460,21 @@ document.querySelectorAll('.ic-wk').forEach(e => e.innerHTML = IC.work); documen
   if (bar && window.ResizeObserver) new ResizeObserver(both).observe(bar);
   new MutationObserver(both).observe(R, { attributes: true, attributeFilter: ['class'] });
   both();
+})();
+/* WA-91: zoom hint. The Mac shell calls waZoomHint(110) after each zoom change (Cmd + / - / 0 and the View menu).
+   pageZoom scales this page too, so the hint is scaled back by 1/zoom; repeat presses reuse one hint and restart its timer. */
+(() => {
+  let el = null, t = 0;
+  window.waZoomHint = (pct) => {
+    pct = Math.round(+pct) || 100;
+    const z = pct / 100;
+    if (!el) { el = document.createElement('div'); el.className = 'zhint'; el.setAttribute('role', 'status'); el.setAttribute('aria-live', 'polite'); document.body.appendChild(el); }
+    el.textContent = pct + '%' + (pct >= 200 ? ' (max)' : pct <= 50 ? ' (min)' : '');
+    el.style.top = ((document.documentElement.classList.contains('wa-native') ? 46 : 14) / z) + 'px';
+    el.style.transform = 'translateX(-50%) scale(' + (1 / z) + ')';
+    el.classList.add('on');
+    clearTimeout(t); t = setTimeout(() => el.classList.remove('on'), 1200);
+  };
 })();
 </script>
 </body>
