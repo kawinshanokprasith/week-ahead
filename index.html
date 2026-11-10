@@ -972,6 +972,7 @@ html.hasbg.stuck .hr1 .logo{--wf:48px}
   .shelf[hidden]{display:none}
   .shelf.rail{width:46px}
   .shelf.rail.peek{width:224px;box-shadow:var(--shm);z-index:9}
+  html:not(:has(.pop:not([hidden]))) .shelf{z-index:11}   /* above the header's soft fade (z 10), back under it while a header menu is open; same trick as .tdrow */
   .shelf.over{background:var(--azsoft)}
   .shelf .sr,.shelf .so{display:none}
   .shelf.rail .sr{display:flex}
