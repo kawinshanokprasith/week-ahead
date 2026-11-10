@@ -2018,8 +2018,8 @@ function tbGrid(days, ro, phone) {
 const tbSay = t => say('Selected “'+t.title+'”, '+fmtDay(t.day)+', '+boxLabel(t)+', '+SZ[t.size].label+'. Arrows move, Shift+arrows change the length, X done, Delete no time, Shift+F10 menu, Esc lets go');
 function renderTB() {
   const days = shownDays(), pick = ui.tbPick && S.tasks.find(x => x.id === ui.tbPick);
-  return '<p class="tbnote">'+LOCK+'<span>'+(CLOUD ? 'Times are set on the Mac. This page only shows them.' : 'Timeboxes are private and never go to Outlook.')+(tbNarrow() && RANGES[ui.range].n > 3 ? ' A narrow window shows 3 days.' : '')+'</span></p>'
-    + tbGrid(days, CLOUD, false)
+  // WA-96: no line above the grid any more (timeboxes still stay private and never go to Outlook)
+  return tbGrid(days, CLOUD, false)
     + (pick ? '<div class="tbhint" role="status">Click a time for “'+esc(pick.title)+'”<button type="button" class="lnk" data-act="tbpickx">Cancel</button></div>' : '');
 }
 /* phone (C7 B): one day, two lanes, read-only */
@@ -2449,27 +2449,41 @@ function go(delta) {
    A trackpad swipe follows the fingers, momentum included, and lands on a whole day. A board wider than the window scrolls its hidden
    columns first; at the edge a fresh turn fills a pull bar and then moves one day. Month: the sideways wheel does nothing, the normal
    wheel slides the rows and lands on a whole row. Every date step makes a soft thud (Web Audio, no files) unless sound is off. ---------- */
-const SND = (() => {   // the pickboard's 'Soft thud' recipe at Win's 15%
-  let ctx = null, last = 0; const vol = .15;
-  const ac = () => { try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); } catch (e) { ctx = null; } return ctx; };
+const SND = (() => {   // Win's 'Soft thud' (WA-88 C1 D) at 15%; WA-95: wakes on the first step and carries on laptop speakers
+  let ctx = null, last = 0, nap = 0; const vol = .15;
+  const make = () => { try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { ctx = null; } return ctx; };
   function env(g, t, a, peak, dec) { g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + a + dec); }
   function osc(c, out, f0, f1, t, glide, a, peak, dec) {
     const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + glide);
     env(g, t, a, peak, dec); o.connect(g).connect(out); o.start(t); o.stop(t + a + dec + .05);
   }
-  function noise(c, out, t, len, f, q, peak) {
+  function noise(c, out, t, len, type, f, q, peak) {
     const n = Math.max(1, Math.floor(c.sampleRate * len)), b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0);
     for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3);
-    const s = c.createBufferSource(), bq = c.createBiquadFilter(), g = c.createGain(); s.buffer = b; bq.type = 'lowpass'; bq.frequency.value = f; bq.Q.value = q; g.gain.value = peak;
+    const s = c.createBufferSource(), bq = c.createBiquadFilter(), g = c.createGain(); s.buffer = b; bq.type = type; bq.frequency.value = f; bq.Q.value = q; g.gain.value = peak;
     s.connect(bq).connect(g).connect(out); s.start(t);
   }
+  /* the pickboard's low thud (118 -> 68 Hz) is kept, but laptop speakers hardly play under ~150 Hz, so a second body around 230 -> 150 Hz
+     and a very soft felt click near 1.6 kHz carry it; the level is a little above the pickboard's so 15% is soft but clearly there */
+  function thud(c, dir) {
+    const out = c.createGain(), lp = c.createBiquadFilter(), k = dir < 0 ? .93 : 1, t = c.currentTime + .005;   // a touch lower going back
+    out.gain.value = Math.pow(vol, 1.6) * 1.6; lp.type = 'lowpass'; lp.frequency.value = 3200; out.connect(lp).connect(c.destination);
+    osc(c, out, 118 * k, 68 * k, t, .06, .003, .7, .12);
+    osc(c, out, 232 * k, 150 * k, t, .05, .003, .6, .09);
+    noise(c, out, t, .05, 'lowpass', 520 * k, .7, .7);
+    noise(c, out, t, .012, 'bandpass', 1600 * k, 1.1, .35);
+  }
+  function rest() { clearTimeout(nap); nap = setTimeout(() => { if (ctx && ctx.state === 'running') ctx.suspend().catch(() => {}); }, 4000); }   // a running context keeps the Mac's audio awake, so it naps
   return {
-    unlock() { ac(); },   // browsers only let sound start after a click or a key, so the first one wakes it
+    get state() { return ctx ? ctx.state : 'none'; },
+    unlock() { const c = make(); if (c && c.state !== 'running') c.resume().then(rest, () => {}); },   // a click or key always may start sound
     play(dir) {
-      if (!ctx || ctx.state !== 'running') return; const now = performance.now(); if (now - last < 55) return; last = now;   // never a rattle
-      const c = ctx, out = c.createGain(), lp = c.createBiquadFilter(), k = dir < 0 ? .93 : 1, t = c.currentTime + .005;   // a touch lower going back
-      out.gain.value = Math.pow(vol, 1.6) * .9; lp.type = 'lowpass'; lp.frequency.value = 1400; out.connect(lp).connect(c.destination);
-      osc(c, out, 118 * k, 68 * k, t, .06, .003, .9, .12); noise(c, out, t, .05, 380 * k, .7, .7);
+      const now = performance.now(); if (now - last < 55) return; last = now;   // never a rattle
+      const c = make(); if (!c) return;
+      if (c.state === 'running') { thud(c, dir); rest(); return; }
+      // 'suspended' after a nap, or 'interrupted' after the app was in the background: wake it and play as soon as it runs.
+      // A plain browser only allows this after one click or key on the page; the Mac app allows it from the start (WA-95 native setting).
+      c.resume().then(() => { if (c.state === 'running' && performance.now() - now < 400) { thud(c, dir); rest(); } }, () => {});
     },
   };
 })();
