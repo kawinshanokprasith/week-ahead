@@ -1009,18 +1009,120 @@ html.shnt .shelf,html.shnt main{transition:none!important}
 .wtip{position:fixed;z-index:60;left:0;top:0;pointer-events:none;background:var(--card);color:var(--ink);border:1px solid var(--edge);border-radius:4px;padding:4px 9px;font-size:13px;font-weight:500;line-height:1.35;white-space:nowrap;opacity:0;transition:opacity .12s}
 .wtip.on{opacity:1}
 @media (prefers-reduced-motion:reduce){.wtip{transition:none}}
+
+/* ===== WA-84: Timebox mode (Win's picks C1 B to C8 B, 10 Nov 2026). The day in hours: Meetings | My plan lanes, a "No time yet" row, private boxes ===== */
+.seg.mode button{display:inline-flex;align-items:center;gap:6px}
+.seg.mode svg{flex:none}
+.hr2 .seg.mode{margin-left:8px}
+.hr2 #tbSetW .btn{display:inline-flex;align-items:center;gap:6px}
+.mut{color:var(--ink3);font-weight:400}
+.lnk{border:0;background:none;padding:0;color:var(--aztext);text-decoration:underline;font-weight:600;font-size:inherit;cursor:pointer}
+.tbnote{display:flex;align-items:center;gap:6px;margin:0 0 8px;font-size:13px;color:var(--ink2)}
+.tbnote svg{flex:none}
+.tgw{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:auto;position:relative;box-shadow:var(--shc);overscroll-behavior:contain}
+.tgw > div,.tgtop > div{display:grid}
+.tgtop{position:sticky;top:0;z-index:6;background:var(--card)}
+.tgh{border-bottom:1px solid var(--border)}
+.tgh .tgd{padding:10px 10px 8px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;min-width:0}
+.tgh .tgd.today{background:var(--azsoft)}
+.tgh .dn{display:flex;align-items:center;gap:8px}
+.tgh .dn h3{margin:0;font:900 18px/1.2 var(--fhd);color:var(--ink);white-space:nowrap}
+.tgh .tgd.today .dn h3{color:var(--aztext)}
+.tgh .tdy{display:inline-flex;border-radius:3px;background:var(--az);color:var(--onaz);font:700 11px/1 var(--fnt);text-transform:uppercase;letter-spacing:.06em;padding:4px 6px}
+.tgh .fill{height:8px;margin:0}
+.tgh .stat{font-size:13px;min-height:19px;color:var(--ink2)}
+.tgh .ln{display:grid;grid-template-columns:40% 1fr;gap:1%;font-size:12px;font-weight:600;color:var(--ink2)}
+.tgh .ln span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tgw .gut{font-size:12px;color:var(--ink2)}
+.tgr{border-bottom:1px solid var(--border);background:var(--sunken)}
+.tgr .gut{display:flex;align-items:center;justify-content:flex-end;padding:0 8px;text-align:right;font-weight:600;line-height:1.2}
+.drow{min-height:44px;border-left:1px solid var(--border);padding:6px;display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;min-width:0}
+.drow.over,.tgw .dc.over{background:var(--azsoft)}
+.drow .emp{font-size:12px;color:var(--ink2);align-self:center;padding:2px 4px}
+.tc{display:inline-flex;align-items:center;gap:6px;max-width:100%;border:1px solid var(--border);background:var(--card);border-radius:999px;padding:3px 10px 3px 7px;font-size:13px;line-height:1.35;color:var(--ink);box-shadow:var(--shc)}
+.tc[draggable]{cursor:grab}
+.tc .dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--wk-dot)}
+.tc.life .dot{background:var(--lf-dot)}
+.tc.meet{border-style:dashed;border-color:var(--bstrong);box-shadow:none}
+.tc.meet .dot{background:transparent;box-shadow:inset 0 0 0 2px var(--ink2)}
+.tc .tt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.tc .tl{flex:none;font-size:12px;color:var(--ink2)}
+.tc.out .tl{color:var(--aztext);font-weight:600}
+.tc.sel,.tc[aria-pressed=true]{outline:2px solid var(--ink);outline-offset:1px}
+.tc:hover[draggable]{background:var(--hover)}
+.tgb .gut.lab{position:relative}
+.tgb .gut.lab span{position:absolute;right:8px;transform:translateY(-50%);font-variant-numeric:tabular-nums}
+.tgw .dc{position:relative;border-left:1px solid var(--border);min-width:0;background-image:linear-gradient(to bottom,var(--border) 0 1px,transparent 1px),linear-gradient(to bottom,var(--hover) 0 1px,transparent 1px);background-size:100% var(--ph),100% var(--sl)}
+.tgw .dc.today{background-color:color-mix(in srgb,var(--azsoft) 45%,transparent)}
+.tgw .dc.picking{cursor:copy}
+.tgw .dc::before{content:"";position:absolute;left:40.5%;top:0;bottom:0;border-left:1px dashed var(--border);pointer-events:none}
+.tgw .eve{position:absolute;left:0;right:0;bottom:0;background:repeating-linear-gradient(135deg,transparent 0 6px,var(--chover) 6px 8px);pointer-events:none}
+.tgw .now{position:absolute;left:-4px;right:0;height:0;border-top:2px solid var(--ink);z-index:4;pointer-events:none}
+.tgw .now i{position:absolute;left:0;top:-6px;width:10px;height:10px;border-radius:50%;background:var(--ink)}
+.bx{container-type:inline-size;position:absolute;border-radius:6px;padding:3px 7px 5px;overflow:hidden;display:flex;flex-direction:column;gap:1px;font-size:12.5px;line-height:1.3;z-index:2}
+.bx.task{background:var(--wk-chip);color:var(--wk-on);border:1px solid color-mix(in srgb,var(--wk-dot) 40%,transparent);border-left:4px solid var(--wk-dot)}
+.bx.task[draggable]{cursor:grab}
+.bx.task.life{background:var(--lf-chip);color:var(--lf-on);border-color:color-mix(in srgb,var(--lf-dot) 40%,transparent);border-left-color:var(--lf-dot)}
+.bx.meet{background:var(--card);color:var(--ink);border:1px dashed var(--bstrong);z-index:1}
+.bx.meet .bm{color:var(--ink2)}
+.bx .bt{font-weight:600;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.bx.tiny{flex-direction:row;align-items:center;gap:6px;padding-top:1px;padding-bottom:1px}
+.bx.tiny .bt{-webkit-line-clamp:1;flex:1;min-width:0;white-space:nowrap;display:block}
+.bx .bm{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.bx.tiny .bm{flex:none}
+@container (max-width:72px){.bx.tiny .bm{display:none}.bx .bm{font-size:12px}}
+.bx.done{background:var(--sunken);color:var(--ink2);border-color:var(--border);border-left-color:var(--bstrong)}
+.bx.done .bt{text-decoration:line-through}
+.bx .dk{display:inline-flex;width:13px;margin-right:4px;vertical-align:-1px}
+.bx .dk svg{width:13px;fill:none;stroke:currentColor;stroke-width:2.4}
+.bx.sel{outline:2px solid var(--ink);outline-offset:1px;z-index:5}
+.bx.task:focus-visible{z-index:5}
+.bx.rz{cursor:ns-resize}
+.bx .rh{position:absolute;left:0;right:0;bottom:0;height:9px;cursor:ns-resize;touch-action:none}
+.bx .rh::after{content:"";position:absolute;left:50%;bottom:2px;width:22px;height:3px;margin-left:-11px;border-radius:2px;background:currentColor;opacity:.35}
+.bx:hover .rh::after,.bx.sel .rh::after{opacity:.8}
+.bx.dragging{opacity:.4}
+.tbghost{position:absolute;left:41%;right:3px;border:2px dashed var(--aztext);background:var(--azsoft);color:var(--aztext);border-radius:6px;font-size:12px;font-weight:600;padding:1px 6px;z-index:6;pointer-events:none;overflow:hidden;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tbbar{position:fixed;z-index:12;bottom:20px;left:calc(var(--shw,0px) + 24px);display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--card);color:var(--ink);border:1px solid var(--border);border-radius:10px;padding:8px 12px;box-shadow:var(--shm);font-size:14px;max-width:calc(100vw - var(--shw,0px) - 32px)}
+.tbbar b{max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbbar .btn{font-size:13px;padding:3px 11px;min-height:30px}
+.tbbar .kh{font-size:12px;color:var(--ink2)}
+.tbhint{position:fixed;z-index:12;bottom:20px;left:calc(50% + var(--shw,0px) / 2);transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:var(--ink);color:var(--card);border-radius:999px;padding:8px 18px;font-size:14px;box-shadow:var(--shm)}
+.tbhint .lnk{color:var(--card)}
+.eod{position:fixed;z-index:13;right:24px;bottom:24px;width:480px;max-width:calc(100vw - 32px);max-height:calc(100vh - 140px);overflow:auto;background:var(--card);color:var(--ink);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shm);display:flex;flex-direction:column;gap:10px}
+.eod.up{bottom:96px}
+.eod h4{margin:0;font:900 18px/1.25 var(--fhd);color:var(--ink)}
+.eod p{margin:0;font-size:13.5px;color:var(--ink2)}
+.eod .ri{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--border);padding-top:8px}
+.eod .rt{font-weight:600;font-size:14px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.eod .rt small{font-weight:400;font-size:12.5px;color:var(--ink2)}
+.eod .ra,.eod .rf{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.eod .btn{font-size:13px;padding:3px 11px;min-height:30px}
+.eod .rf{justify-content:space-between;border-top:1px solid var(--border);padding-top:10px}
+@media (prefers-reduced-motion:no-preference){.eod{animation:eodin .22s ease-out}}
+@keyframes eodin{from{transform:translateY(12px);opacity:.4}}
+/* phone (C7 B): List | Hours, one day, read-only */
+.pmode{margin:10px 16px 2px;align-self:flex-start}
+.pmode button{min-height:36px;padding:5px 18px}
+.dlist.hrs .tbnote{margin:6px 0 8px}
+.tgw.tgph{overflow:visible;box-shadow:none}
+.tgw.tgph .tgtop{position:static}
+.tgw.tgph .tgh .tgd{padding:6px 8px}
 </style>
 </head>
 <body>
 <header class="bar">
   <div class="hr1"><div class="logo"><button type="button" class="sun" aria-label="WeekGo logo" tabindex="-1"></button><h1 class="brand">WeekGo</h1></div>
-    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="olnote" id="olNote" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><span class="dd"><button type="button" class="btn sq nbell" id="bNote" data-pop="pNote" aria-haspopup="dialog" aria-expanded="false" aria-label="Updates" data-tip="Updates"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4"/></svg><span class="nb" id="nBadge" hidden></span></button><div class="pop right nots" id="pNote" role="dialog" aria-label="Updates" hidden></div></span><button type="button" class="btn sq maconly" id="mOl" data-act="olrefresh" aria-label="Refresh from Outlook" data-tip="Outlook"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></svg></button><button type="button" class="btn sq maconly nbell" id="bNt" data-act="ntopen" aria-label="Notion sync" data-tip="Notion"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h4"/></svg><span class="nb" id="ntDot" hidden>!</span></button><button type="button" class="btn sq" id="bTheme" data-act="themecycle" data-tip="Theme"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" data-tip="Week pattern" aria-label="Week pattern: which days are office, home or client site"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" data-tip="Photo" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button><span class="dd tipdd"><button type="button" class="btn sq" id="bHelp" data-pop="pHelp" aria-haspopup="dialog" aria-expanded="false" aria-label="Tips" data-tip="Help"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg></button><div class="pop right tips" id="pHelp" role="dialog" aria-label="Tips" hidden><h5>Tips</h5><ul><li><b>Loose tasks</b> have no day yet. They wait in the tray until you place them.</li><li><b>Drag a card</b> onto a day to plan it, or back to the tray.</li><li><b>Right-click a card</b> for Delete or Cancel.</li><li><b>X or Space</b> marks the focused card done. <b>A</b> adds a task.</li><li>The <b>view menu</b> (Week) changes how many days show.</li><li>The <b>refresh button</b> pulls the latest meetings from Outlook.</li><li>The <b>Notion button</b> sets up the automatic sync with your IBMDT Daily Plan (this week and next week).</li></ul><button type="button" class="tipx" data-act="tipclose">Got it</button></div></span></span><button type="button" class="btn main" data-act="add" data-tip="Add task · A">+ Add task</button></div></div>
+    <div class="hr1r"><span class="saved" id="saved" aria-live="polite"></span><span class="olnote" id="olNote" aria-live="polite"></span><span class="hbtns" role="group" aria-label="Appearance and week settings"><span class="dd"><button type="button" class="btn sq nbell" id="bNote" data-pop="pNote" aria-haspopup="dialog" aria-expanded="false" aria-label="Updates" data-tip="Updates"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4"/></svg><span class="nb" id="nBadge" hidden></span></button><div class="pop right nots" id="pNote" role="dialog" aria-label="Updates" hidden></div></span><button type="button" class="btn sq maconly" id="mOl" data-act="olrefresh" aria-label="Refresh from Outlook" data-tip="Outlook"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></svg></button><button type="button" class="btn sq maconly nbell" id="bNt" data-act="ntopen" aria-label="Notion sync" data-tip="Notion"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h4"/></svg><span class="nb" id="ntDot" hidden>!</span></button><button type="button" class="btn sq" id="bTheme" data-act="themecycle" data-tip="Theme"></button><button type="button" class="btn sq" id="mPat" data-act="pattern" data-tip="Week pattern" aria-label="Week pattern: which days are office, home or client site"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button><button type="button" class="btn sq" id="bBg" data-tip="Photo" aria-label="Background picture"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button><span class="dd tipdd"><button type="button" class="btn sq" id="bHelp" data-pop="pHelp" aria-haspopup="dialog" aria-expanded="false" aria-label="Tips" data-tip="Help"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg></button><div class="pop right tips" id="pHelp" role="dialog" aria-label="Tips" hidden><h5>Tips</h5><ul><li><b>Loose tasks</b> have no day yet. They wait in the tray until you place them.</li><li><b>Drag a card</b> onto a day to plan it, or back to the tray.</li><li><b>Right-click a card</b> for Delete or Cancel.</li><li><b>X or Space</b> marks the focused card done. <b>A</b> adds a task.</li><li>The <b>view menu</b> (Week) changes how many days show.</li><li><b>Timebox</b> (or <b>T</b>) shows your days in hours. Drag a task into a time; timeboxes are private and never go to Outlook.</li><li>The <b>refresh button</b> pulls the latest meetings from Outlook.</li><li>The <b>Notion button</b> sets up the automatic sync with your IBMDT Daily Plan (this week and next week).</li></ul><button type="button" class="tipx" data-act="tipclose">Got it</button></div></span></span><button type="button" class="btn main" data-act="add" data-tip="Add task · A">+ Add task</button></div></div>
   <div class="hr2">
     <button type="button" class="btn sq" data-act="prev" aria-label="Previous week" title="Previous week (←)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
     <span class="range" id="range" aria-live="polite"></span>
     <button type="button" class="btn sq" data-act="next" aria-label="Next week" title="Next week (→)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
     <span class="chip" id="rel"></span>
     <button type="button" class="btn" data-act="today">Today</button>
+    <div class="seg mode" id="modeSeg" role="group" aria-label="Show as (T)" title="Board or Timebox (T)"><button type="button" data-act="mode" data-v="board" aria-pressed="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="4.5" height="16" rx="1"/><rect x="10" y="4" width="4.5" height="11" rx="1"/><rect x="16" y="4" width="4" height="7" rx="1"/></svg>Board</button><button type="button" data-act="mode" data-v="time" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/></svg>Timebox</button></div>
+    <span class="dd" id="tbSetW" hidden><button type="button" class="btn" id="mGrid" data-pop="pGrid" aria-haspopup="menu" aria-expanded="false" title="Slot size and hours shown"><span id="mGridT">30 min · 8–19</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
+      <div class="pop" id="pGrid" role="menu" aria-label="Slot size and hours shown" hidden><h5>Slot size</h5><button type="button" role="menuitemradio" data-act="tbslot" data-slot="15">15 min</button><button type="button" role="menuitemradio" data-act="tbslot" data-slot="30">30 min</button><button type="button" role="menuitemradio" data-act="tbslot" data-slot="60">1 hour</button><h5>Hours shown</h5><button type="button" role="menuitemradio" data-act="tbhours" data-hours="8">08:00 – 19:00</button><button type="button" role="menuitemradio" data-act="tbhours" data-hours="7">07:00 – 22:00</button></div></span>
     <span class="dd"><button type="button" class="btn" id="mView" data-pop="pView" aria-haspopup="menu" aria-expanded="false" title="How much time to show"><span id="mViewT">Week</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
       <div class="pop" id="pView" role="menu" aria-label="How much time to show" hidden>
         <button type="button" role="menuitemradio" data-act="vpick" data-v="day">Day</button><button type="button" role="menuitemradio" data-act="vpick" data-v="3day">3 days</button><button type="button" role="menuitemradio" data-act="vpick" data-v="work">Work week</button><button type="button" role="menuitemradio" data-act="vpick" data-v="week">Week</button><button type="button" role="menuitemradio" data-act="vpick" data-v="month">Month</button></div></span>
@@ -1050,6 +1152,7 @@ html.shnt .shelf,html.shnt main{transition:none!important}
 </div>
 <dialog id="sheet" aria-labelledby="shT"><div class="sh" id="shS"><div class="grab"></div><div class="shh"><h2 id="shT"></h2><button type="button" class="btn b44" data-act="shclose">Done</button></div><div id="shB"></div></div></dialog>
 <div id="menuhost"></div>
+<section id="eod" class="eod" aria-labelledby="eodT" hidden></section>
 <div class="undo" id="undo" role="status" aria-live="polite" hidden></div>
 <div class="srl" id="live" role="status" aria-live="polite"></div>
 
@@ -1148,7 +1251,8 @@ let THIS_MON = mondayOf(new Date());
 let S = { tasks: [] };
 const RANGES = { day:{n:1,step:1,label:'Day'}, '3day':{n:3,step:3,label:'3 days'}, work:{n:5,step:7,label:'Work week'}, week:{n:7,step:7,label:'Week'} };
 let savedRange = 'week'; try { const r = localStorage.getItem('wa-range'); if (RANGES[r]) savedRange = r; } catch (e) {}
-const ui = { range:savedRange, first:TODAY, view:'week', anchor:THIS_MON, filter:'all', hideMeet:false, menu:null, day:null, placing:null, armDel:null };
+const ui = { range:savedRange, first:TODAY, view:'week', anchor:THIS_MON, filter:'all', hideMeet:false, menu:null, day:null, placing:null, armDel:null, mode:'board', tbSel:null, tbPick:null };
+try { if (localStorage.getItem('wa-mode') === 'time') ui.mode = 'time'; } catch (e) {}   // WA-84: Board or Timebox, remembered per device
 const mqC = matchMedia('(max-width:699px)'), compact = () => mqC.matches;
 let form = { kind:'work', cat:'', size:'half', again:false };
 
@@ -1381,10 +1485,10 @@ const roMeeting = id => CLOUD && (S.tasks.find(x => x.id === id) || {}).type ===
 function seed() {
   const m = new Date().getDay() === 0 ? add(THIS_MON, 7) : THIS_MON, d = n => add(m, n), T = (o) => Object.assign({ id:uid(), done:false, demo:true, cat:'' }, o);
   const tasks = [
-    T({type:'meeting',title:'Design sync',kind:'work',size:'quick',day:d(0)}), T({type:'meeting',title:'1:1 Pera',kind:'work',size:'quick',day:d(1)}),
-    T({type:'meeting',title:'Playbook sync',kind:'work',size:'quick',day:d(1)}), T({type:'meeting',title:'Design sync',kind:'work',size:'quick',day:d(2)}),
-    T({type:'meeting',title:'Team review',kind:'work',size:'half',day:d(2)}), T({type:'meeting',title:'1:1 Beam',kind:'work',size:'quick',day:d(4)}),
-    T({type:'task',title:'Review deck',kind:'work',size:'half',day:d(0),due:d(4)}), T({type:'task',title:'Reply to Pam',kind:'work',size:'quick',day:d(1)}),
+    T({type:'meeting',title:'Design sync',kind:'work',size:'quick',day:d(0),time:'10:00',end:'11:00'}), T({type:'meeting',title:'1:1 Pera',kind:'work',size:'quick',day:d(1),time:'14:00',end:'14:30'}),
+    T({type:'meeting',title:'Playbook sync',kind:'work',size:'quick',day:d(1),time:'10:00',end:'10:30'}), T({type:'meeting',title:'Design sync',kind:'work',size:'quick',day:d(2),time:'10:00',end:'11:00'}),
+    T({type:'meeting',title:'Team review',kind:'work',size:'half',day:d(2),time:'13:00',end:'15:00'}), T({type:'meeting',title:'1:1 Beam',kind:'work',size:'quick',day:d(4),time:'11:00',end:'11:30'}),
+    T({type:'task',title:'Review deck',kind:'work',size:'half',day:d(0),due:d(4),start:'13:00',mins:120}), T({type:'task',title:'Reply to Pam',kind:'work',size:'quick',day:d(1),start:'09:00',mins:30}),
     T({type:'task',title:'Playbook draft',kind:'work',size:'full',day:d(2),due:d(2)}), T({type:'task',title:'Fix the sink',kind:'life',cat:'Home fixes',size:'half',day:d(3)}),
     T({type:'task',title:'Prep notes',kind:'work',size:'quick',day:d(3)}), T({type:'task',title:'Send recap',kind:'work',size:'quick',day:d(4),due:d(4)}),
     T({type:'task',title:'Groceries',kind:'life',cat:'Errands',size:'quick',day:d(4)}), T({type:'task',title:'Clean the flat',kind:'life',cat:'Chores',size:'half',day:d(5)}),
@@ -1452,7 +1556,7 @@ function fillPat() { $('patB').innerHTML = patternHtml(); }
 const weekDays = mon => [0,1,2,3,4,5,6].map(n => add(mon, n));
 /* range modes (WA-31, desktop only): Day / 3 days start at ui.first; Work week and Week start at the Monday ui.anchor. ui.anchor is always the Monday of the first shown day, so the loose tray, glance and add dialog keep meaning "this week". */
 const rangeOn = () => !compact() && ui.view === 'week';
-const shownDays = () => { const R = RANGES[ui.range]; return R.n <= 3 ? [0,1,2].slice(0,R.n).map(n => add(ui.first, n)) : weekDays(ui.anchor).slice(0, R.n); };
+const shownDays = () => { const R = RANGES[effRange()]; return R.n <= 3 ? [0,1,2].slice(0,R.n).map(n => add(ui.first, n)) : weekDays(ui.anchor).slice(0, R.n); };
 function setRange(r) {
   if (!RANGES[r] || r === ui.range) return;
   const small = RANGES[r].n <= 3, wasSmall = RANGES[ui.range].n <= 3;
@@ -1464,18 +1568,18 @@ function setRange(r) {
 /* make sure a day is on screen (Work week hides the weekend, Day / 3 days show a few) */
 function showDay(d) {
   ui.anchor = mondayOf(parse(d)); ui.day = d; if (compact()) return;
-  if (RANGES[ui.range].n <= 3) { if (!shownDays().includes(d)) ui.first = d; }
+  if (RANGES[effRange()].n <= 3) { if (!shownDays().includes(d)) ui.first = d; }
   else if (ui.range === 'work' && isWeekend(d)) { ui.range = 'week'; try { localStorage.setItem('wa-range', 'week'); } catch (e) {} }
 }
 const weeksBetween = (a,b) => Math.round((parse(b) - parse(a)) / 604800000);
 function rangeLabel() {
-  const R = RANGES[ui.range], small = rangeOn() && R.n <= 3;
+  const R = RANGES[effRange()], small = rangeOn() && R.n <= 3;
   if (small && R.n === 1) { const d = parse(ui.first); return DN[(d.getDay()+6)%7]+' '+d.getDate()+' '+MN[d.getMonth()]; }
   const n = ui.view === 'week' ? (rangeOn() ? R.n - 1 : 6) : 34, a = small ? ui.first : ui.anchor, b = add(a, n), da = parse(a), db = parse(b);
   return da.getMonth() === db.getMonth() ? da.getDate()+' – '+db.getDate()+' '+MN[db.getMonth()] : da.getDate()+' '+MN[da.getMonth()]+' – '+db.getDate()+' '+MN[db.getMonth()];
 }
 function relLabel() {
-  if (rangeOn() && RANGES[ui.range].n <= 3) { const k = Math.round((parse(ui.first) - parse(TODAY)) / 86400000); return k === 0 ? 'Today' : k === 1 ? 'Tomorrow' : k === -1 ? 'Yesterday' : k > 0 ? 'In '+k+' days' : -k+' days ago'; }
+  if (rangeOn() && RANGES[effRange()].n <= 3) { const k = Math.round((parse(ui.first) - parse(TODAY)) / 86400000); return k === 0 ? 'Today' : k === 1 ? 'Tomorrow' : k === -1 ? 'Yesterday' : k > 0 ? 'In '+k+' days' : -k+' days ago'; }
   const w = weeksBetween(THIS_MON, ui.anchor);
   return w === 0 ? 'This week' : w === 1 ? 'Next week' : w === -1 ? 'Last week' : w > 0 ? 'In '+w+' weeks' : -w+' weeks ago';
 }
@@ -1499,7 +1603,7 @@ function links(t) {
   if (kids.length) h += '<span class="lk led" title="Follow-ups">Led to '+kids.length+' · '+kids.filter(k => k.done).length+' done</span>';
   return h;
 }
-const cardName = t => t.title+(t.mark ? ', '+({ new:'new', changed:'moved from '+(t.mark.was && t.mark.was.day ? fmtDay(t.mark.was.day) : 'another day'), cancelled:'cancelled' }[t.mark.kind] || '') : '')+', '+(t.type === 'meeting' ? 'Meeting' : t.kind === 'life' ? 'Life' : 'Work')+', '+SZ[t.size].label+(t.day || t.type === 'meeting' ? '' : ', loose')+(t.due && !t.done ? ', '+(t.due < TODAY ? 'overdue, due ' : 'due ')+fmtDate(t.due) : '')+(t.done ? ', done' : '')+(subCount(t) ? ', '+subCount(t)[0]+' of '+subCount(t)[1]+' subtasks done' : '');
+const cardName = t => t.title+(isBox(t) ? ', '+boxLabel(t) : '')+(t.mark ? ', '+({ new:'new', changed:'moved from '+(t.mark.was && t.mark.was.day ? fmtDay(t.mark.was.day) : 'another day'), cancelled:'cancelled' }[t.mark.kind] || '') : '')+', '+(t.type === 'meeting' ? 'Meeting' : t.kind === 'life' ? 'Life' : 'Work')+', '+SZ[t.size].label+(t.day || t.type === 'meeting' ? '' : ', loose')+(t.due && !t.done ? ', '+(t.due < TODAY ? 'overdue, due ' : 'due ')+fmtDate(t.due) : '')+(t.done ? ', done' : '')+(subCount(t) ? ', '+subCount(t)[0]+' of '+subCount(t)[1]+' subtasks done' : '');
 function card(t, inTray) {
   const life = t.kind === 'life' && t.type !== 'meeting', meet = t.type === 'meeting';
   const tag = '<span class="tag'+(meet?' meet':life?' life':'')+'">'+icon(meet?'meet':life?'life':'work')+(meet?'Meeting':life?'Life':'Work')+'</span>';
@@ -1513,7 +1617,7 @@ function card(t, inTray) {
   return '<article class="card s-'+t.size+(life?' life':'')+(meet?' meeting hc':' hc')+(t.done?' done':'')+(ui.panel === t.id ? ' tpsel' : '')+(mk === 'new' || mk === 'changed' ? ' olm' : '')+(cx ? ' olcx' : '')+'" '+(cx ? '' : 'draggable="true" ')+'tabindex="0" role="group"'+' aria-keyshortcuts="'+(meet ? '' : 'X Space ')+(t.day ? 'Alt+ArrowUp Alt+ArrowDown' : '')+'"'+' aria-label="'+esc(cardName(t))+'" data-id="'+t.id+'">'
     + (meet && cx ? '' : '<button type="button" class="chk" data-act="done" data-id="'+t.id+'"'+(meet && CLOUD ? ' disabled' : '')+' aria-pressed="'+!!t.done+'" aria-label="'+(t.done?'Mark not done: ':'Mark done: ')+esc(t.title)+'"'+(compact() ? '' : ' tabindex="-1"')+'><span class="ck" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-6.5"/></svg></span></button>')
     + '<div class="ct">'+esc(t.title)+dot+'</div>'
-    + '<div class="cm">'+tag+cat+'<span class="sz">'+SZ[t.size].label+'</span>'+due+sbc+links(t)+was+olA+'</div>'
+    + '<div class="cm">'+tag+cat+(isBox(t) ? '<span class="sz tm">'+boxLabel(t)+'</span>' : '<span class="sz">'+SZ[t.size].label+'</span>')+due+sbc+links(t)+was+olA+'</div>'
     + (cx ? '' : '<button type="button" class="more" data-act="menu" data-id="'+t.id+'" aria-label="Move or change '+esc(t.title)+'" aria-haspopup="menu"'+(compact() ? '' : ' tabindex="-1"')+'>⋯</button>')+'</article>';
 }
 const cardsOf = items => { let seenCx = false; return items.map(t => { const h = cancelled(t) && !seenCx ? '<p class="olcxh">Cancelled</p>' : ''; if (cancelled(t)) seenCx = true; return h + card(t); }).join(''); };
@@ -1702,6 +1806,297 @@ function renderMonth() {
   }
   return h + '</div><div class="legend"><span><i></i>Meeting</span><span><i class="t"></i>Work task</span><span><i class="l"></i>Life task</span><span><i class="d"></i>Deadline</span><span class="chip">Heavy = 2+ Busy days or 3+ deadlines</span><span>Click a day or a week to open it.</span></div>';
 }
+/* ---------- WA-84: Timebox mode. The same tasks, laid out in hours (Win's picks C1 B to C8 B, 10 Nov 2026).
+   A task gets a time with `start` ('HH:MM') and `mins` and keeps its `day`. The real length is the truth and the size follows it (C4 B),
+   so fullness keeps adding sizes exactly as the board does (C5 A). Overlaps sit side by side; there are no clash warnings.
+   Meetings keep their Outlook times (`time`, `end`) and cannot be moved here. Timeboxes are private: they live only in WeekGo
+   and are never sent to Outlook (C6). The phone and the phone page only show the hours (C7 B, read-only). ---------- */
+const DUR = { quick:30, half:120, full:240 };                                  // a new box's length comes from the size
+const sizeOfMins = m => m <= 60 ? 'quick' : m <= 180 ? 'half' : 'full';        // <=1h Quick, <=3h Half-day, more Full-day
+const hmMin = s => { const m = /^(\d{1,2}):(\d{2})/.exec(String(s || '')); return m && +m[1] < 24 && +m[2] < 60 ? +m[1]*60 + +m[2] : null; };
+const toHM = m => pad(Math.floor(m/60))+':'+pad(m%60);
+const dtx = m => m < 60 ? m+'m' : Math.floor(m/60)+'h'+(m%60 ? ' '+m%60+'m' : '');
+const isBox = t => t.type === 'task' && !!t.day && hmMin(t.start) !== null;
+const tbLen = t => t.mins > 0 ? t.mins : DUR[t.size];
+const span = t => {   // [start, end] in minutes, or null when it has no time
+  if (t.type === 'meeting') { const s = hmMin(t.time); if (s === null) return null; const e = hmMin(t.end); return [s, e !== null && e > s ? e : Math.min(1440, s + 30)]; }
+  if (!isBox(t)) return null; const s = hmMin(t.start); return [s, Math.min(1440, s + tbLen(t))];
+};
+const boxLabel = t => { const p = span(t); return p ? toHM(p[0])+'–'+toHM(p[1]) : ''; };
+const tb = { slot:30, hours:'8' };
+try { const v = +localStorage.getItem('wa-tbslot'); if ([15,30,60].includes(v)) tb.slot = v; if (localStorage.getItem('wa-tbhours') === '7') tb.hours = '7'; } catch (e) {}
+const tbHours = () => tb.hours === '7' ? [7, 22] : [8, 19];
+const tbPH = () => ({ 15:96, 30:52, 60:44 })[tb.slot];                         // pixels per hour
+const tbOn = () => !compact() && ui.view === 'week' && ui.mode === 'time';
+const tbNarrow = () => innerWidth < 1100;                                      // C7 B: a narrow window shows 3 days
+const effRange = () => tbOn() && tbNarrow() && RANGES[ui.range].n > 3 ? '3day' : ui.range;
+const snap = m => Math.round(m / tb.slot) * tb.slot;
+const LOCK = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+function setMode(m) {
+  ui.mode = m === 'time' ? 'time' : 'board'; ui.tbSel = null; ui.tbPick = null;
+  try { localStorage.setItem('wa-mode', ui.mode); } catch (e) {}
+  render(); say(ui.mode === 'time' ? (compact() ? 'Hours: the day in hours' : 'Timebox: your days in hours') : (compact() ? 'List' : 'Board: your days as cards'));
+}
+function tbHead() {   // the Board | Timebox switch and the grid settings in the header
+  const wk = ui.view === 'week';
+  $('modeSeg').hidden = !wk; document.querySelectorAll('#modeSeg [data-v]').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === ui.mode));
+  $('tbSetW').hidden = !tbOn();
+  $('mGridT').textContent = (tb.slot === 60 ? '1 hour' : tb.slot+' min')+' · '+tbHours().join('–');
+  document.querySelectorAll('#pGrid [data-slot]').forEach(b => b.setAttribute('aria-checked', +b.dataset.slot === tb.slot));
+  document.querySelectorAll('#pGrid [data-hours]').forEach(b => b.setAttribute('aria-checked', b.dataset.hours === tb.hours));
+}
+/* when the window narrows into 3 days (or widens out of it) keep the same days in view, as setRange does */
+let tbEff = null;
+function tbRangeSync() {
+  const er = effRange();
+  if (tbEff && tbEff.r === ui.range && tbEff.e !== er) {
+    if (RANGES[er].n <= 3 && RANGES[tbEff.e].n > 3) ui.first = weekDays(ui.anchor).includes(TODAY) ? TODAY : ui.anchor;
+    else if (RANGES[er].n > 3 && RANGES[tbEff.e].n <= 3) ui.anchor = mondayOf(parse(ui.first));
+  }
+  tbEff = { r:ui.range, e:er };
+}
+let tbWide = innerWidth >= 1100;
+addEventListener('resize', () => { const w = innerWidth >= 1100; if (w !== tbWide) { tbWide = w; if (tbOn()) render(); } else if (tbOn()) requestAnimationFrame(tbFit); });
+/* side-by-side lanes for things that overlap: id -> [lane, lanes in its cluster] */
+function tbLanes(list) {
+  const out = new Map(), s = list.slice().sort((a,b) => span(a)[0] - span(b)[0] || (span(b)[1] - span(b)[0]) - (span(a)[1] - span(a)[0])); let cl = [], end = -1;
+  const flush = () => { const lanes = []; cl.forEach(t => { const p = span(t); let i = lanes.findIndex(e => e <= p[0]); if (i < 0) { i = lanes.length; lanes.push(0); } lanes[i] = p[1]; out.set(t.id, [i, 0]); }); cl.forEach(t => { out.get(t.id)[1] = lanes.length; }); cl = []; };
+  s.forEach(t => { const p = span(t); if (cl.length && p[0] >= end) flush(); cl.push(t); end = Math.max(end, p[1]); }); if (cl.length) flush();
+  return out;
+}
+/* two lanes per day (C2 D): Meetings on the left 40%, My plan on the right */
+function tbPlace(d, H0, H1, ph) {
+  const its = S.tasks.filter(t => t.day === d && vis(t) && !cancelled(t) && span(t)), inH = t => { const p = span(t); return p[1] > H0*60 && p[0] < H1*60; };
+  const shown = its.filter(inH), meets = shown.filter(t => t.type === 'meeting'), tasks = shown.filter(t => t.type !== 'meeting');
+  const y = t => { const p = span(t), a = Math.max(p[0], H0*60), b = Math.min(p[1], H1*60); return { top:(a - H0*60) / 60 * ph, h:(b - a) / 60 * ph }; };
+  const LM = tbLanes(meets), LT = tbLanes(tasks), boxes = [];
+  meets.forEach(t => { const [i, n] = LM.get(t.id); boxes.push([t, Object.assign(y(t), { l:i*40/n, w:40/n })]); });
+  tasks.forEach(t => { const [i, n] = LT.get(t.id); boxes.push([t, Object.assign(y(t), { l:41 + i*59/n, w:59/n })]); });
+  return { boxes, outside:its.filter(t => !inH(t)) };
+}
+const mTitle = t => CLOUD && t.type === 'meeting' ? t.title.replace(/\s+\d{1,2}:\d{2}$/, '') : t.title;   // the phone copy says "Meeting 14:00"; the time is drawn anyway
+function tbChip(t, ro) {
+  const meet = t.type === 'meeting', life = !meet && t.kind === 'life', sp = span(t), live = !ro && !meet;
+  const tl = sp ? toHM(sp[0]) : meet ? 'No time' : dtx(tbLen(t));
+  const lab = esc(mTitle(t))+(meet ? ', meeting' : life ? ', life' : ', work')+(sp ? ', at '+toHM(sp[0])+', outside the hours shown' : ', no time yet')+(live ? '. Enter gives it the next free time; or click it, then click a time.' : '');
+  return '<span class="tc'+(meet ? ' meet' : life ? ' life' : '')+(ui.tbPick === t.id ? ' sel' : '')+(sp ? ' out' : '')+'" data-id="'+t.id+'"'+(live ? ' draggable="true" tabindex="0" role="button" aria-pressed="'+(ui.tbPick === t.id)+'" aria-label="'+lab+'"' : '')+'>'
+    + '<span class="dot" aria-hidden="true"></span><span class="tt">'+esc(mTitle(t))+'</span><span class="tl">'+tl+'</span></span>';
+}
+function tbBox(t, p, ro) {
+  const meet = t.type === 'meeting', life = !meet && t.kind === 'life', sp = span(t), len = sp[1] - sp[0], tiny = p.h < 40, sel = ui.tbSel === t.id, live = !ro && !meet && !t.done;
+  const meta = toHM(sp[0])+'–'+toHM(sp[1])+(meet ? '' : ' · '+dtx(len));
+  return '<div class="bx '+(meet ? 'meet' : 'task')+(life ? ' life' : '')+(t.done ? ' done' : '')+(tiny ? ' tiny' : '')+(sel ? ' sel' : '')+'" data-id="'+t.id+'" style="top:'+p.top.toFixed(1)+'px;height:'+Math.max(18, p.h - 2).toFixed(1)+'px;left:'+p.l.toFixed(2)+'%;width:calc('+p.w.toFixed(2)+'% - 3px)"'
+    + (ro ? '' : meet ? ' tabindex="-1"' : ' tabindex="0" role="button" aria-pressed="'+sel+'"'+(live ? ' draggable="true" aria-keyshortcuts="ArrowUp ArrowDown Shift+ArrowUp Shift+ArrowDown ArrowLeft ArrowRight Delete X"' : ''))
+    + ' aria-label="'+esc(mTitle(t))+', '+(meet ? 'meeting, ' : '')+meta+(meet ? '' : ', '+SZ[t.size].label)+(t.done ? ', done' : '')+'">'
+    + '<span class="bt">'+(t.done ? '<span class="dk">'+TICK+'</span>' : '')+esc(mTitle(t))+'</span><span class="bm">'+(tiny ? (meet ? toHM(sp[0]) : dtx(len)) : meta)+'</span>'
+    + (live ? '<span class="rh" data-rh="'+t.id+'" aria-hidden="true" title="Drag to change the length"></span>' : '')+'</div>';
+}
+/* the grid: day heads, the "No time yet" row (C3 A), then the hours. ro = read-only (phone, phone page) */
+function tbGrid(days, ro, phone) {
+  const [H0, H1] = tbHours(), ph = tbPH(), body = (H1 - H0) * ph, now = new Date(), nm = now.getHours()*60 + now.getMinutes();
+  const cols = (phone ? '46px' : '56px')+' repeat('+days.length+', minmax('+(phone ? 0 : 150)+'px, 1fr))', P = {};
+  days.forEach(d => { P[d] = tbPlace(d, H0, H1, ph); });
+  let h = '<div class="tgw'+(phone ? ' tgph' : '')+(ro ? ' ro' : '')+'" id="tgw" style="--ph:'+ph+'px;--sl:'+(ph * tb.slot / 60)+'px"><div class="tgtop">';
+  h += '<div class="tgh" style="grid-template-columns:'+cols+'"><div class="gut"></div>' + days.map(d => {
+    const l = load(d);
+    return '<div class="tgd'+(d === TODAY ? ' today' : '')+(isWeekend(d) ? ' wk' : '')+'">'+(phone ? '' : '<div class="dn"><h3>'+fmtDay(d)+'</h3>'+(d === TODAY ? '<span class="tdy">Today</span>' : '')+'</div>'
+      + '<div class="fill'+(l >= .8 ? ' hi' : '')+'" role="img" aria-label="'+barLabel(l)+'">'+barIn(l)+'</div><div class="stat"><span class="lw">'+(loadHtml(l) || '<span class="mut">Nothing planned</span>')+'</span></div>')
+      + '<div class="ln" aria-hidden="true"><span>Meetings</span><span>My plan</span></div></div>';
+  }).join('') + '</div>';
+  h += '<div class="tgr" style="grid-template-columns:'+cols+'"><div class="gut"><span>No time yet</span></div>' + days.map(d => {
+    const un = S.tasks.filter(t => t.day === d && t.type === 'task' && !t.done && !cancelled(t) && vis(t) && !isBox(t));
+    const mn = S.tasks.filter(t => t.day === d && t.type === 'meeting' && !cancelled(t) && vis(t) && !span(t));
+    const list = un.concat(P[d].outside.filter(t => !t.done), mn), timed = P[d].boxes.some(([t]) => t.type === 'task');
+    return '<div class="drow"'+(ro ? '' : ' data-drop="r:'+d+'"')+' aria-label="'+fmtDay(d)+', no time yet">'+list.map(t => tbChip(t, ro)).join('')
+      + (list.length ? '' : '<span class="emp">'+(timed ? 'All timed' : ro ? 'Nothing' : 'Nothing untimed')+'</span>')+'</div>';
+  }).join('') + '</div></div>';
+  h += '<div class="tgb" style="grid-template-columns:'+cols+'"><div class="gut lab" style="height:'+body+'px" aria-hidden="true">';
+  for (let hr = H0 + 1; hr < H1; hr++) h += '<span style="top:'+((hr - H0) * ph)+'px">'+pad(hr)+':00</span>';
+  h += '</div>' + days.map(d => {
+    const nowL = d === TODAY && nm > H0*60 && nm < H1*60 ? '<div class="now" style="top:'+((nm - H0*60) / 60 * ph).toFixed(1)+'px" aria-hidden="true"><i></i></div>' : '';
+    const eve = H1 > 18 ? '<div class="eve" style="top:'+((18 - H0) * ph)+'px" aria-hidden="true"></div>' : '';
+    return '<div class="dc'+(d === TODAY ? ' today' : '')+(ui.tbPick && !ro ? ' picking' : '')+'"'+(ro ? '' : ' data-drop="g:'+d+'"')+' data-d="'+d+'" style="height:'+body+'px" role="group" aria-label="'+fmtDay(d)+' in hours">'
+      + eve + P[d].boxes.map(([t, p]) => tbBox(t, p, ro)).join('') + nowL + '</div>';
+  }).join('') + '</div></div>';
+  return h;
+}
+function tbBar() {   // the selected box (C3 A): Shorter / Longer / No time / Done
+  const t = S.tasks.find(x => x.id === ui.tbSel); if (!t || !isBox(t) || CLOUD) return '';
+  return '<div class="tbbar" role="toolbar" aria-label="Timebox: '+esc(t.title)+'"><b>'+esc(t.title)+'</b><span class="mut">'+fmtDay(t.day)+' · '+boxLabel(t)+' · '+SZ[t.size].label+'</span>'
+    + '<button type="button" class="btn" data-act="tblen" data-v="-1" aria-label="Shorter by '+tb.slot+' minutes">Shorter</button><button type="button" class="btn" data-act="tblen" data-v="1" aria-label="Longer by '+tb.slot+' minutes">Longer</button>'
+    + '<button type="button" class="btn" data-act="tbunbox">No time</button><button type="button" class="btn" data-act="tbdone">'+(t.done ? 'Not done' : 'Done')+'</button><button type="button" class="btn" data-act="tbopen">Details</button>'
+    + '<span class="kh">↑↓ move · ⇧↑↓ length · ←→ day · Delete no time · Esc</span></div>';
+}
+function renderTB() {
+  const days = shownDays(), pick = ui.tbPick && S.tasks.find(x => x.id === ui.tbPick);
+  return '<p class="tbnote">'+LOCK+'<span>'+(CLOUD ? 'Times are set on the Mac. This page only shows them.' : 'Timeboxes are private and never go to Outlook.')+(tbNarrow() && RANGES[ui.range].n > 3 ? ' A narrow window shows 3 days.' : '')+'</span></p>'
+    + tbGrid(days, CLOUD, false) + tbBar()
+    + (pick ? '<div class="tbhint" role="status">Click a time for “'+esc(pick.title)+'”<button type="button" class="lnk" data-act="tbpickx">Cancel</button></div>' : '');
+}
+/* phone (C7 B): one day, two lanes, read-only */
+function hoursDay(d) {
+  const l = load(d);
+  return '<section class="dlist hrs" id="dl" aria-label="'+fmtDay(d)+' in hours"><div class="dh"><h2>'+(d === TODAY ? 'Today · ' : '')+fmtDay(d)+' '+MN[parse(d).getMonth()]+'</h2>'
+    + '<div class="fbw"><div class="fb'+(l >= .8 ? ' hi' : '')+'" role="img" aria-label="'+barLabel(l)+'">'+barIn(l)+'</div><span class="fw">'+fullWord(l)+'</span></div></div>'
+    + '<p class="tbnote">'+LOCK+'<span>'+(CLOUD ? 'Times are set on the Mac. This only shows them.' : 'Make the window wider to change times.')+'</span></p>' + tbGrid([d], true, true) + '</section>';
+}
+/* size the grid to the window and keep its scroll across redraws (first time: show 08:00, or an hour before now) */
+let tbScroll = null;
+function tbFit() {
+  const g = $('tgw'); if (!g || g.classList.contains('tgph')) return;
+  g.style.height = Math.max(420, Math.round(innerHeight - g.getBoundingClientRect().top - (ui.tbSel || ui.tbPick ? 84 : 24)))+'px';   // room for the box bar
+  if (tbScroll === null) tbScroll = tb.hours === '7' ? tbPH() : 0;
+  g.scrollTop = tbScroll;
+}
+document.addEventListener('scroll', e => { if (e.target && e.target.id === 'tgw') tbScroll = e.target.scrollTop; }, true);
+const tbFocus = id => { const el = document.querySelector('#board .bx[data-id="'+id+'"]'); if (el) { el.focus({ preventScroll:true }); el.scrollIntoView({ block:'nearest', inline:'nearest' }); } return !!el; };
+const tbChipFocus = id => { const el = document.querySelector('#board .tc[data-id="'+id+'"]'); if (el) el.focus({ preventScroll:true }); return !!el; };
+const tbMinAt = (col, y) => tbHours()[0]*60 + (y - col.getBoundingClientRect().top) / tbPH() * 60;
+function tbSet(t, d, s, mins) {
+  mins = Math.max(15, Math.min(mins, 1440)); s = Math.max(0, Math.min(Math.round(s), 1440 - mins));
+  if (t.day !== d) delete t.order;
+  t.day = d; t.week = mondayOf(parse(d)); t.start = toHM(s); t.mins = mins; t.size = sizeOfMins(mins);
+}
+const tbUnset = t => { delete t.start; delete t.mins; };
+/* give task `id` a time: from a chip, the Loose rail, another time or another day */
+async function tbPut(id, d, s, how) {
+  const t = S.tasks.find(x => x.id === id); if (!t || t.type !== 'task' || CLOUD) return;
+  if (t.kind === 'work' && isWeekend(d) && t.day !== d && !(await askWeekend(t.title, d))) { render(); return; }
+  tbSet(t, d, how === 'keep' ? s : snap(s), tbLen(t)); ui.tbPick = null; ui.tbSel = id;
+  if (!shownDays().includes(d)) showDay(d);
+  save(); render(); tbFocus(id); say('“'+t.title+'” '+fmtDay(d)+', '+boxLabel(t)+', '+SZ[t.size].label);
+}
+function tbResize(t, dm) {
+  const s = hmMin(t.start), m = Math.max(tb.slot, Math.min(tbLen(t) + dm, 1440 - s));
+  if (m === tbLen(t)) { say('“'+t.title+'” can’t be '+(dm < 0 ? 'shorter' : 'longer')); return; }
+  tbSet(t, t.day, s, m); ui.tbSel = t.id; save(); render(); tbFocus(t.id); say('“'+t.title+'” '+dtx(m)+', now '+SZ[t.size].label);
+}
+function tbMove(t, d, s) {
+  if (d !== t.day) { tbPut(t.id, d, s, 'keep'); return; }
+  const s2 = Math.max(0, Math.min(s, 1440 - tbLen(t))); if (toHM(s2) === t.start) return;
+  tbSet(t, d, s2, tbLen(t)); ui.tbSel = t.id; save(); render(); tbFocus(t.id); say('“'+t.title+'” '+boxLabel(t));
+}
+function tbUnbox(id, d) {   // back to "No time yet" (on its own day, or day d when dropped on another day's row)
+  const t = S.tasks.find(x => x.id === id); if (!t || t.type !== 'task' || CLOUD) return;
+  if (d && d !== t.day) { delete t.order; t.day = d; t.week = mondayOf(parse(d)); }
+  tbUnset(t); if (ui.tbSel === id) ui.tbSel = null; save(); render(); tbChipFocus(id); say('“'+t.title+'” has no time now, '+fmtDay(t.day));
+}
+/* Enter on a chip: the next free half hour in My plan (from now on today, else from 09:00) */
+function tbAuto(id) {
+  const t = S.tasks.find(x => x.id === id); if (!t || t.type !== 'task' || !t.day) return;
+  const [H0, H1] = tbHours(), len = tbLen(t), n = new Date(), nm = n.getHours()*60 + n.getMinutes();
+  const busy = S.tasks.filter(x => x.id !== id && x.day === t.day && !cancelled(x) && !x.done && span(x)).map(span);
+  let s = Math.max(H0*60, t.day === TODAY ? Math.ceil(nm / tb.slot) * tb.slot : 9*60), found = null;
+  for (; s + len <= H1*60; s += tb.slot) if (!busy.some(p => p[0] < s + len && s < p[1])) { found = s; break; }
+  tbPut(id, t.day, found === null ? Math.max(H0*60, Math.min(9*60, H1*60 - len)) : found, 'keep');
+}
+function tbClick(e) {
+  if (!tbOn() || CLOUD) return false;
+  const tg = e.target;
+  if (tg.closest('[data-rh]')) return true;
+  const col = tg.closest('#board .dc[data-drop]');
+  if (col && ui.tbPick) { tbPut(ui.tbPick, col.dataset.d, Math.floor(tbMinAt(col, e.clientY) / tb.slot) * tb.slot, 'keep'); return true; }
+  const chip = tg.closest('#board .tc[data-id][role=button]');
+  if (chip) { const t = S.tasks.find(x => x.id === chip.dataset.id); if (!t) return true; ui.tbPick = ui.tbPick === t.id ? null : t.id; ui.tbSel = null; render(); tbChipFocus(t.id); if (ui.tbPick) say('Now click a time for “'+t.title+'”. Esc cancels.'); return true; }
+  const box = tg.closest('#board .bx.task[data-id]');
+  if (box) { const id = box.dataset.id; if (e.detail >= 2) { openEdit(id); return true; } ui.tbSel = ui.tbSel === id ? null : id; render(); tbFocus(id); return true; }
+  if (ui.tbPick && !tg.closest('[data-act],.tbhint')) { const id = ui.tbPick; ui.tbPick = null; render(); tbChipFocus(id); return true; }
+  if (ui.tbSel && !tg.closest('.tbbar,[data-act=tblen],[data-act=tbunbox],[data-act=tbdone],[data-act=tbopen]')) { ui.tbSel = null; render(); }
+  return false;
+}
+function tbKey(e) {
+  const tg = e.target, typing = /^(input|textarea|select)$/i.test(tg.tagName || '') || tg.isContentEditable;
+  if ((e.key === 't' || e.key === 'T') && !e.metaKey && !e.ctrlKey && !e.altKey && !typing && !document.querySelector('dialog[open]') && ui.view === 'week') { e.preventDefault(); setMode(ui.mode === 'time' ? 'board' : 'time'); return true; }
+  if (!tbOn() || CLOUD || typing || document.querySelector('dialog[open]')) return false;
+  if (e.key === 'Escape' && (ui.tbPick || ui.tbSel)) { e.preventDefault(); const id = ui.tbPick || ui.tbSel, pk = !!ui.tbPick; ui.tbPick = null; ui.tbSel = null; render(); pk ? tbChipFocus(id) : tbFocus(id); return true; }
+  const cl = tg.classList; if (!cl || !tg.dataset || !tg.dataset.id || e.metaKey || e.ctrlKey || e.altKey) return false;
+  if (cl.contains('tc') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); tbAuto(tg.dataset.id); return true; }
+  if (!cl.contains('bx') || !cl.contains('task')) return false;
+  const t = S.tasks.find(x => x.id === tg.dataset.id); if (!t || !isBox(t)) return false;
+  const k = e.key, s = hmMin(t.start);
+  if (k === 'ArrowUp' || k === 'ArrowDown') { e.preventDefault(); const dir = k === 'ArrowUp' ? -1 : 1; if (t.done) return true; if (e.shiftKey) tbResize(t, dir * tb.slot); else tbMove(t, t.day, s + dir * tb.slot); return true; }
+  if (k === 'ArrowLeft' || k === 'ArrowRight') { e.preventDefault(); if (!t.done) tbMove(t, add(t.day, k === 'ArrowLeft' ? -1 : 1), s); return true; }
+  if (k === 'Delete' || k === 'Backspace') { e.preventDefault(); tbUnbox(t.id); return true; }
+  if (k === 'Enter') { e.preventDefault(); if (ui.tbSel !== t.id) { ui.tbSel = t.id; render(); tbFocus(t.id); } else openEdit(t.id); return true; }
+  if (k === 'x' || k === 'X' || k === ' ') { e.preventDefault(); toggleDone(t.id); tbFocus(t.id); return true; }
+  return false;
+}
+/* drag the bottom edge to change the length */
+let rz = null;
+document.addEventListener('pointerdown', e => {
+  const h = e.target.closest && e.target.closest('#board [data-rh]'); if (!h || CLOUD || e.button > 0) return;
+  const t = S.tasks.find(x => x.id === h.dataset.rh), box = h.closest('.bx'), col = h.closest('.dc'); if (!t || !box || !col || !isBox(t)) return;
+  e.preventDefault(); e.stopPropagation();
+  rz = { t, box, col, mins:tbLen(t), id:e.pointerId }; box.classList.add('sel', 'rz');
+  try { h.setPointerCapture(e.pointerId); } catch (x) {}
+}, true);
+document.addEventListener('pointermove', e => {
+  if (!rz) return;
+  const [H0, H1] = tbHours(), ph = tbPH(), s = hmMin(rz.t.start);
+  const end = Math.max(s + tb.slot, Math.min(snap(tbMinAt(rz.col, e.clientY)), 1440));
+  if (end - s === rz.mins) return;
+  rz.mins = end - s;
+  rz.box.style.height = Math.max(18, (Math.min(end, H1*60) - Math.max(s, H0*60)) / 60 * ph - 2)+'px';
+  const bm = rz.box.querySelector('.bm'); if (bm) bm.textContent = toHM(s)+'–'+toHM(end)+' · '+dtx(rz.mins)+' · '+SZ[sizeOfMins(rz.mins)].label;
+});
+function rzEnd() {
+  if (!rz) return; const { t, mins } = rz; rz = null;
+  if (mins !== tbLen(t)) { tbSet(t, t.day, hmMin(t.start), mins); save(); say('“'+t.title+'” '+dtx(mins)+', now '+SZ[t.size].label); }
+  ui.tbSel = t.id; render(); tbFocus(t.id);
+}
+document.addEventListener('pointerup', rzEnd);
+document.addEventListener('pointercancel', rzEnd);
+/* dragging into the hours: a ghost shows where the box will start */
+let tbGrab = 0, tbGhost = null;
+const tbGhostOff = () => { if (tbGhost) { tbGhost.remove(); tbGhost = null; } };
+function tbDragOver(e, z) {
+  const t = S.tasks.find(x => x.id === dragId); if (!t || t.type !== 'task') { tbGhostOff(); return; }
+  const [H0, H1] = tbHours(), ph = tbPH(), len = tbLen(t), s = Math.max(0, Math.min(snap(tbMinAt(z, e.clientY - tbGrab)), 1440 - len));
+  if (!tbGhost || tbGhost.parentNode !== z) { tbGhostOff(); tbGhost = document.createElement('div'); tbGhost.className = 'tbghost'; tbGhost.setAttribute('aria-hidden', 'true'); z.appendChild(tbGhost); }
+  const a = Math.max(s, H0*60), b = Math.min(s + len, H1*60);
+  tbGhost.style.top = ((a - H0*60) / 60 * ph)+'px'; tbGhost.style.height = Math.max(18, (b - a) / 60 * ph - 2)+'px';
+  tbGhost.textContent = toHM(s)+'–'+toHM(s + len); tbGhost.dataset.s = s;
+}
+/* ---------- C8 B: the end-of-day check. Boxes that ended and are not done (today after 18:00, or from the last 3 days) ask where they go.
+   "Later" hides the card for today and leaves a line in the bell. ---------- */
+let eodLater = ''; try { eodLater = localStorage.getItem('wa-eod-later') || ''; } catch (e) {}
+function eodList() {
+  if (CLOUD) return [];
+  const n = new Date(), nm = n.getHours()*60 + n.getMinutes(), lo = add(TODAY, -3);
+  return S.tasks.filter(t => isBox(t) && !t.done && !cancelled(t) && t.day >= lo && t.day <= TODAY && (t.day < TODAY || (nm >= 18*60 && span(t)[1] <= nm)))
+    .sort((a, b) => a.day.localeCompare(b.day) || span(a)[0] - span(b)[0]);
+}
+const eodTarget = t => t.day < TODAY ? TODAY : add(TODAY, 1);
+const eodDay = d => d === TODAY ? 'Today' : d === add(TODAY, 1) ? 'Tomorrow' : fmtDay(d);
+function eodRender() {
+  const host = $('eod'), L = !compact() && ui.view === 'week' && eodLater !== TODAY ? eodList() : [];
+  host.hidden = !L.length; host.classList.toggle('up', !!(tbOn() && ui.tbSel));
+  if (!L.length) { host.innerHTML = ''; return; }
+  const hadFocus = host.contains(document.activeElement) ? document.activeElement.dataset.fk : null;
+  const b = (t, v, lab) => '<button type="button" class="btn" data-act="eod" data-v="'+v+'" data-id="'+t.id+'" data-fk="'+v+':'+t.id+'">'+lab+'</button>';
+  host.innerHTML = '<h4 id="eodT">'+L.length+' timebox'+(L.length > 1 ? 'es' : '')+' didn’t happen</h4><p>Pick where each one goes. Nothing moves until you say.</p><div class="eodl">'
+    + L.map(t => '<div class="ri"><span class="rt">'+esc(t.title)+'<small>'+(t.day < TODAY ? fmtDay(t.day)+' · ' : '')+boxLabel(t)+'</small></span><span class="ra">'
+      + b(t, 'same', eodDay(eodTarget(t))+', same time') + b(t, 'row', eodDay(eodTarget(t))+', no time') + b(t, 'loose', 'Loose') + b(t, 'done', 'It’s done') + '</span></div>').join('')
+    + '</div><div class="rf"><button type="button" class="btn" data-act="eodall" data-fk="all">'+(L.every(t => t.day === TODAY) ? 'Move all to Tomorrow, no time' : 'Move all, no time')+'</button><button type="button" class="lnk" data-act="eodlater" data-fk="later">Later</button></div>';
+  if (hadFocus) { const f = host.querySelector('[data-fk="'+hadFocus+'"]') || host.querySelector('button'); if (f) f.focus({ preventScroll:true }); }
+}
+function eodDo(id, v, quiet) {
+  const t = S.tasks.find(x => x.id === id); if (!t) return;
+  const to = eodTarget(t);
+  if (v === 'done') t.done = true;
+  else if (v === 'loose') { t.day = null; t.week = mondayOf(parse(to)); delete t.order; tbUnset(t); }
+  else { t.day = to; t.week = mondayOf(parse(to)); delete t.order; if (v === 'row') tbUnset(t); }
+  if (!quiet) { save(); render(); say('“'+t.title+'”: '+(v === 'done' ? 'done' : v === 'loose' ? 'Loose' : eodDay(to)+(v === 'row' ? ', no time' : ', '+t.start))); const f = $('eod').querySelector('button'); if (f) f.focus({ preventScroll:true }); }
+}
+function eodSetLater(d) { eodLater = d; try { d ? localStorage.setItem('wa-eod-later', d) : localStorage.removeItem('wa-eod-later'); } catch (e) {} }
+/* once a minute: move the now line, and show the end-of-day card when the evening comes */
+let tbLast = '';
+setInterval(() => {
+  const k = eodList().length+'|'+eodLater;
+  if (k !== tbLast) { tbLast = k; if (!dragId && !rz && !document.querySelector('dialog[open]')) { render(); return; } }
+  const [H0, H1] = tbHours(), n = new Date(), nm = n.getHours()*60 + n.getMinutes(), el = document.querySelector('.tgw .now');
+  if (el && nm > H0*60 && nm < H1*60) el.style.top = ((nm - H0*60) / 60 * tbPH()).toFixed(1)+'px';
+}, 60000);
 /* Motion (Subframe motion guidance): glide only on occasional moves (mouse drop, menu buttons); keyboard moves are instant.
    Cards travelling between two places use ease-in-out, ~220 ms, transform only, no bounce; reduced motion gets a quick fade on the moved card. */
 let animNext = null; // id of the card Win just moved (null = no animation)
@@ -1730,6 +2125,8 @@ function notices() {
     n.push({ k:'changes', t:'<b>'+m.length+' change'+(m.length === 1 ? '' : 's')+'</b> since the last refresh'+(ol.last ? ' at '+esc(ol.last.at) : '')+': '+parts, a:[['olonly', ui.olOnly ? 'Show everything' : 'Show only changes', true], ['olseen', 'Mark all as seen']] });
   }
   if (!CLOUD && ntProblem()) n.push({ k:'notion', t:'<b>'+(nt.st && !nt.st.token ? 'Notion isn’t connected.' : 'Notion sync is paused.')+'</b> '+esc(ntLine(nt.st)), a:[['ntopen', nt.st && !nt.st.token ? 'Connect Notion' : 'Notion sync']] });
+  const eodN = eodLater === TODAY ? eodList().length : 0;
+  if (eodN) n.push({ k:'eod', t:'<b>'+eodN+' timebox'+(eodN > 1 ? 'es' : '')+' didn’t happen.</b> Pick where '+(eodN > 1 ? 'they go' : 'it goes')+' when you’re ready.', a:[['eodnow', 'Check now']] });
   if (ui.nsun) n.push({ k:'sun', t:'It’s Sunday, so this opened on next week.', a:[['backthis', 'Back to this week'], ['dismiss', 'Dismiss']] });
   if (S.tasks.some(t => t.demo)) n.push({ k:'demo', t:'These are example tasks so you can try things.', a:[['cleardemo', 'Clear examples']] });
   return n;
@@ -1792,14 +2189,17 @@ function renderNow() {
     document.querySelectorAll('[data-act=filter]').forEach(b => b.setAttribute('aria-pressed', b.dataset.f === ui.filter));
     $('bPat').hidden = ui.view !== 'week'; $('rngSeg').hidden = ui.view !== 'week'; drawBar();
     document.querySelectorAll('[data-act=range]').forEach(b => b.setAttribute('aria-pressed', b.dataset.r === ui.range));
-    const unit = ui.view === 'month' ? 'week' : RANGES[ui.range].n === 1 ? 'day' : RANGES[ui.range].n === 3 ? '3 days' : 'week', pr = document.querySelector('[data-act=prev]'), nx = document.querySelector('[data-act=next]');
+    tbRangeSync(); const er = RANGES[effRange()];
+    const unit = ui.view === 'month' ? 'week' : er.n === 1 ? 'day' : er.n === 3 ? '3 days' : 'week', pr = document.querySelector('[data-act=prev]'), nx = document.querySelector('[data-act=next]');
     pr.setAttribute('aria-label', 'Previous '+unit); nx.setAttribute('aria-label', 'Next '+unit); pr.title = 'Previous '+unit+' (←)'; nx.title = 'Next '+unit+' (→)';
     $('range').textContent = rangeLabel(); $('rel').textContent = relLabel();
-    $('board').className = 'board' + (ui.view === 'week' ? ' r'+RANGES[ui.range].n : '');
-    $('board').innerHTML = ui.view === 'week' ? renderWeek() : renderMonth();
-    glanceChips();
+    const tbx = tbOn(); $('board').className = 'board' + (ui.view === 'week' ? ' r'+er.n : '') + (tbx ? ' tb' : '');
+    $('board').style.minWidth = tbx ? (56 + er.n * 150)+'px' : '';
+    $('board').innerHTML = ui.view === 'week' ? (tbx ? renderTB() : renderWeek()) : renderMonth();
+    if (tbx) tbFit();
+    tbHead(); glanceChips();
   }
-  shelfRender();
+  shelfRender(); eodRender();
   closeMenu(); if (sheet) fillSheet(); if ($('pat').open) fillPat();
   panelSync();
   sunUpdate();
@@ -1857,7 +2257,7 @@ document.addEventListener('click', e => { if (e.target.closest('.sun:not(.sm)'))
 function setNotice(on) { ui.nsun = !!on; }   // the only notice that is set by hand is the Sunday one; the others come from the data
 function go(delta) {
   if (compact()) { if (ui.view === 'week') { ui.day = add(ui.day || ui.anchor, delta); ui.anchor = mondayOf(parse(ui.day)); } else ui.anchor = add(ui.anchor, delta*28); }
-  else if (rangeOn() && RANGES[ui.range].n <= 3) { ui.first = add(ui.first, delta*RANGES[ui.range].step); ui.anchor = mondayOf(parse(ui.first)); }
+  else if (rangeOn() && RANGES[effRange()].n <= 3) { ui.first = add(ui.first, delta*RANGES[effRange()].step); ui.anchor = mondayOf(parse(ui.first)); }
   else ui.anchor = add(ui.anchor, delta*7);
   setNotice(''); render();
 }
@@ -1871,7 +2271,7 @@ function dayRoll() {
   if (wasDay) ui.day = TODAY;
   if (compact()) { if (ui.view === 'week') { if (wasDay) ui.anchor = mondayOf(parse(TODAY)); } else if (wasWeek) ui.anchor = THIS_MON; }
   else if (ui.view === 'month') { if (wasWeek) ui.anchor = THIS_MON; }
-  else if (RANGES[ui.range].n <= 3) { if (wasFirst) ui.anchor = mondayOf(parse(TODAY)); }
+  else if (RANGES[effRange()].n <= 3) { if (wasFirst) ui.anchor = mondayOf(parse(TODAY)); }
   else if (wasWeek) ui.anchor = THIS_MON;
   render();
 }
@@ -1928,7 +2328,7 @@ function dropSpot(e, z) {
 }
 async function move(id, to, spot) {
   const t = S.tasks.find(x => x.id === id); if (!t || roMeeting(id)) return;
-  if (to === 'tray') { if (t.type === 'meeting') return; t.day = null; t.week = ui.anchor; delete t.order; }
+  if (to === 'tray') { if (t.type === 'meeting') return; t.day = null; t.week = ui.anchor; delete t.order; tbUnset(t); }   // WA-84: Loose has no time
   else {
     if (t.type === 'task' && t.kind === 'work' && isWeekend(to) && t.day !== to && !(await askWeekend(t.title, to))) { render(); focusCard(id); return; }
     if (t.day !== to) delete t.order;
@@ -2142,7 +2542,8 @@ async function saveTask(again) {
   if (!isMeeting && kind === 'work' && day && isWeekend(day) && !(t && t.day === day) && !(await askWeekend(title, day))) return;
   const data = { type:isMeeting?'meeting':'task', title, kind, cat:kind === 'life' ? form.cat : '', size:form.size, day, week:day ? mondayOf(parse(day)) : ((t && t.week) || ui.anchor), due };
   if (t && t.day !== day) delete t.order;
-  if (t) Object.assign(t, data); else { const n = Object.assign({ id:uid(), done:false }, addFrom ? { from:addFrom } : {}, data); S.tasks.push(n); ui.ret = n.id; }
+  if (t && isBox(t) && t.size !== data.size) t.mins = DUR[data.size];   // WA-84: size picked by hand on a timebox = that size's length
+  if (t) { Object.assign(t, data); if (!t.day) tbUnset(t); } else { const n = Object.assign({ id:uid(), done:false }, addFrom ? { from:addFrom } : {}, data); S.tasks.push(n); ui.ret = n.id; }
   save(); render();
   if (again && !t) { $('title').value = ''; $('title').focus(); } else $('dlg').close();
 }
@@ -2245,7 +2646,7 @@ function drawPanel() {
   let sel = null; try { if (inP && a.tagName === 'INPUT' && a.type === 'text') sel = [a.selectionStart, a.selectionEnd]; } catch (x) {}   // WebKit throws when you ask a date box or checkbox for its caret; that used to leave the panel showing the PREVIOUS ticket
   const st = $('tp').querySelector('.tpb') ? $('tp').querySelector('.tpb').scrollTop : 0;
   const subs = subsOf(t), n = subs.length, k = subs.filter(x => x.done).length, days = weekDays(t.day ? mondayOf(parse(t.day)) : (t.week || ui.anchor));
-  const meta = '<span class="tag'+(life?' life':'')+'">'+icon(life?'life':'work')+(life?'Life':'Work')+'</span><span>'+(t.day ? fmtDay(t.day) : 'Loose this week')+' · '+SZ[t.size].label+'</span>';
+  const meta = '<span class="tag'+(life?' life':'')+'">'+icon(life?'life':'work')+(life?'Life':'Work')+'</span><span>'+(t.day ? fmtDay(t.day) : 'Loose this week')+(isBox(t) ? ' · '+boxLabel(t) : '')+' · '+SZ[t.size].label+'</span>';
   const radios = (g, items, cur) => '<div class="seg" role="radiogroup" data-tpg="'+g+'" aria-labelledby="tpl-'+g+'">'+items.map(([v, lab, ic]) => '<button type="button" role="radio" data-tp="'+g+'" data-v="'+v+'" data-fk="'+g+':'+v+'" aria-checked="'+(cur === v)+'" tabindex="'+(cur === v ? 0 : -1)+'">'+(ic || '')+lab+'</button>').join('')+'</div>';
   const cats = allCats(), kids = S.tasks.filter(x => x.from === t.id), p = t.from && S.tasks.find(x => x.id === t.from);
   const f = (g, lab, body) => '<div class="tpf"><span class="tpl" id="tpl-'+g+'">'+lab+'</span>'+body+'</div>';
@@ -2283,7 +2684,8 @@ async function tpSet(t, patch) {
   if (patch.kind === 'work' && !(patch.day === null) && (patch.day || t.day) && isWeekend(patch.day || t.day) && !(await askWeekend(t.title, patch.day || t.day))) { drawPanel(); return; }
   if (patch.day !== undefined && patch.day !== t.day) { delete t.order; patch.week = patch.day ? mondayOf(parse(patch.day)) : (t.week || ui.anchor); }
   if (patch.kind && patch.kind !== 'life') patch.cat = '';
-  Object.assign(t, patch); save(); render(); if (patch.day !== undefined) { tpGlide(t.id); tpPills(); }
+  if (patch.size && isBox(t)) patch.mins = DUR[patch.size];   // WA-84: picking a size on a timebox sets its length to that size
+  Object.assign(t, patch); if (!t.day) tbUnset(t); save(); render(); if (patch.day !== undefined) { tpGlide(t.id); tpPills(); }
 }
 $('tp').addEventListener('click', e => {
   const b = e.target.closest('[data-tp]'); if (!b) return; const t = tpTask(); if (!t) return; const a = b.dataset.tp;
@@ -2398,6 +2800,7 @@ function undoDel() {
 
 /* ---------- events ---------- */
 document.addEventListener('click', e => {
+  if (tbClick(e)) return;
   const cardEl = e.target.closest('.card');
   if (cardEl && !e.target.closest('[data-act]')) { openEdit(cardEl.dataset.id); return; }
   const b = e.target.closest('[data-act]');
@@ -2425,6 +2828,14 @@ document.addEventListener('click', e => {
   else if (a === 'undo') undoDel();
   else if (a === 'goto') { ui.view = 'week'; if (RANGES[ui.range].n <= 3) ui.first = b.dataset.d; showDay(b.dataset.d); setNotice(''); render(); }
   else if (a === 'range') setRange(b.dataset.r);
+  else if (a === 'mode') { if (b.dataset.v !== ui.mode) setMode(b.dataset.v); }
+  else if (a === 'tbslot' || a === 'tbhours') { if (a === 'tbslot') tb.slot = +b.dataset.slot; else tb.hours = b.dataset.hours; tbScroll = null; try { localStorage.setItem('wa-tbslot', tb.slot); localStorage.setItem('wa-tbhours', tb.hours); } catch (x) {} render(); const m = $('mGrid'); if (m) m.focus({ preventScroll:true }); }
+  else if (a === 'tblen' || a === 'tbunbox' || a === 'tbdone' || a === 'tbopen') { const t = S.tasks.find(x => x.id === ui.tbSel); if (t) { if (a === 'tblen') tbResize(t, +b.dataset.v * tb.slot); else if (a === 'tbunbox') tbUnbox(t.id); else if (a === 'tbdone') { toggleDone(t.id); tbFocus(t.id); } else openEdit(t.id); } }
+  else if (a === 'tbpickx') { const id = ui.tbPick; ui.tbPick = null; render(); tbChipFocus(id); }
+  else if (a === 'eod') eodDo(b.dataset.id, b.dataset.v);
+  else if (a === 'eodall') { const L = eodList(); L.forEach(t => eodDo(t.id, 'row', true)); save(); render(); say(L.length+' moved, no time'); }
+  else if (a === 'eodlater') { eodSetLater(TODAY); render(); say('Later: it waits in Updates'); }
+  else if (a === 'eodnow') { eodSetLater(''); render(); const f = $('eod').querySelector('button'); if (f) f.focus(); }
   else if (a === 'cleardemo') { S.tasks = S.tasks.filter(t => !t.demo); save(); render(); }
   else if (a === 'backthis') goToday();
   else if (a === 'dismiss') { setNotice(''); render(); }
@@ -2488,24 +2899,29 @@ function placePh(z, sp) {
   if (prev) playFlip(prev, null, false);
 }
 document.addEventListener('dragstart', e => {
-  const c = e.target.closest('.card'); if (!c) return; if (compact()) { e.preventDefault(); return; }
+  const c = e.target.closest('.card, #board .bx[draggable], #board .tc[draggable]'); if (!c) return; if (compact() || rz) { e.preventDefault(); return; }
+  tbGrab = c.classList.contains('bx') ? e.clientY - c.getBoundingClientRect().top : 8; ui.tbPick = null;
   dragId = c.dataset.id; phH = c.offsetHeight; e.dataTransfer.setData('text/plain', dragId); e.dataTransfer.effectAllowed = 'move';
   try { const g = c.cloneNode(true), r = c.getBoundingClientRect(); g.classList.add('dragimg'); g.removeAttribute('data-id'); g.style.width = c.offsetWidth+'px'; document.body.appendChild(g); e.dataTransfer.setDragImage(g, e.clientX - r.left, e.clientY - r.top); setTimeout(() => g.remove(), 0); } catch (x) {}
   const z = c.closest('[data-drop]'), id = dragId;
   setTimeout(() => { if (dragId !== id) return; if (z && /^\d/.test(z.dataset.drop)) { phEl = document.createElement('div'); phEl.className = 'ph'; phEl.style.height = phH+'px'; phEl.setAttribute('aria-hidden', 'true'); c.parentNode.insertBefore(phEl, c); } c.classList.add('dragging'); }, 0);
 });
-document.addEventListener('dragend', () => { dragId = null; shelfPeek(false); removePh(); document.querySelectorAll('.dragging,.over').forEach(x => x.classList.remove('dragging','over')); });
+document.addEventListener('dragend', () => { dragId = null; shelfPeek(false); removePh(); tbGhostOff(); document.querySelectorAll('.dragging,.over').forEach(x => x.classList.remove('dragging','over')); });
 document.addEventListener('dragover', e => {
   if (dragId) { const s = $('shelf'); if (s && !s.hidden) { if (e.clientX < SHW.rail + 70) shelfPeek(true); else if (e.clientX > SHW.open + 60) shelfPeek(false); } }
   const z = e.target.closest('[data-drop]'); if (!z || !dragId) return; e.preventDefault();
   document.querySelectorAll('.over').forEach(x => x !== z && x.classList.remove('over'));
+  if (z.dataset.drop.startsWith('g:')) { removePh(); z.classList.remove('over'); tbDragOver(e, z); return; }
+  tbGhostOff();
   if (!/^\d/.test(z.dataset.drop)) { removePh(); z.classList.add('over'); return; }
   placePh(z, dropSpot(e, z));
 });
-document.addEventListener('drop', e => {
+document.addEventListener('drop', async e => {
   shelfPeek(false);
   const z = e.target.closest('[data-drop]'); if (!z || !dragId) return; e.preventDefault();
   const id = dragId; dragId = null; let sp = null;
+  if (z.dataset.drop.startsWith('g:')) { const s0 = tbGhost ? +tbGhost.dataset.s : snap(tbMinAt(z, e.clientY - tbGrab)); tbGhostOff(); tbPut(id, z.dataset.drop.slice(2), s0, 'keep'); return; }
+  if (z.dataset.drop.startsWith('r:')) { tbGhostOff(); const t0 = S.tasks.find(x => x.id === id), d0 = z.dataset.drop.slice(2); if (t0 && t0.type === 'task') { if (t0.kind === 'work' && isWeekend(d0) && t0.day !== d0 && !(await askWeekend(t0.title, d0))) { render(); return; } tbUnbox(id, d0); } return; }
   if (phEl && phEl.parentNode === z) {
     const side = dir => { let n = phEl[dir]; while (n && n.dataset && n.dataset.id === id) n = n[dir]; return n && n.classList.contains('card') ? n : null; };
     const nx = side('nextElementSibling'), pv = side('previousElementSibling');
@@ -2527,6 +2943,7 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); return; }
   }
   if (e.key === 'Escape' && ui.menu) { closeMenu(); return; }
+  if (tbKey(e)) return;
   if ((e.key === 'ContextMenu' || (e.key === 'F10' && e.shiftKey)) && e.target.classList && e.target.classList.contains('card') && !$('dlg').open) { e.preventDefault(); const r = e.target.getBoundingClientRect(); openCtx(e.target.dataset.id, r.left + 24, r.top + 28); return; }
   if (e.key === 'Enter' && e.target.classList && e.target.classList.contains('card') && !$('dlg').open) { e.preventDefault(); openEdit(e.target.dataset.id); return; }
   if ((e.key === 'x' || e.key === 'X' || e.key === ' ') && !e.altKey && !e.metaKey && !e.ctrlKey && e.target.classList && e.target.classList.contains('card') && !$('dlg').open) { e.preventDefault(); toggleDone(e.target.dataset.id); return; }
@@ -2588,7 +3005,7 @@ function renderM() {
   $('mhead').innerHTML = '<button type="button" class="sun sm" aria-label="Week mood"></button><button type="button" class="ar" data-act="prev" aria-label="'+(wk?'Previous day':'Previous 4 weeks')+'">‹</button><div class="mt" aria-live="polite"><b>'+(wk ? fmtDay(ui.day)+' '+MN[parse(ui.day).getMonth()] : rangeLabel())+'</b><span>'+(wk && ui.day === TODAY ? 'Today' : relLabel())+'</span></div><button type="button" class="ar" data-act="next" aria-label="'+(wk?'Next day':'Next 4 weeks')+'">›</button>' + (away ? '<button type="button" class="tdp" data-act="today">Today</button>' : '')
     + '<button type="button" class="ar nbell" data-act="sheet" data-s="notes" aria-label="'+(nN ? 'Updates, '+nN+' open' : 'Updates, all caught up')+'">'+'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4"/></svg>'+(nN ? '<span class="nb">'+nN+'</span>' : '')+'</button>';
   $('mbody').innerHTML = wk
-    ? '<div class="pl">'+stripM()+dayList(ui.day)+'</div><div class="pr ag" aria-label="The whole week">'+weekDays(ui.anchor).map(d => dayList(d, true)).join('')+'</div>'
+    ? '<div class="pl">'+stripM()+'<div class="seg pmode" role="group" aria-label="Show as"><button type="button" data-act="mode" data-v="board" aria-pressed="'+(ui.mode !== 'time')+'">List</button><button type="button" data-act="mode" data-v="time" aria-pressed="'+(ui.mode === 'time')+'">Hours</button></div>'+(ui.mode === 'time' ? hoursDay(ui.day) : dayList(ui.day))+'</div><div class="pr ag" aria-label="The whole week">'+weekDays(ui.anchor).map(d => dayList(d, true)).join('')+'</div>'
     : '<div class="pl">'+gridM()+'</div><div class="pr">'+dayList(ui.day)+'</div>';
   const n = looseList().length;
   $('app-m').classList.toggle('hasloose', wk && n > 0);
